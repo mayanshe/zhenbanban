@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//dtd/Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhenbanban.core.infrastructure.persistence.mapper.AccountPoMapper">
+    <!-- 账号(accounts)表映射 -->
+
+    <insert id="insert" parameterType="AccountPo" useGeneratedKeys="false">
+        INSERT INTO accounts (id, scopes, username, surname, given_name, gender, email, phone, password, avatar, state, created_at)
+        VALUES
+        (#{id}, #{scopes}, #{username}, #{surname}, #{givenName}, #{gender}, #{email}, #{phone}, #{password}, #{avatar}, #{state}, #{createdAt})
+    </insert>
+
+    <update id="update" parameterType="AccountPo">
+        UPDATE accounts SET
+        scopes = #{scopes},
+        username = #{username},
+        surname = #{surname},
+        given_name = #{givenName},
+        gender = #{gender},
+        email = #{email},
+        phone = #{phone},
+        <if test="password != null and password != ''">
+            password = #{password},
+        </if>
+        avatar = #{avatar},
+        state = #{state},
+        version = version + 1,
+        updated_at = #{updatedAt}
+        WHERE id = #{id} AND version = #{version}
+    </update>
+
+    <update id="forbid" parameterType="java.util.Map">
+        UPDATE accounts SET
+        state = 0,
+        version = version + 1,
+        updated_at = UNIX_TIMESTAMP(NOW(3)) * 1000
+        WHERE id = #{id} AND version = #{version}
+    </update>
+
+    <select id="findById" parameterType="Long" resultType="AccountPo">
+        SELECT * FROM accounts WHERE id = #{id}
+    </select>
+
+    <select id="existsById" parameterType="Long" resultType="boolean">
+        SELECT COUNT(id) > 0 FROM accounts WHERE id = #{id}
+    </select>
+
+    <select id="findIdByUsername" parameterType="String" resultType="Long">
+        SELECT id FROM accounts WHERE username = #{username}
+    </select>
+
+    <select id="findIdByEmail" parameterType="String" resultType="Long">
+        SELECT id FROM accounts WHERE email = #{email}
+    </select>
+
+    <select id="findIdByPhone" parameterType="String" resultType="Long">
+        SELECT id FROM accounts WHERE phone = #{phone}
+    </select>
+
+</mapper>

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//dtd/Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhenbanban.core.infrastructure.persistence.mapper.PermissionGroupPoMapper">
+    <!-- 权限组(permission_groups)表映射 -->
+
+    <resultMap id="PermissionGroupMap" type="PermissionGroupPo">
+        <id property="id" column="id"/>
+        <result property="parentId" column="parent_id"/>
+        <result property="groupName" column="group_name"/>
+        <result property="displayName" column="display_name"/>
+        <result property="description" column="description"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+        <collection property="children" ofType="PermissionGroupPo"
+                    select="findByParentId" column="id"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="PermissionGroupPo" useGeneratedKeys="false">
+        INSERT INTO permission_groups (id, parent_id, group_name, display_name, description, created_at)
+        VALUES (#{id}, #{parentId}, #{groupName}, #{displayName}, #{description}, #{createdAt})
+    </insert>
+
+    <update id="update" parameterType="PermissionGroupPo">
+        UPDATE permission_groups
+        SET parent_id = #{parentId},
+        group_name = #{groupName},
+        display_name = #{displayName},
+        description = #{description},
+        updated_at = #{updatedAt}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="Long">
+        DELETE FROM permission_groups WHERE id = #{id}
+    </delete>
+
+    <select id="count" parameterType="java.util.HashMap" resultType="Integer">
+        SELECT COUNT(id)
+        FROM permission_groups
+        <where>
+            <if test="id != null">
+                AND id = #{id}
+            </if>
+            <if test="parentId != null">
+                AND parent_id = #{parentId}
+            </if>
+            <if test="groupName != null and groupName != ''">
+                AND group_name LIKE CONCAT('%', #{groupName}, '%')
+            </if>
+            <if test="displayName != null and displayName != ''">
+                AND display_name LIKE CONCAT('%', #{displayName}, '%')
+            </if>
+        </where>
+    </select>
+
+    <select id="findById" parameterType="Long" resultMap="PermissionGroupMap">
+        SELECT id, parent_id, group_name, display_name, description, created_at, updated_at
+        FROM permission_groups
+        WHERE id = #{id}
+    </select>
+
+    <select id="findIdByGroupName" parameterType="String" resultType="Long">
+        SELECT id
+        FROM permission_groups
+        WHERE group_name = #{groupName}
+    </select>
+
+    <select id="findIdByDisplayName" parameterType="String" resultType="Long">
+        SELECT id
+        FROM permission_groups
+        WHERE display_name = #{displayName}
+    </select>
+
+    <select id="findAll" resultMap="PermissionGroupMap">
+        SELECT id, parent_id, group_name, display_name, description, created_at, updated_at
+        FROM permission_groups
+        ORDER BY id ASC
+    </select>
+
+    <select id="search" parameterType="java.util.HashMap" resultMap="PermissionGroupMap">
+        SELECT id, parent_id, group_name, display_name, description, created_at, updated_at
+        FROM permission_groups
+        <where>
+            <if test="groupName != null and groupName != ''">
+                AND group_name LIKE CONCAT('%', #{groupName}, '%')
+            </if>
+            <if test="displayName != null and displayName != ''">
+                AND display_name LIKE CONCAT('%', #{displayName}, '%')
+            </if>
+        </where>
+        <if test="orderBy != null and orderBy != ''">
+            ORDER BY ${orderBy}
+        </if>
+    </select>
+
+    <select id="findByParentId" parameterType="Long" resultMap="PermissionGroupMap">
+        SELECT id, parent_id, group_name, display_name, description, created_at, updated_at
+        FROM permission_groups
+        WHERE parent_id = #{parentId}
+        ORDER BY id ASC
+    </select>
+
+</mapper>

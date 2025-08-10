@@ -1,0 +1,18 @@
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.iml
+*.iws
+*.ipr

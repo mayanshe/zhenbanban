@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//dtd/Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhenbanban.core.infrastructure.persistence.mapper.PermissionPoMapper">
+    <!-- 权限(permissions)表映射 -->
+
+    <insert id="insert" parameterType="PermissionPo" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO permissions (id, group_id, permission_name, display_name, description, created_at)
+        VALUES (#{id}, #{groupId}, #{permissionName}, #{displayName}, #{description}, #{createdAt})
+    </insert>
+
+    <update id="update" parameterType="PermissionPo">
+        UPDATE permissions SET
+        group_id = #{groupId},
+        permission_name = #{permissionName},
+        display_name = #{displayName},
+        description = #{description},
+        updated_at = #{updatedAt}
+        WHERE id = #{id}
+    </update>
+
+    <update id="removeGroup" parameterType="Long">
+        UPDATE permissions SET
+        group_id = 0
+        WHERE group_id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="Long">
+        DELETE FROM permissions WHERE id = #{id}
+    </delete>
+
+    <select id="findById" parameterType="Long" resultType="PermissionPo">
+        SELECT * FROM permissions WHERE id = #{id}
+    </select>
+
+    <select id="findIdByPermissionName" parameterType="String" resultType="Long">
+        SELECT id FROM permissions WHERE permission_name = #{permissionName}
+    </select>
+
+    <select id="findByDisplayName" parameterType="String" resultType="Long">
+        SELECT id FROM permissions WHERE display_name = #{displayName}
+    </select>
+
+    <select id="findAll" resultType="PermissionPo">
+        SELECT * FROM permissions
+    </select>
+
+    <select id="search" parameterType="java.util.HashMap" resultType="PermissionPo">
+        SELECT * FROM permissions
+        <where>
+            <if test="permissionName != null and permissionName != ''">
+                AND permissionName LIKE CONCAT('%', #{permissionName}, '%')
+            </if>
+            <if test="displayName != null and displayName != ''">
+                AND display_name LIKE CONCAT('%', #{displayName}, '%')
+            </if>
+            <if test="description != null and description != ''">
+                AND description LIKE CONCAT('%', #{description}, '%')
+            </if>
+        </where>
+        <if test="orderBy != null and orderBy != ''">
+            ORDER BY ${orderBy}
+        </if>
+    </select>
+
+    <!-- 查询指定角色关联的权限 -->
+    <select id="findPermissionsByRoleId" parameterType="Long" resultType="PermissionPo">
+        SELECT p.id, p.permission_name, p.description, p.created_at, p.updated_at
+        FROM permissions p
+        WHERE p.id IN (
+        SELECT rp.permission_id
+        FROM role_permissions rp
+        WHERE rp.role_id = #{id}
+        )
+    </select>
+
+</mapper>

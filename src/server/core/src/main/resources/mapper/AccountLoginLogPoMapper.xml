@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//dtd/Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhenbanban.core.infrastructure.persistence.mapper.AccountLoginLogPoMapper">
+    <!-- 账号登陆日志(account_login_logs)表映射 -->
+
+    <insert id="insert" parameterType="AccountLoginLogPo" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO account_login_logs (account_id, username, scope, kind, platform, client_ip, user_agent,
+        browser_fingerprint, token_md5, login_at)
+        VALUES
+        (#{accountId}, #{username}, #{scope}, #{kind}, #{platform}, #{clientIp}, #{userAgent}, #{browserFingerprint},
+        #{tokenMd5}, #{loginAt})
+    </insert>
+
+    <update id="update" parameterType="java.util.Set">
+        UPDATE account_login_logs SET
+        login_at = #{loginAt}
+        WHERE account_id = #{accountId} and tokenMd5 = #{tokenMd5}
+    </update>
+
+</mapper>

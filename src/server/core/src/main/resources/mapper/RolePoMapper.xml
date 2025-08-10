@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//dtd/Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhenbanban.core.infrastructure.persistence.mapper.RolePoMapper">
+    <!-- 角色(roles)表映射 -->
+
+    <resultMap id="RoleWithAssignmentMap" type="RolePo">
+        <id property="id" column="id"/>
+        <result property="roleName" column="role_name"/>
+        <result property="displayName" column="display_name"/>
+        <result property="description" column="description"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+        <collection fetchType="lazy" property="permissions" column="id"
+                    ofType="java.util.Set"
+                    select="com.zhenbanban.core.infrastructure.persistence.mapper.PermissionPoMapper.findPermissionsByRoleId"/>
+        <collection fetchType="lazy" property="resources" column="id"
+                    ofType="jva.util.Set"
+                    select="com.zhenbanban.core.infrastructure.persistence.mapper.ResourcePoMapper.findResourcesByRoleId"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="RolePo" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO roles (id, role_name, display_name, description, created_at)
+        VALUES (#{id}, #{roleName}, #{displayName}, #{description}, #{createdAt})
+    </insert>
+
+    <update id="update" parameterType="RolePo">
+        UPDATE roles SET
+        role_name = #{roleName},
+        display_name = #{displayName},
+        description = #{description},
+        updated_at = #{updatedAt}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="Long">
+        DELETE FROM roles WHERE id = #{id}
+    </delete>
+
+    <select id="findById" parameterType="Long" resultMap="RoleWithAssignmentMap">
+        SELECT * FROM roles WHERE id = #{id}
+    </select>
+
+    <select id="findByAdminId" parameterType="Long" resultMap="RoleWithAssignmentMap">
+        SELECT * FROM roles WHERE id IN (SELECT role_id FROM admin_roles WHERE admin_id = #{adminId})
+    </select>
+
+    <select id="findIdByRoleName" parameterType="String" resultType="Long">
+        SELECT id FROM roles WHERE role_name = #{roleName}
+    </select>
+
+    <select id="findByDisplayName" parameterType="String" resultType="Long">
+        SELECT id FROM roles WHERE display_name = #{displayName}
+    </select>
+
+    <select id="findAll" resultType="RolePo">
+        SELECT * FROM roles ORDER BY id ASC
+    </select>
+
+    <select id="search" parameterType="java.util.Map" resultMap="RoleWithAssignmentMap">
+        SELECT * FROM roles
+        <where>
+            <if test="roleName != null and roleName != ''">
+                AND role_name LIKE CONCAT('%', #{roleName}, '%')
+            </if>
+            <if test="displayName != null and displayName != ''">
+                AND display_name LIKE CONCAT('%', #{displayName}, '%')
+            </if>
+            <if test="description != null and description != ''">
+                AND description LIKE CONCAT('%', #{description}, '%')
+            </if>
+        </where>
+        <if test="orderBy != null and orderBy != ''">
+            ORDER BY ${orderBy}
+        </if>
+    </select>
+
+    <select id="countByIds" parameterType="java.util.Set" resultType="int">
+        SELECT COUNT(id) FROM roles
+        <if test="ids != null and ids.size > 0">
+            WHERE id IN
+            <foreach collection="ids" item="roleId" separator="," open="(" close=")">
+                #{roleId}
+            </foreach>
+        </if>
+        <if test="ids == null or ids.size == 0">
+            WHERE 1=0
+        </if>
+    </select>
+
+</mapper>

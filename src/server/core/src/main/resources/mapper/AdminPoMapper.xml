@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//dtd/Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhenbanban.core.infrastructure.persistence.mapper.AdminPoMapper">
+    <!-- 管理员(admins)表映射 -->
+
+    <resultMap id="AdminPoMap" type="AdminPo">
+        <id property="id" column="id"/>
+        <result property="username" column="username"/>
+        <result property="surname" column="surname"/>
+        <result property="givenName" column="given_name"/>
+        <result property="phone" column="phone"/>
+        <result property="email" column="email"/>
+        <result property="avatar" column="avatar"/>
+        <result property="lastLoginIp" column="last_login_ip"/>
+        <result property="lastLoginAt" column="last_login_at"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+        <result property="deletedAt" column="deleted_at"/>
+        <association property="roles" column="id"
+                     javaType="java.util.Set" select="com.zhenbanban.core.infrastructure.persistence.mapper.RolePoMapper.findByAdminId"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="AdminPo" useGeneratedKeys="false">
+        INSERT INTO admins (account_id, created_at) VALUES (#{id}, #{createdAt})
+    </insert>
+
+    <update id="update" parameterType="AdminPo">
+        UPDATE admins SET
+        last_login_ip = #{lastLoginIp},
+        last_login_at= #{lastLoginAt},
+        deleted_at = #{deletedAt}
+        WHERE account_id = #{id}
+    </update>
+
+    <update id="forbid" parameterType="Long">
+        UPDATE admins SET deleted_at = UNIX_TIMESTAMP(NOW(3)) * 1000 WHERE account_id = #{id}
+    </update>
+
+    <update id="activate" parameterType="Long">
+        UPDATE admins SET deleted_at = 0 WHERE account_id = #{id}
+    </update>
+
+    <select id="findById" parameterType="Long" resultMap="AdminPoMap">
+        SELECT a.id, a.username, a.surname, a.password, a.given_name, a.phone, a.email, a.avatar,
+               m.last_login_ip, m.last_login_at, m.created_at, m.updated_at, m.deleted_at
+        FROM admins AS m
+        INNER JOIN accounts AS a ON m.account_id = a.id
+        WHERE m.account_id = #{id}
+    </select>
+
+    <select id="existsById" parameterType="Long" resultType="boolean">
+        SELECT COUNT(1) > 0 FROM admins WHERE account_id = #{id}
+    </select>
+
+    <select id="findByPhone" parameterType="String" resultMap="AdminPoMap">
+        SELECT a.id, a.username, a.password, a.surname, a.given_name, a.phone, a.email, a.avatar,
+        m.last_login_ip, m.last_login_at, m.created_at, m.updated_at, m.deleted_at
+        FROM admins AS m
+        INNER JOIN accounts AS a ON m.account_id = a.id
+        WHERE a.phone = #{phone} Limit 1
+    </select>
+
+    <select id="findByEmail" parameterType="String" resultMap="AdminPoMap">
+        SELECT a.id, a.username, a.password, a.surname, a.given_name, a.phone, a.email, a.avatar,
+        m.last_login_ip, m.last_login_at, m.created_at, m.updated_at, m.deleted_at
+        FROM admins AS m
+        INNER JOIN accounts AS a ON m.account_id = a.id
+        WHERE a.email = #{email} Limit 1
+    </select>
+
+    <select id="findByUsername" parameterType="String" resultMap="AdminPoMap">
+        SELECT a.id, a.username, a.password, a.surname, a.given_name, a.phone, a.email, a.avatar,
+        m.last_login_ip, m.last_login_at, m.created_at, m.updated_at, m.deleted_at
+        FROM admins AS m
+        INNER JOIN accounts AS a ON m.account_id = a.id
+        WHERE a.username = #{username} Limit 1
+    </select>
+
+</mapper>

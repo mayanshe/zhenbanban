@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//dtd/Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhenbanban.core.infrastructure.persistence.mapper.RolePermissionPoMapper">
+    <!-- 角色权限关联关系(role_permissions)表映射 -->
+
+    <insert id="insert" parameterType="RolePermissionPo" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO role_permissions (role_id, permission_id, created_at)
+        VALUES (#{roleId}, #{permissionId}, #{createdAt})
+    </insert>
+
+    <insert id="batchInsert" parameterType="java.util.List">
+        INSERT INTO role_permissions (role_id, permission_id, created_at)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.roleId}, #{item.permissionId}, #{item.createdAt})
+        </foreach>
+    </insert>
+
+    <delete id="batchDelete" parameterType="java.util.List">
+        DELETE FROM role_permissions
+        WHERE 1=0
+        <foreach collection="list" item="item">
+            OR (role_id = #{item.roleId} AND permission_id = #{item.permissionId})
+        </foreach>
+    </delete>
+
+    <delete id="deleteByRoleId" parameterType="Long">
+        DELETE FROM role_permissions WHERE role_id = #{roleId}
+    </delete>
+
+    <delete id="deleteByPermissionId" parameterType="Long">
+        DELETE FROM role_permissions WHERE permission_id = #{permissionId}
+    </delete>
+
+    <select id="findPermissionIdsByRoleId" parameterType="Long" resultType="Long">
+        SELECT permission_id FROM role_permissions WHERE role_id = #{roleId}
+    </select>
+
+</mapper>

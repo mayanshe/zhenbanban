@@ -1,0 +1,84 @@
+# 编译生成文件
+/target/
+/bin/
+/build/
+/out/
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+
+# 日志文件
+*.log
+logs/
+
+# 依赖目录
+/.mvn/wrapper/
+/.settings/
+/.classpath
+/.project
+/.factorypath
+
+# IDE 相关文件
+.idea/
+*.iml
+*.ipr
+*.iws
+*.sw?
+.DS_Store
+
+# Maven 相关
+.mvn/
+mvnw
+mvnw.cmd
+pom.xml.versionsBackup
+dependency-reduced-pom.xml
+buildNumber.properties
+
+# Gradle 相关
+.gradle/
+gradle/
+!gradle-wrapper.jar
+gradlew
+gradlew.bat
+
+# 环境配置文件
+*.properties
+*.yml
+!application.yml
+!application.properties
+!bootstrap.yml
+!bootstrap.properties
+!application-env.yml.example
+!application.properties.example
+
+# 测试相关
+/test-output/
+/test-results/
+/surefire-reports/
+/failsafe-reports/
+
+# 系统文件
+*.orig
+*.bak
+*~
+
+# 前端构建目录
+/node_modules/
+/dist/
+/static/public/
+/static/js/
+/static/css/
+
+# 其他
+.attach_pid*
+.history
+.vscode/
+*.versionsBackup
+*.cache
+*.diff
+*.patch
+*.tmp
+*.hprof
+*.flattened-pom.xml

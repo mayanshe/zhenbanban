@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//dtd/Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhenbanban.core.infrastructure.persistence.mapper.ResourcePoMapper">
+    <!-- 资源(resources)表映射 -->
+
+    <resultMap id="ResourceWithChildrenMap" type="ResourcePo">
+        <id property="id" column="id"/>
+        <result property="parentId" column="parent_id"/>
+        <result property="resourceType" column="resource_type"/>
+        <result property="resourceName" column="resource_name"/>
+        <result property="displayName" column="display_name"/>
+        <result property="description" column="description"/>
+        <result property="url" column="url"/>
+        <result property="icon" column="icon"/>
+        <result property="component" column="component"/>
+        <result property="showInMenu" column="show_in_menu"/>
+        <result property="sort" column="sort" />
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+        <collection property="children" ofType="ResourcePo"
+                    select="findByParentId" column="id"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="ResourcePo" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO resources (id, parent_id, resource_type, resource_name, display_name, description, url, icon,
+        component, show_in_menu, sort, created_at)
+        VALUES (#{id}, #{parentId}, #{resourceType}, #{resourceName}, #{displayName}, #{description}, #{url}, #{icon},
+        #{component}, #{showInMenu}, #{sort}, #{createdAt})
+    </insert>
+
+    <update id="update" parameterType="ResourcePo">
+        UPDATE resources
+        SET parent_id = #{parentId},
+        resource_type = #{resourceType},
+        resource_name = #{resourceName},
+        display_name = #{displayName},
+        description = #{description},
+        url = #{url},
+        icon = #{icon},
+        component = #{component},
+        show_in_menu = #{showInMenu},
+        sort = #{sort},
+        updated_at = #{updatedAt}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="Long">
+        DELETE FROM resources WHERE id = #{id}
+    </delete>
+
+    <select id="count" parameterType="java.util.HashMap" resultType="Integer">
+        SELECT COUNT(id)
+        FROM resources
+        <where>
+            <if test="id != null">
+                AND id = #{id}
+            </if>
+            <if test="parentId != null">
+                AND parent_id = #{parentId}
+            </if>
+            <if test="resourceType != null and resourceType != ''">
+                AND resource_type = #{resourceType}
+            </if>
+            <if test="resourceName != null and resourceName != ''">
+                AND resource_name LIKE CONCAT('%', #{resourceName}, '%')
+            </if>
+            <if test="displayName != null and displayName != ''">
+                AND display_name LIKE CONCAT('%', #{displayName}, '%')
+            </if>
+        </where>
+    </select>
+
+    <select id="findById" parameterType="Long" resultMap="ResourceWithChildrenMap">
+        SELECT id, parent_id, resource_type, resource_name, display_name, description, url, icon, component,
+        show_in_menu, created_at, updated_at
+        FROM resources
+        WHERE id = #{id}
+    </select>
+
+    <select id="findIdByResourceName" parameterType="String" resultType="Long">
+        SELECT id
+        FROM resources
+        WHERE resource_name = #{resourceName}
+    </select>
+
+    <select id="findIdByDisplayName" parameterType="String" resultType="Long">
+        SELECT id
+        FROM resources
+        WHERE display_name = #{displayName}
+    </select>
+
+    <select id="findAll" resultMap="ResourceWithChildrenMap">
+        SELECT id, parent_id, resource_type, resource_name, display_name, description, url, icon, component,
+        show_in_menu, created_at, updated_at
+        FROM resources
+        ORDER BY id ASC
+    </select>
+
+    <select id="search" parameterType="java.util.HashMap" resultMap="ResourceWithChildrenMap">
+        SELECT id, parent_id, resource_type, resource_name, display_name, description, url, icon, component,
+        show_in_menu, created_at, updated_at
+        FROM resources
+        <where>
+            <if test="resourceName != null and resourceName != ''">
+                AND resource_name LIKE CONCAT('%', #{resourceName}, '%')
+            </if>
+            <if test="displayName != null and displayName != ''">
+                AND display_name LIKE CONCAT('%', #{displayName}, '%')
+            </if>
+            <if test="description != null and description != ''">
+                AND description LIKE CONCAT('%', #{description}, '%')
+            </if>
+        </where>
+        <if test="orderBy != null and orderBy != ''">
+            ORDER BY ${orderBy}
+        </if>
+    </select>
+
+    <select id="findByParentId" parameterType="Long" resultMap="ResourceWithChildrenMap">
+        SELECT id, parent_id, resource_type, resource_name, display_name, description, url, icon, component,
+        show_in_menu, created_at, updated_at
+        FROM resources
+        WHERE parent_id = #{parentId}
+        ORDER BY id ASC
+    </select>
+
+    <select id="findResourcesByRoleId" parameterType="Long" resultMap="ResourceWithChildrenMap">
+        SELECT * FROM resources
+        WHERE id IN (
+            SELECT resource_id
+            FROM role_resources
+            WHERE role_id = #{roleId}
+        )
+    </select>
+
+    <select id="findMaxSortByParentId" parameterType="Long" resultType="Integer">
+        SELECT MAX(sort)
+        FROM resources
+        WHERE parent_id = #{parentId}
+    </select>
+
+</mapper>

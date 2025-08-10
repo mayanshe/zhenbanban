@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhenbanban.core.infrastructure.persistence.mapper.EventPoMapper">
+    <!-- 事件(admins)表映射 -->
+
+    <insert id="insert" parameterType="EventPo" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO _events (ref_id, event_type, event_id, event_data, occurred_at, state, created_by, created_at)
+        VALUES
+        (#{refId}, #{eventType}, #{eventId}, #{eventData}, #{occurredAt}, #{state}, #{createdBy}, #{createdAt})
+    </insert>
+
+    <update id="update" parameterType="EventPo">
+        UPDATE _events SET
+        ref_id = #{refId},
+        event_type = #{eventType},
+        event_id = #{eventId},
+        event_data = #{eventData},
+        occurred_at = #{occurredAt},
+        state = #{state},
+        created_by = #{createdBy},
+        version = version + 1,
+        updated_at = #{updatedAt}
+        WHERE id = #{id} AND version = #{version}
+    </update>
+
+    <select id="findByEventId" parameterType="String" resultType="EventPo">
+        SELECT * FROM _events WHERE event_id = #{eventId}
+    </select>
+
+    <select id="search" parameterType="java.util.HashMap" resultType="EventPo">
+        SELECT * FROM _events
+        <where>
+            <if test="refId != null and refId != ''">
+                AND ref_id = #{refId}
+            </if>
+            <if test="eventType != null and eventType != ''">
+                AND event_type = #{eventType}
+            </if>
+            <if test="eventId != null and eventId != ''">
+                AND event_id = #{eventId}
+            </if>
+            <if test="state != null and state != ''">
+                AND state = #{state}
+            </if>
+        </where>
+        <if test="orderBy != null and orderBy != ''">
+            ORDER BY ${orderBy}
+        </if>
+    </select>
+
+</mapper>

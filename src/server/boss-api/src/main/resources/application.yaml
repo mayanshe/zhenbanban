@@ -1,0 +1,15 @@
+app:
+  name: 诊伴伴控制中心API
+  version: V1.0.0
+  author: Zhangxihai[mail@sniu.com]
+
+server:
+  port: 8081
+
+spring:
+  profiles:
+    active: dev
+
+
+
+
