@@ -411,7 +411,7 @@ CREATE TABLE IF NOT EXISTS `hospitals` (
     `hospital_name`                  VARCHAR(100)                        NOT NULL DEFAULT '' COMMENT '医疗机构名称',
     `province_id`                    BIGINT UNSIGNED                     NOT NULL DEFAULT 0 COMMENT '所在省份编码',
     `city_id`                        BIGINT UNSIGNED                     NOT NULL DEFAULT 0 COMMENT '所在城市编码',
-    `county_id`                      BIGINT UNSIGNED                     NOT NULL DEFAULT 0 COMMENT '所在区县编码',
+    `county_id`                      BIGINT UNSIGNED                     NOT NULLtext DEFAULT 0 COMMENT '所在区县编码',
     `address`                        VARCHAR(255)                        NOT NULL DEFAULT '' COMMENT '详细地址',
     `postal_code`                    CHAR(6)                             NOT NULL DEFAULT '' COMMENT '邮政编码',
     `longitude`                      DECIMAL(10, 6)                      DEFAULT NULL COMMENT '经度',
