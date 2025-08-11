@@ -405,10 +405,11 @@ CREATE TABLE IF NOT EXISTS `hospitals` (
     `ownership_type`                 ENUM('PUBLIC', 'PRIVATE', 'OTHER')  NOT NULL DEFAULT 'OTHER' COMMENT '医院所有制类型：PUBLIC=公立 PRIVATE=私立 OTHER=其他',
     `hospital_type`                  ENUM('GENERAL', 'SPECIALTY', 'TRADITIONAL', 'ETHNIC', 'REHABILITATION', 'OTHER')    NOT NULL DEFAULT 'OTHER' COMMENT '医疗机构类型：GENERAL=综合医院 SPECIALTY=专科医院 TRADITIONAL=中医医院 ETHNIC=民族医医院 REHABILITATION=康复医院 OTHER=其他',
     `hospital_level`                 ENUM('LEVEL-3A', 'LEVEL-3B', 'LEVEL-2A', 'LEVEL-2B', 'LEVEL-1', 'OTHER')            NOT NULL DEFAULT 'OTHER' COMMENT '机构等级：LEVEL-3A=三甲、LEVEL-2A=三乙、LEVEL-2A=二甲、LEVEL-2B=二乙、LEVEL-1=一级、OTHER=其他',
-    `status`                         ENUM('PENDING', 'ACTIVE', 'INACTIVE', 'SUSPENDED')                                  NOT NULL DEFAULT 'PENDING' COMMENT '医院状态：PENDING=待审核 ACTIVE=启用 INACTIVE=禁用 SUSPENDED=暂停',
+    `status`                         ENUM('PENDING', 'ACTIVE', 'INACTIVE')                                               NOT NULL DEFAULT 'PENDING' COMMENT '医院状态：PENDING=待审核 ACTIVE=启用 INACTIVE=禁用',
     `insurance_code`                 CHAR(12)                            NOT NULL DEFAULT '' COMMENT '医保定点机构编码',
-    `hospital_code`                  CHAR(22)                            NOT NULL COMMENT '医疗机构登记号',
-    `hospital_name`                  VARCHAR(100)                        NOT NULL DEFAULT '' COMMENT '医疗机构名称',
+    `uscc_code`                      CHAR(18)                            NOT NULL DEFAULT '' COMMENT '统一社会信用代码',
+    `hospital_code`                  CHAR(22)                            NOT NULL COMMENT '医院机构登记号',
+    `hospital_name`                  VARCHAR(100)                        NOT NULL DEFAULT '' COMMENT '医院名称',
     `province_id`                    BIGINT UNSIGNED                     NOT NULL DEFAULT 0 COMMENT '所在省份编码',
     `city_id`                        BIGINT UNSIGNED                     NOT NULL DEFAULT 0 COMMENT '所在城市编码',
     `county_id`                      BIGINT UNSIGNED                     NOT NULL DEFAULT 0 COMMENT '所在区县编码',
@@ -420,14 +421,13 @@ CREATE TABLE IF NOT EXISTS `hospitals` (
     `contact_phone`                  VARCHAR(20)                         NOT NULL DEFAULT '' COMMENT '联系电话',
     `contact_email`                  VARCHAR(125)                        NOT NULL DEFAULT '' COMMENT '联系邮箱',
     `website`                        VARCHAR(255)                        NOT NULL DEFAULT '' COMMENT '医院官网',
-    `license_number`                 VARCHAR(100)                        NOT NULL DEFAULT '' COMMENT '医疗机构执业许可证号',
     `companion_diagnosis_enabled`    TINYINT(2)                          NOT NULL DEFAULT 0 COMMENT '是否启用伴诊断服务',
     `meal_service_enabled`           TINYINT(2)                          NOT NULL DEFAULT 0 COMMENT '是否启用配餐服务',
     `testing_delivery_enabled`       TINYINT(2)                          NOT NULL DEFAULT 0 COMMENT '是否启用送检测服务',
     `created_at`                     BIGINT(11) UNSIGNED                 NOT NULL DEFAULT 0 COMMENT '创建时间',
     `updated_at`                     BIGINT(11) UNSIGNED                 NOT NULL DEFAULT 0 COMMENT '更新时间',
     UNIQUE KEY `uk_hospital_code` (`hospital_code`) USING BTREE COMMENT '医院编码索引',
-    INDEX `idx_hospital_name` (`hospital_name`) USING BTREE COMMENT '医院名称索引'
+    INDEX `idx_hospital_name` (`hospital_name`) USING BTREE COMMENT '医院名称索
 ) ENGINE = InnoDB COMMENT '医院表';
 
 -- ---------------------------------------------------------------------------------------------------------------------

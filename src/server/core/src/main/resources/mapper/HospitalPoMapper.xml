@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhenbanban.core.infrastructure.persistence.mapper.HospitalPoMapper">
+    <!-- 医院(hospitals)表映射 -->
+
+    <insert id="insert" parameterType="HospitalPo">
+        INSERT INTO hospitals(id, ownership_type, hospital_type, hospital_level, status, insurance_code, uscc_code
+        hospital_code, hospital_name, province_id, city_id, county_id, address, postal_code,
+        longitude, latitude, map_url, contact_phone, contact_email, website,
+        companion_diagnosis_enabled, meal_service_enabled, testing_delivery_enabled, created_at,
+        updated_at)
+        VALUES (#{id}, #{ownershipType}, #{hospitalType}, #{hospitalLevel}, #{status}, #{insuranceCode},
+        #{hospitalCode}, #{usccCode}, #{hospitalName}, #{provinceId}, #{cityId}, #{countyId}, #{address}, #{postalCode},
+        #{longitude}, #{latitude}, #{mapUrl}, #{contactPhone}, #{contactEmail}, #{website},
+        #{companionDiagnosisEnabled}, #{mealServiceEnabled}, #{testingDeliveryEnabled}, #{createdAt},
+        #{updatedAt})
+    </insert>
+
+    <update id="update" parameterType="HospitalPo">
+        UPDATE hospitals
+        SET ownership_type = #{ownershipType},
+        hospital_type = #{hospitalType},
+        hospital_level = #{hospitalLevel},
+        status = #{status},
+        insurance_code = #{insuranceCode},
+        uscc_code = #{usccCoded},
+        hospital_code = #{hospitalCode},
+        hospital_name = #{hospitalName},
+        province_id = #{provinceId},
+        city_id = #{cityId},
+        county_id = #{countyId},
+        address = #{address},
+        postal_code = #{postalCode},
+        longitude = #{longitude},
+        latitude = #{latitude},
+        map_url = #{mapUrl},
+        contact_phone = #{contactPhone},
+        contact_email = #{contactEmail},
+        website = #{website},
+        companion_diagnosis_enabled = #{companionDiagnosisEnabled},
+        meal_service_enabled = #{mealServiceEnabled},
+        testing_delivery_enabled = #{testingDeliveryEnabled},
+        updated_at = #{updatedAt}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="long">
+        UPDATE hospitals
+        SET status = 'INACTIVE',
+        updated_at = UNIX_TIMESTAMP(NOW(3)) * 1000
+        WHERE id = #{id}
+    </delete>
+
+    <select id="findById" parameterType="long" resultType="HospitalPo">
+        SELECT * FROM hospitals WHERE id = #{id}
+    </select>
+
+</mapper>
