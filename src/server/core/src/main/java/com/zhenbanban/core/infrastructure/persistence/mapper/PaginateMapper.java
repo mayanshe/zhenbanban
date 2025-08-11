@@ -18,16 +18,22 @@
  * distribution of this code must also be licensed under the GPL. Failure
  * to comply with the terms of the GPL may result in legal action.
  */
-package com.zhenbanban.core.application.query;
+package com.zhenbanban.core.infrastructure.persistence.mapper;
 
-import com.zhenbanban.core.application.dto.AdminDto;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
- * Query : 查询管理员的Profile
+ * 类型 : PaginateMapper
  *
  * @author zhangxihai 2025/8/11
  */
-public interface AdminProfileQuery {
-    AdminDto handle();
+public interface PaginateMapper<Po> {
+    int count(Map<String, Object> params);
+
+    List<Po> searchByPage(@Param("params") Map<String, Object> params, @Param("page") long offset, @Param("pageSize") long limit);
 
 }

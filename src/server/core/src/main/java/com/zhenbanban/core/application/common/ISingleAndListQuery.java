@@ -18,16 +18,42 @@
  * distribution of this code must also be licensed under the GPL. Failure
  * to comply with the terms of the GPL may result in legal action.
  */
-package com.zhenbanban.core.application.query;
+package com.zhenbanban.core.application.common;
 
-import com.zhenbanban.core.application.dto.AdminDto;
+import com.zhenbanban.core.infrastructure.support.paging.Pagination;
+
+import java.util.List;
 
 /**
- * Query : 查询管理员的Profile
+ * Query : 通用查询接口，支持单个查询和列表查询
  *
  * @author zhangxihai 2025/8/11
  */
-public interface AdminProfileQuery {
-    AdminDto handle();
+public interface ISingleAndListQuery<Model, Key, Command> {
+    /**
+     * 查询单个模型
+     *
+     * @param key 主键
+     * @return 单个模型
+     */
+    Model handleQuerySingle(Key key);
+
+    /**
+     * 查询模型列表
+     *
+     * @param command 查询命令
+     * @return 模型列表
+     */
+    List<Model> handleQueryList(Command command);
+
+    /**
+     * 分页查询模型列表
+     *
+     * @param command 查询命令
+     * @param page 页码，从1开始
+     * @param pageSize 每页大小
+     * @return 分页结果
+     */
+    Pagination<Model> handleQueryPage(Command command, long page, long pageSize);
 
 }

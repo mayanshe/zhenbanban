@@ -18,16 +18,13 @@
  * distribution of this code must also be licensed under the GPL. Failure
  * to comply with the terms of the GPL may result in legal action.
  */
-package com.zhenbanban.core.application.query;
-
-import com.zhenbanban.core.application.dto.AdminDto;
+package com.zhenbanban.core.application.dto;
 
 /**
- * Query : 查询管理员的Profile
+ * Dto : Boss后台Resource
  *
  * @author zhangxihai 2025/8/11
  */
-public interface AdminProfileQuery {
-    AdminDto handle();
+public class AdminResourceDto {
 
 }
