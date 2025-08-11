@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhenbanban.core.infrastructure.persistence.mapper.HospitalPoMapper">
+    <insert id="insert" parameterType="com.zhenbanban.core.infrastructure.persistence.po.HospitalPo">
+        INSERT INTO hospitals(id, ownership_type, hospital_type, hospital_level, status, insurance_code,
+                              hospital_code, hospital_name, province_id, city_id, county_id, address, postal_code,
+                              longitude, latitude, map_url, contact_phone, contact_email, website, license_number,
+                              companion_diagnosis_enabled, meal_service_enabled, testing_delivery_enabled, created_at,
+                              updated_at)
+        VALUES (#{id}, #{ownershipType}, #{hospitalType}, #{hospitalLevel}, #{status}, #{insuranceCode},
+                #{hospitalCode}, #{hospitalName}, #{provinceId}, #{cityId}, #{countyId}, #{address}, #{postalCode},
+                #{longitude}, #{latitude}, #{mapUrl}, #{contactPhone}, #{contactEmail}, #{website}, #{licenseNumber},
+                #{companionDiagnosisEnabled}, #{mealServiceEnabled}, #{testingDeliveryEnabled}, #{createdAt},
+                #{updatedAt})
+    </insert>
+
+    <update id="update" parameterType="com.zhenbanban.core.infrastructure.persistence.po.HospitalPo">
+        UPDATE hospitals
+        SET ownership_type              = #{ownershipType},
+            hospital_type               = #{hospitalType},
+            hospital_level              = #{hospitalLevel},
+            status                      = #{status},
+            insurance_code              = #{insuranceCode},
+            hospital_code               = #{hospitalCode},
+            hospital_name               = #{hospitalName},
+            province_id                 = #{provinceId},
+            city_id                     = #{cityId},
+            county_id                   = #{countyId},
+            address                     = #{address},
+            postal_code                 = #{postalCode},
+            longitude                   = #{longitude},
+            latitude                    = #{latitude},
+            map_url                     = #{mapUrl},
+            contact_phone               = #{contactPhone},
+            contact_email               = #{contactEmail},
+            website                     = #{website},
+            license_number              = #{licenseNumber},
+            companion_diagnosis_enabled = #{companionDiagnosisEnabled},
+            meal_service_enabled        = #{mealServiceEnabled},
+            testing_delivery_enabled    = #{testingDeliveryEnabled},
+            updated_at                  = #{updatedAt}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="long">
+        DELETE FROM hospitals
+        WHERE id = #{id}
+    </delete>
+
+</mapper>
