@@ -21,9 +21,12 @@
 package com.zhenbanban.bossapi.controller;
 
 import com.zhenbanban.bossapi.vo.IdResponse;
+import com.zhenbanban.bossapi.vo.RoleAssignmentModifyRequest;
 import com.zhenbanban.bossapi.vo.RoleSaveRequest;
 import com.zhenbanban.core.application.command.RoleAmdCmdHandler;
+import com.zhenbanban.core.application.command.RoleAssignmentModifyCmdHandler;
 import com.zhenbanban.core.application.dto.RoleAmdCommand;
+import com.zhenbanban.core.application.dto.RoleAssignmentModifyCommand;
 import com.zhenbanban.core.infrastructure.support.annotation.AdminPermit;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
@@ -41,9 +44,15 @@ import org.springframework.web.bind.annotation.*;
 public class RoleController {
     private final RoleAmdCmdHandler roleAmdCmdHandler;
 
+    private final RoleAssignmentModifyCmdHandler roleAssignmentModifyCmdHandler;
+
     @Autowired
-    public RoleController(@Lazy RoleAmdCmdHandler roleAmdCmdHandler) {
+    public RoleController(
+            @Lazy RoleAmdCmdHandler roleAmdCmdHandler,
+            @Lazy RoleAssignmentModifyCmdHandler roleAssignmentModifyCmdHandler
+    ) {
         this.roleAmdCmdHandler = roleAmdCmdHandler;
+        this.roleAssignmentModifyCmdHandler = roleAssignmentModifyCmdHandler;
     }
 
     /**
@@ -82,6 +91,15 @@ public class RoleController {
     @AdminPermit(permissions = {"role:add"}, message = "您未被授权执行此操作：删除角色")
     public void destroyRole(@PathVariable("id") Long id) {
         roleAmdCmdHandler.handleDestroy(id);
+    }
+
+    @PutMapping("/{id}/assignments")
+    @AdminPermit(permissions = {"role:assignment:modify"}, message = "您未被授权执行此操作：修改角色的资源/权限分配")
+    public void modifyRoleAssignments(@PathVariable("id") Long id, @Valid @RequestBody RoleAssignmentModifyRequest request) {
+        RoleAssignmentModifyCommand command = (new ModelMapper()).map(request, RoleAssignmentModifyCommand.class);
+        command.setRoleId(id);
+
+        roleAssignmentModifyCmdHandler.handle(command);
     }
 
 }

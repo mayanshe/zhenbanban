@@ -14,7 +14,7 @@
         <result property="icon" column="icon"/>
         <result property="component" column="component"/>
         <result property="showInMenu" column="show_in_menu"/>
-        <result property="sort" column="sort" />
+        <result property="sort" column="sort"/>
         <result property="createdAt" column="created_at"/>
         <result property="updatedAt" column="updated_at"/>
         <collection property="children" ofType="ResourcePo"
@@ -127,9 +127,9 @@
     <select id="findResourcesByRoleId" parameterType="Long" resultMap="ResourceWithChildrenMap">
         SELECT * FROM resources
         WHERE id IN (
-            SELECT resource_id
-            FROM role_resources
-            WHERE role_id = #{roleId}
+        SELECT resource_id
+        FROM role_resources
+        WHERE role_id = #{roleId}
         )
     </select>
 
@@ -137,6 +137,15 @@
         SELECT MAX(sort)
         FROM resources
         WHERE parent_id = #{parentId}
+    </select>
+
+    <select id="countByIds" parameterType="java.util.Map" resultType="Integer">
+        SELECT COUNT(id)
+        FROM resources
+        WHERE id IN
+        <foreach item="id" collection="ids" open="(" separator="," close=")">
+            #{id}
+        </foreach>
     </select>
 
 </mapper>

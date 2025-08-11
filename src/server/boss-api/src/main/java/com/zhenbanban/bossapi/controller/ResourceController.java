@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.*;
 /**
  * Controller : 资源
  *
- * @author zhangxihai 2025/7/11
+ * @author zhangxihai 2025/8/03
  */
 @RestController
 @RequestMapping("/resources")

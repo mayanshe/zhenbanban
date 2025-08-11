@@ -32,7 +32,7 @@ import java.util.List;
 /**
  * 聚合根 : 全线组
  *
- * @author zhangxihai 2025/7/11
+ * @author zhangxihai 2025/8/03
  */
 @Data
 @Builder(toBuilder = true)

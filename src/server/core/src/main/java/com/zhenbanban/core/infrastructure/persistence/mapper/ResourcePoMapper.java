@@ -22,14 +22,16 @@ package com.zhenbanban.core.infrastructure.persistence.mapper;
 
 import com.zhenbanban.core.infrastructure.persistence.po.ResourcePo;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Mybatis Mapper 接口  : 资源
  *
- * @author zhangxihai 2025/7/11
+ * @author zhangxihai 2025/8/03
  */
 @Mapper
 public interface ResourcePoMapper {
@@ -53,4 +55,5 @@ public interface ResourcePoMapper {
 
     Integer findMaxSortByParentId(Long parentId);
 
+    int countByIds(@Param("ids") Set<Long> ids);
 }

@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
 /**
  * 转换器 : PermissionGroupConverter
  *
- * @author zhangxihai 2025/7/11
+ * @author zhangxihai 2025/8/03
  */
 @Mapper
 public interface PermissionGroupConverter {

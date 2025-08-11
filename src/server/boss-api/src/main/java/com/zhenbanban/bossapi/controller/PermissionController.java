@@ -34,7 +34,7 @@ import org.springframework.web.bind.annotation.*;
 /**
  * 控制器 : 权限
  *
- * @author zhangxihai 2025/7/11
+ * @author zhangxihai 2025/8/03
  */
 @RestController
 @RequestMapping("/permissions")

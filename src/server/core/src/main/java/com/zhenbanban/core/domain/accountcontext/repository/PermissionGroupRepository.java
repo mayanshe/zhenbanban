@@ -26,7 +26,7 @@ import com.zhenbanban.core.domain.common.IDomainRepository;
 /**
  * 领域仓储接口 : 权限组
  *
- * @author zhangxihai 2025/7/11
+ * @author zhangxihai 2025/8/03
  */
 public interface PermissionGroupRepository extends IDomainRepository<PermissionGroup, Long> {
 

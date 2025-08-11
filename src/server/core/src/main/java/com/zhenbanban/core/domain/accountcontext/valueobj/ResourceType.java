@@ -31,7 +31,7 @@ import java.util.Objects;
 /**
  * Value : 资源类型
  *
- * @author zhangxihai 2025/7/11
+ * @author zhangxihai 2025/8/03
  */
 public class ResourceType {
     public static final ResourceType MENU = new ResourceType("menu", "菜单");

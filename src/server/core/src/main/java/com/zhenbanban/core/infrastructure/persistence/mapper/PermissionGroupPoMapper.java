@@ -28,7 +28,7 @@ import java.util.List;
 /**
  * Mybatis Mapper 接口 : 权限组
  *
- * @author zhangxihai 2025/7/11
+ * @author zhangxihai 2025/8/03
  */
 public interface PermissionGroupPoMapper {
     int insert(PermissionGroupPo permissionGroupPo);

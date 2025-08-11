@@ -32,7 +32,7 @@ import java.util.List;
 /**
  * 转换器 : 资源
  *
- * @author zhangxihai 2025/7/11
+ * @author zhangxihai 2025/8/03
  */
 @Mapper
 public interface ResourceConverter extends IConverter {

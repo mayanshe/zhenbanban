@@ -22,9 +22,11 @@ package com.zhenbanban.core.infrastructure.persistence.mapper;
 
 import com.zhenbanban.core.infrastructure.persistence.po.PermissionPo;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Mybatis Mapper 接口：权限
@@ -52,5 +54,7 @@ public interface PermissionPoMapper {
     List<PermissionPo> search(HashMap<String, Object> params);
 
     List<PermissionPo> findPermissionsByRoleId(Long roleId);
+
+    int countByIds(@Param("ids") Set<Long> ids);
 
 }

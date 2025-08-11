@@ -18,30 +18,28 @@
  * distribution of this code must also be licensed under the GPL. Failure
  * to comply with the terms of the GPL may result in legal action.
  */
-package com.zhenbanban.core.application.dto;
+package com.zhenbanban.bossapi.vo;
 
-import lombok.*;
-import lombok.experimental.SuperBuilder;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.context.annotation.Role;
 
 import java.util.Set;
 
 /**
- * Command : 角色分配修改命令
+ * Vo : 角色资源/权限分配修改请求
  *
  * @author zhangxihai 2025/8/11
  */
-@Getter
-@Setter
-@SuperBuilder(toBuilder = true)
+@Data
+@Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class RoleAssignmentModifyCommand  {
-    private Long roleId;                          // 角色ID
+public class RoleAssignmentModifyRequest {
+    private Set<Long> permissionIds = Set.of();        // 角色ID集合
 
-    @Builder.Default
-    private Set<Long> permissionIds = Set.of();   // 权限ID集合
-
-    @Builder.Default
-    private Set<Long> resourceIds = Set.of();     // 资源ID集合
+    private Set<Long> resourceIds = Set.of();         // 资源ID集合
 
 }

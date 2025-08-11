@@ -62,7 +62,6 @@
         </if>
     </select>
 
-    <!-- 查询指定角色关联的权限 -->
     <select id="findPermissionsByRoleId" parameterType="Long" resultType="PermissionPo">
         SELECT p.id, p.permission_name, p.description, p.created_at, p.updated_at
         FROM permissions p
@@ -71,6 +70,13 @@
         FROM role_permissions rp
         WHERE rp.role_id = #{id}
         )
+    </select>
+
+    <select id="countByIds" parameterType="java.util.Set" resultType="Integer">
+        SELECT COUNT(*) FROM permissions WHERE id IN
+        <foreach item="id" collection="ids" open="(" separator="," close=")">
+            #{id}
+        </foreach>
     </select>
 
 </mapper>

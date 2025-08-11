@@ -27,7 +27,7 @@ import lombok.experimental.SuperBuilder;
 /**
  * 命令载体 : 权限组
  *
- * @author zhangxihai 2025/7/11
+ * @author zhangxihai 2025/8/03
  */
 @Getter
 @Setter
