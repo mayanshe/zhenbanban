@@ -20,6 +20,12 @@ public class HospitalController {
         this.hospitalAmdCmdHandler = hospitalAmdCmdHandler;
     }
 
+    /**
+     * 添加医院
+     *
+     * @param request 医院保存请求
+     * @return IdResponse 包含新创建医院的ID
+     */
     @PostMapping
     @AdminPermit(permissions = {"hospital:add"}, message = "您未被授权执行此操作：添加医院")
     public IdResponse addHospital(@Valid @RequestBody HospitalSaveRequest request) {
@@ -28,6 +34,12 @@ public class HospitalController {
         return IdResponse.builder().id(hospitalId).build();
     }
 
+    /**
+     * 修改医院信息
+     *
+     * @param id      医院ID
+     * @param request 医院保存请求
+     */
     @PutMapping("/{id}")
     @AdminPermit(permissions = {"hospital:modify"}, message = "您未被授权执行此操作：修改医院信息")
     public void modifyHospital(@PathVariable("id") Long id, @Valid @RequestBody HospitalSaveRequest request) {
@@ -36,9 +48,26 @@ public class HospitalController {
         hospitalAmdCmdHandler.handleModify(command);
     }
 
-    @DeleteMapping("/{id}")
-    @AdminPermit(permissions = {"hospital:delete"}, message = "您未被授权执行此操作：删除医院")
+    /**
+     * 禁用医院
+     *
+     * @param id 医院ID
+     */
+    @PostMapping("/{id}/lock")
+    @AdminPermit(permissions = {"hospital:delete"}, message = "您未被授权执行此操作：禁用医院")
     public void destroyHospital(@PathVariable("id") Long id) {
         hospitalAmdCmdHandler.handleDestroy(id);
     }
+
+    /**
+     * 启用医院
+     *
+     * @param id 医院ID
+     */
+    @DeleteMapping("/{id}/lock")
+    @AdminPermit(permissions = {"hospital:activate"}, message = "您未被授权执行此操作：禁用医院")
+    public void activateHospital(@PathVariable("id") Long id) {
+        hospitalAmdCmdHandler.handleActivate(id);
+    }
+
 }

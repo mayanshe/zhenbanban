@@ -18,17 +18,31 @@
  * distribution of this code must also be licensed under the GPL. Failure
  * to comply with the terms of the GPL may result in legal action.
  */
-package com.zhenbanban.core.application.command;
+package com.zhenbanban.core.domain.institutioncontext.Event;
 
-import com.zhenbanban.core.application.common.IAmdCmdHandler;
-import com.zhenbanban.core.application.dto.HospitalAmdCommand;
+import com.zhenbanban.core.domain.common.AbsDomainEvent;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 /**
- * 命令处理结构：医院增删改
+ * 事件 : 医院添加成功事件
  *
- * @author zhangxihai 2025/08/11
+ * @author zhangxihai 2025/8/11
  */
-public interface HospitalAmdCmdHandler extends IAmdCmdHandler<HospitalAmdCommand, Long> {
-    void handleActivate(Long id);
+@Getter
+@Setter
+@SuperBuilder(toBuilder = true)
+@ToString(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
+@AllArgsConstructor
+public class HospitalDestroyedEvent extends AbsDomainEvent {
+    private Long hospitalId;                                  // 医院ID
+
+    private String insuranceCode;                             // 医保编码（唯一标识）
+
+    private String hospitalCode;                              // 医院编码（唯一标识）
+
+    private String hospitalName;                              // 医院名称
 
 }

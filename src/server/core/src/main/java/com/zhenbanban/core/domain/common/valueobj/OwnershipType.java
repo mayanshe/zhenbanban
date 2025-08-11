@@ -18,7 +18,7 @@
  * distribution of this code must also be licensed under the GPL. Failure
  * to comply with the terms of the GPL may result in legal action.
  */
-package com.zhenbanban.core.domain.institutioncontext.valueobj;
+package com.zhenbanban.core.domain.common.valueobj;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -26,40 +26,34 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * 值对象：医院类型
+ * 值对象：所有制类型
  *
  * @author zhangxihai 2025/08/11
  */
-public class HospitalType {
-    public static final HospitalType GENERAL = new HospitalType("GENERAL", "综合医院");
-    public static final HospitalType SPECIALTY = new HospitalType("SPECIALTY", "专科医院");
-    public static final HospitalType TRADITIONAL = new HospitalType("TRADITIONAL", "中医医院");
-    public static final HospitalType ETHNIC = new HospitalType("ETHNIC", "民族医医院");
-    public static final HospitalType REHABILITATION = new HospitalType("REHABILITATION", "康复医院");
-    public static final HospitalType OTHER = new HospitalType("OTHER", "其他");
+public class OwnershipType {
+    public static final OwnershipType PUBLIC = new OwnershipType("PUBLIC", "公立");
+    public static final OwnershipType PRIVATE = new OwnershipType("PRIVATE", "私立");
+    public static final OwnershipType OTHER = new OwnershipType("OTHER", "其他");
 
-    private static final List<HospitalType> ALL_TYPES = Collections.unmodifiableList(Arrays.asList(
-            GENERAL,
-            SPECIALTY,
-            TRADITIONAL,
-            ETHNIC,
-            REHABILITATION,
+    private static final List<OwnershipType> ALL_TYPES = Collections.unmodifiableList(Arrays.asList(
+            PUBLIC,
+            PRIVATE,
             OTHER
     ));
 
     private final String code;
     private final String name;
 
-    public HospitalType(String code, String name) {
+    public OwnershipType(String code, String name) {
         this.code = code;
         this.name = name;
     }
 
-    public static List<HospitalType> all() {
+    public static List<OwnershipType> all() {
         return ALL_TYPES;
     }
 
-    public static HospitalType of(String code) {
+    public static OwnershipType of(String code) {
         if (code == null || code.isEmpty()) {
             return OTHER;
         }
@@ -81,7 +75,7 @@ public class HospitalType {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        HospitalType that = (HospitalType) o;
+        OwnershipType that = (OwnershipType) o;
         return Objects.equals(code, that.code);
     }
 
@@ -92,9 +86,10 @@ public class HospitalType {
 
     @Override
     public String toString() {
-        return "HospitalType{" +
+        return "HospitalOwnershipType{" +
                 "code='" + code + '\'' +
                 ", name='" + name + '\'' +
                 '}';
     }
+
 }
