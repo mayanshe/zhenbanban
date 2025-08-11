@@ -20,10 +20,14 @@
  */
 package com.zhenbanban.core.application.query;
 
+import com.zhenbanban.core.application.dto.AdminDto;
+
 /**
- * 类型 : ExampleQuery
+ * 类型 : AdminProfileQuery
  *
- * @author zhangxihai 2025/7/18
+ * @author zhangxihai 2025/8/11
  */
-public class ExampleQuery {
+public interface AdminProfileQuery {
+    AdminDto handle();
+
 }
