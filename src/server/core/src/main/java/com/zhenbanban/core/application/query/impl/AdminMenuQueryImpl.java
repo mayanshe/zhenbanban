@@ -26,11 +26,13 @@ import com.zhenbanban.core.application.query.AdminMenuQuery;
 import com.zhenbanban.core.domain.accountcontext.entity.Admin;
 import com.zhenbanban.core.infrastructure.persistence.mapper.ResourcePoMapper;
 import com.zhenbanban.core.infrastructure.persistence.po.ResourcePo;
-import com.zhenbanban.core.infrastructure.util.PrintUtils;
+import com.zhenbanban.core.infrastructure.util.CacheKeyGenerator;
+import com.zhenbanban.core.infrastructure.util.RedisUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -45,12 +47,21 @@ import java.util.stream.Collectors;
 public class AdminMenuQueryImpl implements AdminMenuQuery {
     private final ResourcePoMapper resourcePoMapper;
 
+    private final RedisUtils redisUtils;
+
     @Override
     public List<AdminMenuView> handle(Admin admin) {
+        String cacheKey = CacheKeyGenerator.getAdminMenusCacheKey(admin.getId());
+        if (redisUtils.hasKey(cacheKey)) return redisUtils.get(cacheKey, List.class, Collections.emptyList());
+
         Set<Long> roleIds = admin.getRoleIds();
         List<ResourcePo> pos = admin.isSuperAdmin() ? resourcePoMapper.findRootAll() : resourcePoMapper.findRootByIds(roleIds);
 
-        return trans(pos, "admin.menu");
+        List<AdminMenuView> list = trans(pos, "admin.menu");
+
+        redisUtils.set(cacheKey, list, 600);
+
+        return list;
     }
 
     /**

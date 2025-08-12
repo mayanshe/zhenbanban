@@ -98,7 +98,7 @@ public final class CacheKeyGenerator {
      * @param scope   作用域（如：ADMIN、USER等）
      * @param account 账号
      */
-    public static String getAccountFailedAttempLimitKey(String scope, String account) {
+    public static String getAccountFailedAttemptLimitKey(String scope, String account) {
         return generate(scope.toUpperCase() + "-ACCOUNT-FAILED", account);
     }
 
@@ -110,6 +110,16 @@ public final class CacheKeyGenerator {
      */
     public static String getIpFailedAttempLimitKey(String scope, String ip) {
         return generate(scope.toUpperCase() + "-IP-FAILED", IPUtils.ipv4ToLong(ip.getBytes()));
+    }
+
+    /**
+     * 获取管理员菜单缓存键
+     *
+     * @param adminId 管理员ID
+     * @return 缓存键
+     */
+    public static String getAdminMenusCacheKey(long adminId) {
+        return generate("ADMIN-MENUS", adminId);
     }
 
 }
