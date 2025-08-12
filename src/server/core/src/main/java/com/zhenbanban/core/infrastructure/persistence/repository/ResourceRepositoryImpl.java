@@ -27,7 +27,6 @@ import com.zhenbanban.core.infrastructure.persistence.mapper.ResourcePoMapper;
 import com.zhenbanban.core.infrastructure.persistence.mapper.RoleResourcePoMapper;
 import com.zhenbanban.core.infrastructure.persistence.po.ResourcePo;
 import com.zhenbanban.core.infrastructure.support.annotation.StoreDomainEventsExecution;
-import com.zhenbanban.core.infrastructure.util.PrintUtils;
 import com.zhenbanban.core.shared.exception.ResourceNotFoundException;
 import com.zhenbanban.core.shared.exception.ServiceUnavailableException;
 import org.springframework.beans.factory.annotation.Autowired;

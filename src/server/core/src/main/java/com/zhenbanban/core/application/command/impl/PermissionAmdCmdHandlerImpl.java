@@ -25,7 +25,6 @@ import com.zhenbanban.core.application.dto.PermissionAmdCommand;
 import com.zhenbanban.core.domain.accountcontext.entity.Permission;
 import com.zhenbanban.core.domain.accountcontext.repository.PermissionRepository;
 import com.zhenbanban.core.domain.common.DomainEventPublisher;
-import com.zhenbanban.core.infrastructure.util.PrintUtils;
 import com.zhenbanban.core.shared.contract.IdGenerator;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;

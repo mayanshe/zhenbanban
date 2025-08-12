@@ -207,7 +207,6 @@ CREATE TABLE IF NOT EXISTS `medicines`
   CREATE TABLE IF NOT EXISTS `regions`
   (
       `id`            BIGINT UNSIGNED        NOT NULL PRIMARY KEY AUTO_INCREMENT COMMENT '区域ID',
-      `parent_id`     BIGINT UNSIGNED        NOT NULL COMMENT '上级区域ID',
       `region_name`   VARCHAR(255)           NOT NULL DEFAULT '' COMMENT '区域名称',
       `pinyin`        VARCHAR(255)           NOT NULL DEFAULT '' COMMENT '区域拼音',
       `pinyin_prefix` VARCHAR(1)             NOT NULL DEFAULT '' COMMENT '区域拼音首字母',
@@ -338,10 +337,11 @@ DROP TABLE IF EXISTS `resources`;
 CREATE TABLE IF NOT EXISTS `resources` (
     `id`               BIGINT UNSIGNED                                NOT NULL PRIMARY KEY  COMMENT '主键',
     `parent_id`        BIGINT UNSIGNED                                NOT NULL DEFAULT 0 COMMENT '父级ID',
-    `resource_type`    enum('menu', 'button', 'link', 'component')    NOT NULL DEFAULT 'menu' COMMENT '资源类型 menu:菜单 button:按钮 link:链接 component:组件',
+    `resource_type`    enum('MENU', 'COMPONENT', 'LINK', 'BUTTON')    NOT NULL DEFAULT 'menu' COMMENT '资源类型 menu:菜单 component:组件 LINK:链接 BUTTON:按钮',
     `resource_name`    VARCHAR(75)                                    NOT NULL UNIQUE COMMENT '资源名称',
     `display_name`     VARCHAR(75)                                    NOT NULL DEFAULT '' COMMENT '资源显示名称',
     `description`      VARCHAR(255)                                   NOT NULL DEFAULT '' COMMENT '资源描述',
+    `path`             VARCHAR(255)                                   NOT NULL DEFAULT '' COMMENT '资源路径',
     `url`              VARCHAR(255)                                   NOT NULL DEFAULT '' COMMENT '资源链接',
     `icon`             VARCHAR(75)                                    NOT NULL DEFAULT '' COMMENT '资源图标',
     `component`        VARCHAR(255)                                   NOT NULL DEFAULT '' COMMENT '前端组件',

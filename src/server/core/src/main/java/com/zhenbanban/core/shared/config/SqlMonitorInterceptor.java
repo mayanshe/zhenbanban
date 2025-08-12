@@ -95,7 +95,6 @@ public class SqlMonitorInterceptor implements Interceptor {
             String message = String.format("SQL: %s | Time: %d ms", sql, (end - start));
 
             if (environmentChecker.isDev()) {
-                PrintUtils.toConsole(message);
                 Path printTo = Paths.get(sqlPrintTo);
                 if (Files.exists(printTo)) {
                     PrintUtils.toFile(sqlPrintTo, message);

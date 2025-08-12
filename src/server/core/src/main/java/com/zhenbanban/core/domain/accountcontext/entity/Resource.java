@@ -25,7 +25,6 @@ import com.zhenbanban.core.domain.accountcontext.event.ResourceDestroyedEvent;
 import com.zhenbanban.core.domain.accountcontext.event.ResourceModifiedEvent;
 import com.zhenbanban.core.domain.accountcontext.valueobj.ResourceType;
 import com.zhenbanban.core.domain.common.AbsAggregate;
-import com.zhenbanban.core.infrastructure.util.PrintUtils;
 import lombok.*;
 
 import java.util.List;
@@ -128,7 +127,6 @@ public class Resource extends AbsAggregate {
      * 删除资源
      */
     public void destroy() {
-        PrintUtils.toConsole(this.childIds);
         if (this.childIds != null && !this.childIds.isEmpty()) {
             throw new IllegalStateException("无法删除资源，存在子资源，请先删除子资源");
         }

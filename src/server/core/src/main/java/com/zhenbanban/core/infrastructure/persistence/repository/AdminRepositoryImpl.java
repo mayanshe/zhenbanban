@@ -29,7 +29,6 @@ import com.zhenbanban.core.infrastructure.persistence.mapper.AdminRolePoMapper;
 import com.zhenbanban.core.infrastructure.persistence.mapper.RolePoMapper;
 import com.zhenbanban.core.infrastructure.persistence.po.AdminPo;
 import com.zhenbanban.core.infrastructure.support.annotation.StoreDomainEventsExecution;
-import com.zhenbanban.core.infrastructure.util.PrintUtils;
 import com.zhenbanban.core.infrastructure.util.StrUtils;
 import com.zhenbanban.core.shared.exception.BadRequestException;
 import com.zhenbanban.core.shared.exception.InternalServerException;

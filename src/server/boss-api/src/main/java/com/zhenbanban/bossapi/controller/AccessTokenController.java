@@ -31,6 +31,9 @@ import com.zhenbanban.bossapi.vo.AdminLoginRequest;
 import com.zhenbanban.core.application.command.AdminLoginCmdHandler;
 import com.zhenbanban.core.application.command.AdminLogoutCmdHandler;
 import com.zhenbanban.core.application.dto.AdminLoginCommand;
+import com.zhenbanban.core.domain.accountcontext.entity.Admin;
+import com.zhenbanban.core.infrastructure.support.annotation.AdminPermit;
+import com.zhenbanban.core.shared.contract.IAuth;
 import com.zhenbanban.core.shared.valueobj.Token;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -44,12 +47,17 @@ public class AccessTokenController {
 
     private final AdminLogoutCmdHandler adminLogoutCmdHandler;
 
+    private IAuth<Admin> auth;
+
     @Autowired
     public AccessTokenController(
             @Lazy AdminLoginCmdHandler adminLoginCmdHandler,
-            @Lazy AdminLogoutCmdHandler adminLogoutCmdHandler) {
+            @Lazy AdminLogoutCmdHandler adminLogoutCmdHandler,
+            @Lazy IAuth<Admin> auth
+    ) {
         this.adminLoginCmdHandler = adminLoginCmdHandler;
         this.adminLogoutCmdHandler = adminLogoutCmdHandler;
+        this.auth = auth;
     }
 
     /**
@@ -79,9 +87,10 @@ public class AccessTokenController {
                 .build();
     }
 
-    @DeleteMapping("/admins/{id}/access-tokens")
-    public void deleteAccessToken(@PathVariable("id") Long id) {
-        adminLogoutCmdHandler.handle(id);
+    @DeleteMapping("/access-tokens")
+    @AdminPermit
+    public void deleteAccessToken() {
+        adminLogoutCmdHandler.handle(auth.user().getId());
     }
 
 }

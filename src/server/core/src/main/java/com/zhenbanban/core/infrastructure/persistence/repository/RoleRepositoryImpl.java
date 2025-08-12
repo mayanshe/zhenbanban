@@ -26,7 +26,6 @@ import com.zhenbanban.core.infrastructure.persistence.converter.RoleConverter;
 import com.zhenbanban.core.infrastructure.persistence.mapper.*;
 import com.zhenbanban.core.infrastructure.persistence.po.*;
 import com.zhenbanban.core.infrastructure.support.annotation.StoreDomainEventsExecution;
-import com.zhenbanban.core.infrastructure.util.PrintUtils;
 import com.zhenbanban.core.shared.exception.InternalServerException;
 import com.zhenbanban.core.shared.exception.RequestConflictException;
 import com.zhenbanban.core.shared.exception.ResourceNotFoundException;
@@ -125,9 +124,6 @@ public class RoleRepositoryImpl implements RoleRepository {
         Long roleId = aggregate.getId();
         Set<Long> permissionIds = aggregate.getPermissionIds();
         Set<Long> resourceIds = aggregate.getResourceIds();
-        PrintUtils.info("修改角色权限和资源分配: roleId={}, permissionIds={}, resourceIds={}",
-                roleId, permissionIds, resourceIds
-        );
 
         // 修改权限
         rolePermissionMapper.deleteByRoleId(aggregate.getId());

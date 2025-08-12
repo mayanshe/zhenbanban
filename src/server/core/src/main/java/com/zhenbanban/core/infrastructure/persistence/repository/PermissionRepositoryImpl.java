@@ -28,7 +28,6 @@ import com.zhenbanban.core.infrastructure.persistence.mapper.PermissionPoMapper;
 import com.zhenbanban.core.infrastructure.persistence.mapper.RolePermissionPoMapper;
 import com.zhenbanban.core.infrastructure.persistence.po.PermissionPo;
 import com.zhenbanban.core.infrastructure.support.annotation.StoreDomainEventsExecution;
-import com.zhenbanban.core.infrastructure.util.PrintUtils;
 import com.zhenbanban.core.shared.exception.*;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
