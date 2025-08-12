@@ -21,7 +21,7 @@
 package com.zhenbanban.core.application.common;
 
 /**
- * Query : 通用查询接口
+ * 领域层通用接口 : 通用查询接口
  *
  * @author zhangxihai 2025/8/11
  */

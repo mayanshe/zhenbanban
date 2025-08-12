@@ -20,14 +20,16 @@
  */
 package com.zhenbanban.core.application.dto;
 
-import com.zhenbanban.core.infrastructure.util.StrUtils;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+import java.util.Set;
+
 /**
- * Dto : 管理员
+ * View : 管理员菜单
  *
  * @author zhangxihai 2025/8/11
  */
@@ -35,37 +37,16 @@ import lombok.NoArgsConstructor;
 @Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class AdminDto {
-    private Long id;            // 管理员ID
+public class AdminMenuView {
 
-    private String username;     // 用户名
+    private String path;
 
-    private String surname;      // 姓
+    private String name;
 
-    private String givenName;    // 名
+    private String component;
 
-    private String email;        // 邮箱
+    private AdminMenuMetaView meta;
 
-    private String phone;        // 手机号
-
-    private String avatar;       // 头像URL
-
-    /**
-     * 获取脱敏后的邮箱地址
-     *
-     * @return 脱敏后的邮箱地址
-     */
-    public String getEmail() {
-        return email == null ? "" : StrUtils.desensitizeEmail(email);
-    }
-
-    /**
-     * 获取脱敏后的手机号码
-     *
-     * @return 脱敏后的手机号码
-     */
-    public String getPhone() {
-        return phone == null ? "" : StrUtils.desensitizePhoneNumber(phone);
-    }
+    private List<AdminMenuView> children;      // 子菜单列表
 
 }

@@ -20,42 +20,52 @@
  */
 package com.zhenbanban.core.application.dto;
 
-import com.zhenbanban.core.application.common.BaseCommand;
-import lombok.*;
-import lombok.experimental.SuperBuilder;
+import com.zhenbanban.core.infrastructure.util.StrUtils;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
- * Command : 资源
+ * Dto : 管理员
  *
- * @author zhangxihai 2025/8/03
+ * @author zhangxihai 2025/8/11
  */
-@Getter
-@Setter
-@SuperBuilder(toBuilder = true)
+@Data
+@Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class ResourceAmdCommand extends BaseCommand<Long> {
-    private Long parentId;                 // 父资源ID
+public class AdminStateView {
+    private Long id;            // 管理员ID
 
-    private String resourceType;           // 资源类型
+    private String username;     // 用户名
 
-    private String resourceName;           // 资源名称
+    private String surname;      // 姓
 
-    private String displayName;            // 资源显示名称
+    private String givenName;    // 名
 
-    private String description;            // 资源描述
+    private String email;        // 邮箱
 
-    private String path;                   // 资源路径
+    private String phone;        // 手机号
 
-    private String url;                    // 资源URL
+    private String avatar;       // 头像URL
 
-    private String icon;                   // 资源图标
+    /**
+     * 获取脱敏后的邮箱地址
+     *
+     * @return 脱敏后的邮箱地址
+     */
+    public String getEmail() {
+        return email == null ? "" : StrUtils.desensitizeEmail(email);
+    }
 
-    private String component;               // 资源组件路径
-
-
-    private boolean showInMenu;             // 是否在菜单中显示，默认不显示
-
-    private int sort;                       // 资源排序，默认0表示不排序
+    /**
+     * 获取脱敏后的手机号码
+     *
+     * @return 脱敏后的手机号码
+     */
+    public String getPhone() {
+        return phone == null ? "" : StrUtils.desensitizePhoneNumber(phone);
+    }
 
 }

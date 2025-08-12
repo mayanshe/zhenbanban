@@ -20,7 +20,7 @@
  */
 package com.zhenbanban.bossapi.controller;
 
-import com.zhenbanban.core.application.dto.AdminDto;
+import com.zhenbanban.core.application.dto.AdminStateView;
 import com.zhenbanban.core.application.query.AdminProfileQuery;
 import com.zhenbanban.core.infrastructure.support.annotation.AdminPermit;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +51,7 @@ public class MyController {
      */
     @GetMapping("/profile")
     @AdminPermit
-    public AdminDto getProfile() {
+    public AdminStateView getProfile() {
         return adminProfileQuery.handle();
     }
 

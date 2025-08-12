@@ -18,37 +18,17 @@
  * distribution of this code must also be licensed under the GPL. Failure
  * to comply with the terms of the GPL may result in legal action.
  */
-package com.zhenbanban.core.application.query.impl;
+package com.zhenbanban.core.application.query;
 
-import com.zhenbanban.core.application.dto.AdminStateView;
-import com.zhenbanban.core.application.query.AdminProfileQuery;
+import com.zhenbanban.core.application.common.IListQuery;
+import com.zhenbanban.core.application.dto.AdminMenuView;
 import com.zhenbanban.core.domain.accountcontext.entity.Admin;
-import com.zhenbanban.core.shared.contract.IAuth;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
 /**
- * 查询实现 : 管理员Profile
+ * 领域层通用查询接口 : 查询管理员在Admin菜单
  *
  * @author zhangxihai 2025/8/11
  */
-@Service
-@RequiredArgsConstructor
-public class AdminProfileQueryImpl implements AdminProfileQuery {
-    private final IAuth<Admin> auth;
-
-    public AdminStateView handle() {
-        Admin admin = auth.user();
-
-        return AdminStateView.builder()
-                .id(admin.getId())
-                .username(admin.getUsername())
-                .surname(admin.getSurname())
-                .givenName(admin.getGivenName())
-                .email(admin.getEmail())
-                .phone(admin.getPhone())
-                .avatar(admin.getAvatar())
-                .build();
-    }
+public interface AdminMenuQuery extends IListQuery<AdminMenuView, Admin> {
 
 }

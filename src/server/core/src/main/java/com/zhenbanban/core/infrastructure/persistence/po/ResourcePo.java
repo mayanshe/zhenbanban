@@ -53,6 +53,9 @@ public class ResourcePo {
     private String url = "";                           // 资源URL
 
     @Builder.Default
+    private String path = "";                          // 资源路径（用于路由）
+
+    @Builder.Default
     private String icon = "";                          // 资源图标
 
     @Builder.Default

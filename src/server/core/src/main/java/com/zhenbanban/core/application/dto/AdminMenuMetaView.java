@@ -20,11 +20,36 @@
  */
 package com.zhenbanban.core.application.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.Set;
+
 /**
- * Dto : Boss后台Resource
+ * View : 管理员菜单元数据
  *
  * @author zhangxihai 2025/8/11
  */
-public class AdminResourceDto {
+@Data
+@Builder(toBuilder = true)
+@NoArgsConstructor
+@AllArgsConstructor
+public class AdminMenuMetaView {
+    @Builder.Default
+    private String locale = "";                 // 一级菜单名
+
+    @Builder.Default
+    private String icon = "";                   // 图标
+
+    @Builder.Default
+    private boolean hideInMenu = true;          // 是否在菜单中隐藏
+
+    @Builder.Default
+    private int order = 0;                      // 排序
+
+    @Builder.Default
+    private Set<String> buttons = Set.of();     // 按钮权限集合
 
 }

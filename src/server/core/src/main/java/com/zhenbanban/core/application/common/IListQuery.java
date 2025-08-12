@@ -18,47 +18,16 @@
  * distribution of this code must also be licensed under the GPL. Failure
  * to comply with the terms of the GPL may result in legal action.
  */
-package com.zhenbanban.core.infrastructure.persistence.mapper;
+package com.zhenbanban.core.application.common;
 
-import com.zhenbanban.core.infrastructure.persistence.po.ResourcePo;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-
-import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
 /**
- * Mybatis Mapper 接口  : 资源
+ * 领域层通用接口 : 通用List查询接口
  *
- * @author zhangxihai 2025/8/03
+ * @author zhangxihai 2025/8/11
  */
-@Mapper
-public interface ResourcePoMapper {
-    Long insert(ResourcePo po);
-
-    int update(ResourcePo po);
-
-    int delete(Long id);
-
-    int count(HashMap<String, Object> params);
-
-    ResourcePo findById(Long id);
-
-    Long findIdByResourceName(String resourceName);
-
-    Long findIdByDisplayName(String displayName);
-
-    List<ResourcePo> findByParentId(Long parentId);
-
-    List<ResourcePo> findResourcesByRoleId(Long roleId);
-
-    Integer findMaxSortByParentId(Long parentId);
-
-    int countByIds(@Param("ids") Set<Long> ids);
-
-    List<ResourcePo> findRootByIds(@Param("ids") Set<Long> ids);
-
-    List<ResourcePo> findRootAll();
+public interface IListQuery<Model, Key> {
+    List<Model> handle(Key key);
 
 }

@@ -18,30 +18,14 @@
  * distribution of this code must also be licensed under the GPL. Failure
  * to comply with the terms of the GPL may result in legal action.
  */
-package com.zhenbanban.bossapi.vo;
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.springframework.context.annotation.Role;
-
-import java.util.Set;
+package com.zhenbanban.core.application.common;
 
 /**
- * Vo : 角色资源/权限分配修改请求
+ * 领域层通用接口 : ISetQuery
  *
  * @author zhangxihai 2025/8/11
  */
-@Data
-@Builder(toBuilder = true)
-@NoArgsConstructor
-@AllArgsConstructor
-public class RoleAssignmentModifyRequest {
-    @Builder.Default
-    private Set<Long> permissionIds = Set.of();        // 角色ID集合
-
-    @Builder.Default
-    private Set<Long> resourceIds = Set.of();         // 资源ID集合
+public interface ISetQuery<Model, Key> {
+    Model handle(Key key);
 
 }

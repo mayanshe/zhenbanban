@@ -20,7 +20,7 @@
  */
 package com.zhenbanban.core.application.query;
 
-import com.zhenbanban.core.application.dto.AdminDto;
+import com.zhenbanban.core.application.dto.AdminStateView;
 
 /**
  * Query : 查询管理员的Profile
@@ -28,6 +28,6 @@ import com.zhenbanban.core.application.dto.AdminDto;
  * @author zhangxihai 2025/8/11
  */
 public interface AdminProfileQuery {
-    AdminDto handle();
+    AdminStateView handle();
 
 }

@@ -10,6 +10,7 @@
         <result property="resourceName" column="resource_name"/>
         <result property="displayName" column="display_name"/>
         <result property="description" column="description"/>
+        <result property="path" column="path"/>
         <result property="url" column="url"/>
         <result property="icon" column="icon"/>
         <result property="component" column="component"/>
@@ -22,9 +23,10 @@
     </resultMap>
 
     <insert id="insert" parameterType="ResourcePo" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO resources (id, parent_id, resource_type, resource_name, display_name, description, url, icon,
+        INSERT INTO resources (id, parent_id, resource_type, resource_name, display_name, description, path, url, icon,
         component, show_in_menu, sort, created_at)
-        VALUES (#{id}, #{parentId}, #{resourceType}, #{resourceName}, #{displayName}, #{description}, #{url}, #{icon},
+        VALUES (#{id}, #{parentId}, #{resourceType}, #{resourceName}, #{displayName}, #{description}, #{path}, #{url},
+        #{icon},
         #{component}, #{showInMenu}, #{sort}, #{createdAt})
     </insert>
 
@@ -35,6 +37,7 @@
         resource_name = #{resourceName},
         display_name = #{displayName},
         description = #{description},
+        path = #{path},
         url = #{url},
         icon = #{icon},
         component = #{component},
@@ -117,8 +120,7 @@
     </select>
 
     <select id="findByParentId" parameterType="Long" resultMap="ResourceWithChildrenMap">
-        SELECT id, parent_id, resource_type, resource_name, display_name, description, url, icon, component,
-        show_in_menu, created_at, updated_at
+        SELECT *
         FROM resources
         WHERE parent_id = #{parentId}
         ORDER BY id ASC
@@ -146,6 +148,22 @@
         <foreach item="id" collection="ids" open="(" separator="," close=")">
             #{id}
         </foreach>
+    </select>
+
+    <select id="findRootByIds" parameterType="java.util.Set" resultMap="ResourceWithChildrenMap">
+        SELECT * FROM resources
+        WHERE id IN (
+        SELECT resource_id
+        FROM role_resources
+        WHERE role_id IN
+        <foreach item="roleId" collection="roleIds" open="(" separator="," close=")">
+            #{roleId}
+        </foreach>
+        ) AND parent_id = 0
+    </select>
+
+    <select id="findRootAll" resultMap="ResourceWithChildrenMap">
+        SELECT * FROM resources WHERE parent_id = 0 ORDER BY sort ASC, created_at DESC
     </select>
 
 </mapper>

@@ -35,6 +35,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AccessTokenResponse {
+    @Builder.Default
     private String type = "Bearer";
 
     private String token;       // 登录凭证，通常是一个JWT或其他类型的令牌

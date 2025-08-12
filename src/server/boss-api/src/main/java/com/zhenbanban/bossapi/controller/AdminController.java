@@ -25,13 +25,19 @@ import com.zhenbanban.bossapi.vo.AdminSaveRequest;
 import com.zhenbanban.bossapi.vo.IdResponse;
 import com.zhenbanban.core.application.command.AdminAmdCmdHandler;
 import com.zhenbanban.core.application.command.AdminRolesBindingCmdHandler;
-import com.zhenbanban.core.application.command.impl.AdminRolesBindingCmdHandlerImpl;
 import com.zhenbanban.core.application.dto.AdminAmdCommand;
+import com.zhenbanban.core.application.dto.AdminMenuView;
 import com.zhenbanban.core.application.dto.AdminRolesBindingCommand;
+import com.zhenbanban.core.application.query.AdminMenuQuery;
+import com.zhenbanban.core.domain.accountcontext.entity.Admin;
 import com.zhenbanban.core.infrastructure.support.annotation.AdminPermit;
+import com.zhenbanban.core.shared.contract.IAuth;
+import com.zhenbanban.core.shared.exception.BadRequestException;
 import jakarta.validation.Valid;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * Controller : 管理员
@@ -45,12 +51,20 @@ public class AdminController {
 
     private final AdminRolesBindingCmdHandler adminRolesBindingCmdHandler;
 
+    private final IAuth<Admin> auth;
+
+    private final AdminMenuQuery adminMenuQuery;
+
     public AdminController(
             @Lazy AdminAmdCmdHandler adminAmdCmdHandler,
-            @Lazy AdminRolesBindingCmdHandler adminRolesBindingCmdHandler
+            @Lazy AdminRolesBindingCmdHandler adminRolesBindingCmdHandler,
+            @Lazy IAuth<Admin> auth,
+            @Lazy AdminMenuQuery adminMenuQuery
     ) {
         this.adminAmdCmdHandler = adminAmdCmdHandler;
         this.adminRolesBindingCmdHandler = adminRolesBindingCmdHandler;
+        this.auth = auth;
+        this.adminMenuQuery = adminMenuQuery;
     }
 
     /**
@@ -107,7 +121,7 @@ public class AdminController {
     /**
      * 修改管理员角色
      *
-     * @param id 管理员ID
+     * @param id      管理员ID
      * @param request 管理员角色绑定请求
      */
     @PutMapping("/{id}/roles")
@@ -119,6 +133,23 @@ public class AdminController {
                 .build();
 
         adminRolesBindingCmdHandler.handle(command);
+    }
+
+    /**
+     * 获取管理员菜单
+     *
+     * @param id 管理员ID
+     * @return 管理员菜单列表
+     */
+    @GetMapping("/{id}/menus")
+    @AdminPermit
+    public List<AdminMenuView> getAdminMenus(@PathVariable("id") Long id) {
+        Admin admin = auth.user();
+        if (!id.equals(admin.getId()) && !admin.isSuperAdmin()) {
+            throw new BadRequestException("非法请求");
+        }
+
+        return adminMenuQuery.handle(admin);
     }
 
 }

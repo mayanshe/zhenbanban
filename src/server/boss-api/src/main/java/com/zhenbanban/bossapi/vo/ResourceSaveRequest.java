@@ -44,32 +44,42 @@ public class ResourceSaveRequest {
     private Long parentId = 0L;               // 父资源ID
 
     @NotBlank(message = "请选择资源类型")
-    @InList(value = {"menu", "button", "link", "component"}, message = "请选择正确的资源类型")
+    @InList(value = {"MENU", "COMPONENT", "LINK", "BUTTON"}, message = "请选择正确的资源类型")
     private String resourceType;              // 资源类型
 
     @NotBlank(message = "资源名称不能为空")
     @Size(max = 75, message = "资源名称不能超过75个字符")
-    @Pattern(regexp = "^[a-zA-Z\\-]+$", message = "权限名称只能包含字母和-")
+    @Pattern(regexp = "^[a-zA-Z\\-:]+$", message = "权限名称只能包含字母和-:")
     private String resourceName;              // 资源名称
 
     @NotBlank(message = "资源显示名称不能为空")
     @Size(max = 75, message = "资源显示名称不能超过75个字符")
     private String displayName;               // 资源显示名称
 
+    @Builder.Default
     @Size(max = 255, message = "资源描述不能超过255个字符")
     private String description = "";          // 资源描述
 
+    @Builder.Default
+    @Size(max = 255, message = "资源路径不能超过255个字符")
+    private String path = "";                  // 资源路径
+
+    @Builder.Default
     @Size(max = 255, message = "资源URL不能超过255个字符")
     private String url = "";                  // 资源URL
 
+    @Builder.Default
     @Size(max = 75, message = "资源图标不能超过255个字符")
     private String icon = "";                 // 资源图标
 
+    @Builder.Default
     @Size(max = 255, message = "资源组件路径不能超过255个字符")
     private String component = "";            // 资源组件路径
 
+    @Builder.Default
     private boolean showInMenu = false;       // 是否在菜单中显示，默认不显示
 
+    @Builder.Default
     @Min(value = 0, message = "排序值不能小于0")
     private int sort = 0;                     // 资源排序，默认0表示不排序
 
