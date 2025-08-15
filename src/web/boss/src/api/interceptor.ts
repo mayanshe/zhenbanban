@@ -34,12 +34,12 @@ axios.interceptors.response.use(
   (error) => {
     if (error.response) {
       Message.error({
-        content: error.response.data?.message || '尚未标记的错误，请重试或联系管理员',
+        content: error.response.data?.message || '网络错误，请重试或联系管理员',
         duration: 5 * 1000,
       })
     } else {
       Message.error({
-        content: '尚未标记的错误，请重试或联系管理员',
+        content: '网络错误，请重试或联系管理员',
         duration: 5 * 1000,
       })
     }

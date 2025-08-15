@@ -9,15 +9,16 @@
         <result property="groupName" column="group_name"/>
         <result property="displayName" column="display_name"/>
         <result property="description" column="description"/>
+        <result property="sort" column="sort"/>
         <result property="createdAt" column="created_at"/>
         <result property="updatedAt" column="updated_at"/>
-        <collection property="children" ofType="PermissionGroupPo"
+        <collection property="children" ofType="PermissionGroupPo" fetchType="lazy"
                     select="findByParentId" column="id"/>
     </resultMap>
 
     <insert id="insert" parameterType="PermissionGroupPo" useGeneratedKeys="false">
-        INSERT INTO permission_groups (id, parent_id, group_name, display_name, description, created_at)
-        VALUES (#{id}, #{parentId}, #{groupName}, #{displayName}, #{description}, #{createdAt})
+        INSERT INTO permission_groups (id, parent_id, group_name, display_name, description, sort, created_at)
+        VALUES (#{id}, #{parentId}, #{groupName}, #{displayName}, #{description}, #{sort}, #{createdAt})
     </insert>
 
     <update id="update" parameterType="PermissionGroupPo">
@@ -26,6 +27,7 @@
         group_name = #{groupName},
         display_name = #{displayName},
         description = #{description},
+        sort = #{sort},
         updated_at = #{updatedAt}
         WHERE id = #{id}
     </update>
@@ -54,7 +56,7 @@
     </select>
 
     <select id="findById" parameterType="Long" resultMap="PermissionGroupMap">
-        SELECT id, parent_id, group_name, display_name, description, created_at, updated_at
+        SELECT *
         FROM permission_groups
         WHERE id = #{id}
     </select>
@@ -72,9 +74,16 @@
     </select>
 
     <select id="findAll" resultMap="PermissionGroupMap">
-        SELECT id, parent_id, group_name, display_name, description, created_at, updated_at
+        SELECT *
         FROM permission_groups
-        ORDER BY id ASC
+        ORDER BY sort DESC, id ASC
+    </select>
+
+    <select id="findRootAll" resultMap="PermissionGroupMap">
+        SELECT *
+        FROM permission_groups
+        WHERE parent_id = 0
+        ORDER BY sort DESC, id ASC
     </select>
 
     <select id="search" parameterType="java.util.HashMap" resultMap="PermissionGroupMap">
@@ -94,10 +103,10 @@
     </select>
 
     <select id="findByParentId" parameterType="Long" resultMap="PermissionGroupMap">
-        SELECT id, parent_id, group_name, display_name, description, created_at, updated_at
+        SELECT *
         FROM permission_groups
         WHERE parent_id = #{parentId}
-        ORDER BY id ASC
+        ORDER BY sort DESC, id ASC
     </select>
 
 </mapper>

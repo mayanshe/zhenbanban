@@ -18,41 +18,51 @@
  * distribution of this code must also be licensed under the GPL. Failure
  * to comply with the terms of the GPL may result in legal action.
  */
-package com.zhenbanban.bossapi.vo;
+package com.zhenbanban.core.application.dto;
 
-import jakarta.validation.constraints.*;
+import com.zhenbanban.core.infrastructure.util.DateUtils;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 /**
- * Vo : 保持权限组请求
+ * View : 权限组视图对象
  *
- * @author zhangxihai 2025/8/03
+ * @author zhangxihai 2025/8/14
  */
 @Data
 @Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class PermissionGroupSaveRequest {
-    private Long parentId;                // 父权限组ID，0表示顶级权限组
+public class PermissionGroupDto {
+    private String id;                      // 权限组ID
 
-    @NotBlank(message = "权限组名称不能为空")
-    @Size(max = 75, message = "权限组名称不能超过75个字符")
-    @Pattern(regexp = "^[a-zA-Z\\-]+$", message = "权限组名称只能包含字母和-")
+    private String parentId;                // 父权限组ID，0表示顶级权限组
+
     private String groupName;             // 权限组名称
 
-    @NotBlank(message = "权限组显示名称不能为空")
-    @Size(max = 75, message = "权限组显示名称不能超过75个字符")
     private String displayName;           // 权限组显示名称
 
-    @Builder.Default
-    @Size(max = 255, message = "权限组描述不能超过255个字符")
-    private String description = "";     // 权限组描述
+    private String description;           // 权限组描述
 
-    @NotNull(message = "排序不能为空")
-    @Min(value = 0, message = "排序必须为非负整数")
-    private Integer sort = 0;            // 排序，倒叙
+    private Integer sort;                 // 排序，倒叙
+
+    private String createdAt;              // 创建时间
+
+    private String updatedAt;              // 更新时间
+
+    @Builder.Default
+    private List<PermissionGroupDto> children = List.of();
+
+    public String getCreatedAt() {
+        return createdAt == null || createdAt.isBlank() ? "" : DateUtils.timestampToFormattedDate(createdAt);
+    }
+
+    public String getUpdatedAt() {
+        return updatedAt == null || updatedAt.isBlank() ? "" : DateUtils.timestampToFormattedDate(updatedAt);
+    }
 
 }

@@ -21,8 +21,8 @@
 package com.zhenbanban.core.application.query.impl;
 
 import com.zhenbanban.core.application.dto.AdminMenuMetaView;
-import com.zhenbanban.core.application.dto.AdminMenuView;
-import com.zhenbanban.core.application.query.AdminMenuQuery;
+import com.zhenbanban.core.application.dto.AdminMenuDto;
+import com.zhenbanban.core.application.query.AdminMenuQueryHandler;
 import com.zhenbanban.core.domain.accountcontext.entity.Admin;
 import com.zhenbanban.core.infrastructure.persistence.mapper.ResourcePoMapper;
 import com.zhenbanban.core.infrastructure.persistence.po.ResourcePo;
@@ -44,20 +44,20 @@ import java.util.stream.Collectors;
  */
 @Service
 @AllArgsConstructor
-public class AdminMenuQueryImpl implements AdminMenuQuery {
+public class AdminMenuQueryHandlerImpl implements AdminMenuQueryHandler {
     private final ResourcePoMapper resourcePoMapper;
 
     private final RedisUtils redisUtils;
 
     @Override
-    public List<AdminMenuView> handle(Admin admin) {
+    public List<AdminMenuDto> handle(Admin admin) {
         String cacheKey = CacheKeyGenerator.getAdminMenusCacheKey(admin.getId());
         if (redisUtils.hasKey(cacheKey)) return redisUtils.get(cacheKey, List.class, Collections.emptyList());
 
         Set<Long> roleIds = admin.getRoleIds();
         List<ResourcePo> pos = admin.isSuperAdmin() ? resourcePoMapper.findRootAll() : resourcePoMapper.findRootByIds(roleIds);
 
-        List<AdminMenuView> list = trans(pos, "admin.menu");
+        List<AdminMenuDto> list = trans(pos, "admin.menu");
 
         redisUtils.set(cacheKey, list, 600);
 
@@ -71,8 +71,8 @@ public class AdminMenuQueryImpl implements AdminMenuQuery {
      * @param parentName 父菜单名称
      * @return 菜单视图列表
      */
-    private List<AdminMenuView> trans(List<ResourcePo> pos, String parentName) {
-        List<AdminMenuView> list = new ArrayList<>(List.of());
+    private List<AdminMenuDto> trans(List<ResourcePo> pos, String parentName) {
+        List<AdminMenuDto> list = new ArrayList<>(List.of());
 
         for (ResourcePo po : pos) {
             String resourceType = po.getResourceType();
@@ -85,7 +85,7 @@ public class AdminMenuQueryImpl implements AdminMenuQuery {
                 continue;
             }
 
-            AdminMenuView menu = new AdminMenuView();
+            AdminMenuDto menu = new AdminMenuDto();
             menu.setName(po.getResourceName());
 
             AdminMenuMetaView meta = new AdminMenuMetaView();

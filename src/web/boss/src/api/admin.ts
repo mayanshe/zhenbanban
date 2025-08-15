@@ -48,5 +48,5 @@ export function getAdminState() {
  * @param adminId
  */
 export function getMenuList(adminId: number) {
-  return axios.get<RouteRecordNormalized[]>(`/admins/${adminId}/menus`)
+  return axios.get<RouteRecordNormalized[]>(`/my/menus`)
 }

@@ -20,14 +20,18 @@
  */
 package com.zhenbanban.core.application.query;
 
-import com.zhenbanban.core.application.dto.AdminStateView;
+import com.zhenbanban.core.application.dto.PermissionGroupDto;
+
+import java.util.List;
 
 /**
- * Query : 查询管理员的Profile
+ * Query Interface : 权限组查询接口
  *
- * @author zhangxihai 2025/8/11
+ * @author zhangxihai 2025/8/14
  */
-public interface AdminProfileQuery {
-    AdminStateView handle();
+public interface PermissionGroupQueryHandler {
+    PermissionGroupDto handleQuerySingle(Long id);
+
+    List<PermissionGroupDto> handleQueryRootList();
 
 }

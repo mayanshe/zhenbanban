@@ -29,7 +29,7 @@ import java.util.List;
  *
  * @author zhangxihai 2025/8/11
  */
-public interface ISingleAndListQuery<Model, Key, Command> {
+public interface ISingleAndListQuery<Model, Key, Query> {
     /**
      * 查询单个模型
      *
@@ -41,19 +41,19 @@ public interface ISingleAndListQuery<Model, Key, Command> {
     /**
      * 查询模型列表
      *
-     * @param command 查询命令
+     * @param query 查询命令
      * @return 模型列表
      */
-    List<Model> handleQueryList(Command command);
+    List<Model> handleQueryList(Query query);
 
     /**
      * 分页查询模型列表
      *
-     * @param command 查询命令
+     * @param query 查询命令
      * @param page 页码，从1开始
      * @param pageSize 每页大小
      * @return 分页结果
      */
-    Pagination<Model> handleQueryPage(Command command, long page, long pageSize);
+    Pagination<Model> handleQueryPage(Query query, long page, long pageSize);
 
 }

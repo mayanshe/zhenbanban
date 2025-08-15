@@ -131,7 +131,6 @@ public class JwtAuthUtils<TUser> {
                 throw new UnauthorizedException("Token已失效或已被销毁，请重新登录");
             }
         } catch (Exception e) {
-            System.out.println(e.getMessage());
             throw new UnauthorizedException(message);
         }
     }

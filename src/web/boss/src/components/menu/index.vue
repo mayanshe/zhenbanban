@@ -4,7 +4,6 @@ import { useAppStore } from '@/store'
 import { openWindow, regexUrl } from '@/utils'
 import { listenerRouteChange } from '@/utils/route-listener'
 import { compile, computed, defineComponent, h, ref } from 'vue'
-import { useI18n } from 'vue-i18n'
 import type { RouteMeta } from 'vue-router'
 import { RouteRecordRaw, useRoute, useRouter } from 'vue-router'
 import useMenuTree from './use-menu-tree'
@@ -12,7 +11,6 @@ import useMenuTree from './use-menu-tree'
 export default defineComponent({
   emit: ['collapse'],
   setup() {
-    const { t } = useI18n()
     const appStore = useAppStore()
     const router = useRouter()
     const route = useRoute()
@@ -97,14 +95,14 @@ export default defineComponent({
                   key={element?.name}
                   v-slots={{
                     icon,
-                    title: () => h(compile(t(element?.meta?.locale || ''))),
+                    title: () => element?.meta?.locale || '',
                   }}
                 >
                   {travel(element?.children)}
                 </a-sub-menu>
               ) : (
                 <a-menu-item key={element?.name} v-slots={{ icon }} onClick={() => goto(element)}>
-                  {t(element?.meta?.locale || '')}
+                  {element?.meta?.locale || ''}
                 </a-menu-item>
               )
             nodes.push(node as never)

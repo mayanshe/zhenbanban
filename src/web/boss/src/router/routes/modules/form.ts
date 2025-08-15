@@ -6,10 +6,10 @@ const FORM: AppRouteRecordRaw = {
   name: 'form',
   component: DEFAULT_LAYOUT,
   meta: {
-    locale: 'menu.form',
+    locale: '表单',
     icon: 'icon-settings',
     requiresAuth: true,
-    order: 3,
+    order: 24000,
   },
   children: [
     {
@@ -17,9 +17,9 @@ const FORM: AppRouteRecordRaw = {
       name: 'Step',
       component: () => import('@/views/form/step/index.vue'),
       meta: {
-        locale: 'menu.form.step',
+        locale: '分步表单',
         requiresAuth: true,
-        roles: ['admin'],
+        roles: ['*'],
       },
     },
     {
@@ -27,9 +27,9 @@ const FORM: AppRouteRecordRaw = {
       name: 'Group',
       component: () => import('@/views/form/group/index.vue'),
       meta: {
-        locale: 'menu.form.group',
+        locale: '分组表单',
         requiresAuth: true,
-        roles: ['admin'],
+        roles: ['*'],
       },
     },
   ],

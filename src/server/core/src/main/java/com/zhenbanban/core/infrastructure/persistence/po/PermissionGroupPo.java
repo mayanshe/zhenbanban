@@ -50,6 +50,9 @@ public class PermissionGroupPo {
     private String description = "";                                  // 权限组描述
 
     @Builder.Default
+    private int sort = 0;                                             // 排序，倒叙
+
+    @Builder.Default
     private long createdAt = 0L;                                      // 创建时间戳, 默认0表示未设置
 
     @Builder.Default

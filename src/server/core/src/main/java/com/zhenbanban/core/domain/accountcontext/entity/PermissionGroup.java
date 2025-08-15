@@ -50,6 +50,8 @@ public class PermissionGroup extends AbsAggregate {
 
     private String description;            // 权限组描述
 
+    private int sort;                      // 排序
+
     @Builder.Default
     private boolean deleted = false;       // 是否已删除
 

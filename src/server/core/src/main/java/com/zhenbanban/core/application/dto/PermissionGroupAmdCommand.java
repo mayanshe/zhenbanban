@@ -46,5 +46,7 @@ public class PermissionGroupAmdCommand extends BaseCommand<Long> {
     @Builder.Default
     private boolean deleted = false;     // 是否已删除，默认未删除
 
+    private int sort;                    // 排序，倒叙
+
 
 }

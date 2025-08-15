@@ -20,6 +20,7 @@
  */
 package com.zhenbanban.core.infrastructure.persistence.mapper;
 
+import com.zhenbanban.core.application.dto.PermissionGroupDto;
 import com.zhenbanban.core.infrastructure.persistence.po.PermissionGroupPo;
 
 import java.util.HashMap;
@@ -46,6 +47,8 @@ public interface PermissionGroupPoMapper {
     Long findIdByDisplayName(String displayName);
 
     List<PermissionGroupPo> findAll();
+
+    List<PermissionGroupPo> findRootAll();
 
     List<PermissionGroupPo> search(HashMap<String, Object> params);
 

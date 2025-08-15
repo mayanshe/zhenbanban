@@ -18,13 +18,9 @@
         >
           <div class="menu-wrapper">
             <div class="left-side">
-              <a-space style="padding-left: 5px;">
-                <img
-                  alt="logo"
-                  src="/src/assets/logo.png"
-                  style="width:24px; margin-bottom: -8px"
-                />
-                <a-typography-title style="font-weight:500;padding-left:2px">诊伴伴</a-typography-title>
+              <a-space style="padding-left: 5px">
+                <img alt="logo" src="/src/assets/logo.png" style="width: 24px; margin-bottom: -8px" />
+                <a-typography-title style="font-weight: 500; padding-left: 2px">诊伴伴</a-typography-title>
               </a-space>
             </div>
             <Menu />
@@ -46,19 +42,19 @@
           <a-layout-content>
             <PageLayout />
           </a-layout-content>
-          <div style="padding: 20px 20px; display: flex;  justify-content: space-between; width: 100%; ">
-              <div style="text-align:left">
-              ©2025 <a target="_blank" href="https://mayanshe.com">码研社</a> 版权所有
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  本项目仅供学习交流使用, 请勿用于商业用途！
-              </div>
-              <div style="text-align:right;color: #ccc">
-                 <a href="mailto:mail@sniu.com" style="color: #888">联系我们</a>
-                 &nbsp;&nbsp;|&nbsp;&nbsp;
-                 <a target="_blank" href="https://github.com/mayanshe" style="color: #888">Repository</a>
-                 &nbsp;&nbsp;|&nbsp;&nbsp;
-                 <a target="_blank" href="https://github.com/mayanshe" style="color: #888">Issues</a>
-              </div>
+          <div style="padding: 20px 20px; display: flex; justify-content: space-between; width: 100%">
+            <div style="text-align: left">
+              ©2025
+              <a target="_blank" href="https://mayanshe.com">码研社</a>
+              版权所有 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 本项目仅供学习交流使用, 请勿用于商业用途！
+            </div>
+            <div style="text-align: right; color: #ccc">
+              <a href="mailto:mail@sniu.com" style="color: #888">联系我们</a>
+              &nbsp;&nbsp;|&nbsp;&nbsp;
+              <a target="_blank" href="https://github.com/mayanshe" style="color: #888">Repository</a>
+              &nbsp;&nbsp;|&nbsp;&nbsp;
+              <a target="_blank" href="https://github.com/mayanshe" style="color: #888">Issues</a>
+            </div>
           </div>
         </a-layout>
       </a-layout>

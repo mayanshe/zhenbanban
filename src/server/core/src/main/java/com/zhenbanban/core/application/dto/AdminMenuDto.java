@@ -26,7 +26,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * View : 管理员菜单
@@ -37,7 +36,7 @@ import java.util.Set;
 @Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class AdminMenuView {
+public class AdminMenuDto {
 
     private String path;
 
@@ -47,6 +46,6 @@ public class AdminMenuView {
 
     private AdminMenuMetaView meta;
 
-    private List<AdminMenuView> children;      // 子菜单列表
+    private List<AdminMenuDto> children;      // 子菜单列表
 
 }

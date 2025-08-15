@@ -28,7 +28,6 @@ import com.zhenbanban.core.domain.accountcontext.service.AccountLoginAttemptServ
 import com.zhenbanban.core.domain.common.DomainEventPublisher;
 import com.zhenbanban.core.infrastructure.util.JwtAuthUtils;
 import com.zhenbanban.core.shared.exception.BadRequestException;
-import com.zhenbanban.core.shared.exception.UnauthorizedException;
 import com.zhenbanban.core.shared.valueobj.Token;
 import com.zhenbanban.core.shared.valueobj.UserClaims;
 import org.springframework.context.annotation.Lazy;

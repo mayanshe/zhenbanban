@@ -20,14 +20,20 @@
  */
 package com.zhenbanban.bossapi.controller;
 
+import com.zhenbanban.core.application.dto.AdminMenuDto;
 import com.zhenbanban.core.application.dto.AdminStateView;
-import com.zhenbanban.core.application.query.AdminProfileQuery;
+import com.zhenbanban.core.application.query.AdminMenuQueryHandler;
+import com.zhenbanban.core.application.query.AdminProfileQueryHandler;
+import com.zhenbanban.core.domain.accountcontext.entity.Admin;
 import com.zhenbanban.core.infrastructure.support.annotation.AdminPermit;
+import com.zhenbanban.core.shared.contract.IAuth;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * 控制器 : 我的
@@ -37,11 +43,21 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/my")
 public class MyController {
-    private final AdminProfileQuery adminProfileQuery;
+    private final AdminProfileQueryHandler adminProfileQuery;
+
+    private final IAuth<Admin> auth;
+
+    private final AdminMenuQueryHandler adminMenuQueryHandler;
 
     @Autowired
-    public MyController(@Lazy AdminProfileQuery adminProfileQuery) {
+    public MyController(
+            @Lazy AdminProfileQueryHandler adminProfileQuery,
+            @Lazy IAuth<Admin> auth,
+            @Lazy AdminMenuQueryHandler adminMenuQueryHandler
+    ) {
         this.adminProfileQuery = adminProfileQuery;
+        this.auth = auth;
+        this.adminMenuQueryHandler = adminMenuQueryHandler;
     }
 
     /**
@@ -53,6 +69,19 @@ public class MyController {
     @AdminPermit
     public AdminStateView getProfile() {
         return adminProfileQuery.handle();
+    }
+
+    /**
+     * 获取管理员菜单
+     *
+     * @return 管理员菜单列表
+     */
+    @GetMapping("/menus")
+    @AdminPermit
+    public List<AdminMenuDto> getAdminMenus() {
+        Admin admin = auth.user();
+
+        return adminMenuQueryHandler.handle(admin);
     }
 
 }

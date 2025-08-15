@@ -6,10 +6,10 @@ const EXCEPTION: AppRouteRecordRaw = {
   name: 'exception',
   component: DEFAULT_LAYOUT,
   meta: {
-    locale: 'menu.exception',
+    locale: '错误页面',
     requiresAuth: true,
     icon: 'icon-exclamation-circle',
-    order: 6,
+    order: 21000,
   },
   children: [
     {
@@ -17,9 +17,8 @@ const EXCEPTION: AppRouteRecordRaw = {
       name: '403',
       component: () => import('@/views/exception/403/index.vue'),
       meta: {
-        locale: 'menu.exception.403',
+        locale: '403',
         requiresAuth: true,
-        roles: ['admin'],
       },
     },
     {
@@ -27,7 +26,7 @@ const EXCEPTION: AppRouteRecordRaw = {
       name: '404',
       component: () => import('@/views/exception/404/index.vue'),
       meta: {
-        locale: 'menu.exception.404',
+        locale: '404',
         requiresAuth: true,
         roles: ['*'],
       },
@@ -37,7 +36,7 @@ const EXCEPTION: AppRouteRecordRaw = {
       name: '500',
       component: () => import('@/views/exception/500/index.vue'),
       meta: {
-        locale: 'menu.exception.500',
+        locale: '500',
         requiresAuth: true,
         roles: ['*'],
       },

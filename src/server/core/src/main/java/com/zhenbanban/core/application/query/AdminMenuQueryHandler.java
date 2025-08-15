@@ -21,7 +21,7 @@
 package com.zhenbanban.core.application.query;
 
 import com.zhenbanban.core.application.common.IListQuery;
-import com.zhenbanban.core.application.dto.AdminMenuView;
+import com.zhenbanban.core.application.dto.AdminMenuDto;
 import com.zhenbanban.core.domain.accountcontext.entity.Admin;
 
 /**
@@ -29,6 +29,6 @@ import com.zhenbanban.core.domain.accountcontext.entity.Admin;
  *
  * @author zhangxihai 2025/8/11
  */
-public interface AdminMenuQuery extends IListQuery<AdminMenuView, Admin> {
+public interface AdminMenuQueryHandler extends IListQuery<AdminMenuDto, Admin> {
 
 }
