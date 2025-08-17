@@ -18,40 +18,17 @@
  * distribution of this code must also be licensed under the GPL. Failure
  * to comply with the terms of the GPL may result in legal action.
  */
-package com.zhenbanban.core.application.common;
+package com.zhenbanban.core.application.query;
 
-import com.zhenbanban.core.infrastructure.support.paging.Pagination;
-
-import java.util.List;
+import com.zhenbanban.core.application.common.ISingleAndListQuery;
+import com.zhenbanban.core.application.dto.PermissionDto;
+import com.zhenbanban.core.application.dto.PermissionQuery;
 
 /**
- * Query : 通用查询接口，支持单个查询和列表查询
+ * Query Interface : 权限查询处理器
  *
- * @author zhangxihai 2025/8/11
+ * @author zhangxihai 2025/8/15
  */
-public interface ISingleAndListQuery<Model, Key, Query> {
-    /**
-     * 查询单个模型
-     *
-     * @param key 主键
-     * @return 单个模型
-     */
-    Model handleQuerySingle(Key key);
-
-    /**
-     * 查询模型列表
-     *
-     * @param query 查询命令
-     * @return 模型列表
-     */
-    List<Model> handleQueryList(Query query);
-
-    /**
-     * 分页查询模型列表
-     *
-     * @param query 查询命令
-     * @return 分页结果
-     */
-    Pagination<Model> handleQueryPage(Query query);
+public interface PermissionQueryHandler extends ISingleAndListQuery<PermissionDto, Long, PermissionQuery> {
 
 }

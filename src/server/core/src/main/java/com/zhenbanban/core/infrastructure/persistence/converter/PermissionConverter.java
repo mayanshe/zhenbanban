@@ -39,12 +39,14 @@ public interface PermissionConverter {
 
 
     @Mappings({
+            @Mapping(target = "groupName", ignore = true),
             @Mapping(target = "createdAt", ignore = true),
             @Mapping(target = "updatedAt", ignore = true)
     })
     PermissionPo toPo(Permission permission);
 
     @Mappings({
+            @Mapping(target = "groupName", ignore = true),
             @Mapping(target = "createdAt", ignore = true),
             @Mapping(target = "updatedAt", ignore = true)
     })

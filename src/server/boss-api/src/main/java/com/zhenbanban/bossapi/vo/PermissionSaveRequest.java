@@ -43,7 +43,7 @@ public class PermissionSaveRequest {
 
     @NotBlank(message = "权限名称不能为空")
     @Size(max = 75, message = "权限名称不能超过75个字符")
-    @Pattern(regexp = "^[a-zA-Z\\-]+$", message = "权限名称只能包含字母和-")
+    @Pattern(regexp = "^[a-zA-Z\\-:]+$", message = "权限名称只能包含字母和-")
     private String permissionName;
 
     @NotBlank(message = "权限显示名称不能为空")

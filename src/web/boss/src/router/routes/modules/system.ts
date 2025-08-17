@@ -35,17 +35,18 @@ const LIST: AppRouteRecordRaw = {
       name: 'ResourceManage',
       component: () => import('@/views/list/card/index.vue'),
       meta: {
-        locale: '菜单及按钮',
+        locale: '资源',
         requiresAuth: false,
       },
     },
     {
       path: 'permissions',
       name: 'PermissionManage',
-      component: () => import('@/views/list/card/index.vue'),
+      component: () => import('@/views/permission/index.vue'),
       meta: {
         locale: '权限',
         requiresAuth: false,
+        buttons: ['permission:add', 'permission:modify', 'permission:delete'],
       },
     },
     {
@@ -55,7 +56,7 @@ const LIST: AppRouteRecordRaw = {
       meta: {
         locale: '权限组',
         requiresAuth: false,
-        buttons: ['permission-group:add', 'permission-group:modify', 'permission-group:delete']
+        buttons: ['permission-group:add', 'permission-group:modify', 'permission-group:delete'],
       },
     },
   ],

@@ -20,8 +20,10 @@
  */
 package com.zhenbanban.core.infrastructure.persistence.mapper;
 
+import com.zhenbanban.core.infrastructure.persistence.po.PermissionPo;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -34,6 +36,6 @@ import java.util.Set;
 public interface PaginateMapper<Po> {
     int count(Map<String, Object> params);
 
-    List<Po> searchByPage(@Param("params") Map<String, Object> params, @Param("page") long offset, @Param("pageSize") long limit);
+    List<Po> search(Map<String, Object> params);
 
 }

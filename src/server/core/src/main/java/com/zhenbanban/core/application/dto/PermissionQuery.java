@@ -18,40 +18,49 @@
  * distribution of this code must also be licensed under the GPL. Failure
  * to comply with the terms of the GPL may result in legal action.
  */
-package com.zhenbanban.core.application.common;
+package com.zhenbanban.core.application.dto;
 
-import com.zhenbanban.core.infrastructure.support.paging.Pagination;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
- * Query : 通用查询接口，支持单个查询和列表查询
+ * 类型 : PermissionQuery
  *
- * @author zhangxihai 2025/8/11
+ * @author zhangxihai 2025/8/15
  */
-public interface ISingleAndListQuery<Model, Key, Query> {
-    /**
-     * 查询单个模型
-     *
-     * @param key 主键
-     * @return 单个模型
-     */
-    Model handleQuerySingle(Key key);
+@Getter
+@Setter
+@SuperBuilder(toBuilder = true)
+@NoArgsConstructor
+@AllArgsConstructor
+public class PermissionQuery {
+    @Builder.Default
+    private int page = 1;
 
-    /**
-     * 查询模型列表
-     *
-     * @param query 查询命令
-     * @return 模型列表
-     */
-    List<Model> handleQueryList(Query query);
+    @Builder.Default
+    private int pageSize = 15;
 
-    /**
-     * 分页查询模型列表
-     *
-     * @param query 查询命令
-     * @return 分页结果
-     */
-    Pagination<Model> handleQueryPage(Query query);
+    private String keywords;
+
+    private Long groupId;
+
+    public Map<String, Object> toMap() {
+        Map<String, Object> map = new HashMap<>();
+        if (keywords != null && !keywords.isBlank()) {
+            List<String> keywordList = Arrays.asList(keywords.split(" "));
+            map.put("keywords", keywordList);
+        }
+
+        if (groupId != null && groupId > 0) {
+            map.put("groupId", groupId);
+        }
+
+        return map;
+    }
 
 }

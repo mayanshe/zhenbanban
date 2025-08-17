@@ -26,6 +26,7 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -34,7 +35,7 @@ import java.util.Set;
  * @author zhangxihai 2025/08/02
  */
 @Mapper
-public interface PermissionPoMapper {
+public interface PermissionPoMapper extends PaginateMapper<PermissionPo> {
     Long insert(PermissionPo permissionPo);
 
     int update(PermissionPo permissionPo);
@@ -50,8 +51,6 @@ public interface PermissionPoMapper {
     Long findByDisplayName(String displayName);
 
     List<PermissionPo> findAll();
-
-    List<PermissionPo> search(HashMap<String, Object> params);
 
     List<PermissionPo> findPermissionsByRoleId(Long roleId);
 

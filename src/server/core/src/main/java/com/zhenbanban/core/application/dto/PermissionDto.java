@@ -18,38 +18,44 @@
  * distribution of this code must also be licensed under the GPL. Failure
  * to comply with the terms of the GPL may result in legal action.
  */
-package com.zhenbanban.core.infrastructure.persistence.po;
+package com.zhenbanban.core.application.dto;
 
+import com.zhenbanban.core.infrastructure.util.DateUtils;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 
 /**
- * Po: 权限
+ * Dto : 权限组
  *
- * @author zhangxihai 2025/08/02
+ * @author zhangxihai 2025/8/15
  */
 @Getter
 @Setter
-@SuperBuilder(toBuilder = true)
+@Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class PermissionPo {
-    private Long id;                     // 权限ID
+public class PermissionDto {
+    private String id;                   // 权限ID
 
-    private Long groupId;                 // 权限组ID
+    private String groupId;              // 权限组ID，0表示顶级权限组
 
-    private String groupName;             // 权限组名称
+    private String groupName;            // 权限组名称
 
-    private String permissionName;       // 权限名称
+    private String permissionName;      // 权限名称
 
-    private String displayName;          // 权限显示名称
+    private String displayName;         // 权限代码
 
-    private String description;          // 权限描述
+    private String description;         // 权限描述
 
-    @Builder.Default
-    private long createdAt = 0L;         // 创建时间戳
+    private String createdAt;           // 创建时间
 
-    @Builder.Default
-    private long updatedAt = 0L;         // 更新时间戳
-    
+    private String updatedAt;           // 更新时间
+
+    public String getCreatedAt() {
+        return createdAt == null || createdAt.isBlank() ? "" : DateUtils.timestampToFormattedDate(createdAt);
+    }
+
+    public String getUpdatedAt() {
+        return updatedAt == null || updatedAt.isBlank() ? "" : DateUtils.timestampToFormattedDate(updatedAt);
+    }
+
 }

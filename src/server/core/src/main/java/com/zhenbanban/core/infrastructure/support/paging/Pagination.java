@@ -88,7 +88,7 @@ public class Pagination<T> {
     }
 
     public long getPrevPage() {
-        return page > 0 ? page - 1 : 1;
+        return page > 1 ? page - 1 : 1;
     }
 
     private void setPrevPage(long prevPage) {

@@ -29,7 +29,10 @@
     </delete>
 
     <select id="findById" parameterType="Long" resultType="PermissionPo">
-        SELECT * FROM permissions WHERE id = #{id}
+        SELECT p.*, g.display_name as group_name FROM
+        permissions AS p
+        LEFT JOIN permission_groups AS g ON g.id = p.group_id
+        WHERE p.id = #{id}
     </select>
 
     <select id="findIdByPermissionName" parameterType="String" resultType="Long">
@@ -41,30 +44,58 @@
     </select>
 
     <select id="findAll" resultType="PermissionPo">
-        SELECT * FROM permissions
+        SELECT p.*,  g.display_name as group_name FROM
+        permissions AS p
+        LEFT JOIN permission_groups AS g ON g.id = p.group_id
     </select>
 
-    <select id="search" parameterType="java.util.HashMap" resultType="PermissionPo">
-        SELECT * FROM permissions
+    <select id="count" parameterType="java.util.Map">
+        SELECT COUNT(id) FROM permissions
         <where>
-            <if test="permissionName != null and permissionName != ''">
-                AND permissionName LIKE CONCAT('%', #{permissionName}, '%')
+            <if test="groupId != null and groupId > 0">
+                AND group_id = #{groupId}
             </if>
-            <if test="displayName != null and displayName != ''">
-                AND display_name LIKE CONCAT('%', #{displayName}, '%')
-            </if>
-            <if test="description != null and description != ''">
-                AND description LIKE CONCAT('%', #{description}, '%')
+            <if test="keywords != null and keywords.size() > 0">
+                AND (
+                <foreach item="w" collection="keywords" separator="OR">
+                    permission_name LIKE CONCAT('%', #{w}, '%') OR display_name LIKE CONCAT('%', #{w}, '%')
+                </foreach>
+                )
             </if>
         </where>
-        <if test="orderBy != null and orderBy != ''">
-            ORDER BY ${orderBy}
-        </if>
+    </select>
+
+    <select id="search" parameterType="java.util.Map" resultType="PermissionPo">
+        SELECT p.*, g.display_name as group_name FROM
+        permissions AS p
+        LEFT JOIN permission_groups AS g ON g.id = p.group_id
+        <where>
+            <if test="groupId != null and groupId > 0">
+                AND p.group_id = #{groupId}
+            </if>
+            <if test="keywords != null and keywords.size() > 0">
+                AND (
+                <foreach item="w" collection="keywords" separator="OR">
+                    p.permission_name LIKE CONCAT('%', #{w}, '%') OR p.display_name LIKE CONCAT('%', #{w}, '%')
+                </foreach>
+                )
+            </if>
+        </where>
+        ORDER BY <choose>
+        <when test="orderBy != null and orderBy != ''">
+            #{orderBy}
+        </when>
+        <otherwise>
+            p.id DESC
+        </otherwise>
+        </choose>
+        Limit #{offset}, #{limit}
     </select>
 
     <select id="findPermissionsByRoleId" parameterType="Long" resultType="PermissionPo">
-        SELECT p.id, p.permission_name, p.description, p.created_at, p.updated_at
-        FROM permissions p
+        SELECT p.*, g.group_name FROM
+        permissions AS p
+        LEFT JOIN permission_groups AS g ON g.id = p.group_id
         WHERE p.id IN (
         SELECT rp.permission_id
         FROM role_permissions rp

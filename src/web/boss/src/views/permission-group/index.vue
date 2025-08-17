@@ -3,10 +3,10 @@
     <Breadcrumb :items="['系统', '权限组管理']" />
     <a-card class="general-card" title="权限组管理">
       <a-divider style="margin-top: 0" />
-      <a-row style="margin-bottom: 24px" v-if="buttons.includes('permission-group:add')">
+      <a-row style="margin-bottom: 24px">
         <a-col :span="12">
           <a-space>
-            <a-button type="primary" @click="handleOpenSingle('add', '0')">
+            <a-button  v-if="buttons.includes('permission-group:add')" type="primary" @click="handleOpenSingle('add', '0')">
               <template #icon>
                 <icon-plus />
               </template>
@@ -14,13 +14,18 @@
             </a-button>
           </a-space>
         </a-col>
+        <a-col :span="12" style="display: flex; align-items: center; justify-content: end; padding-top: 12px">
+          <a-tooltip content="刷新">
+            <div class="action-icon" @click="load"><icon-refresh size="18" /></div>
+          </a-tooltip>
+        </a-col>
       </a-row>
       <a-table style="margin-bottom: 16px" :columns="columns" :data="datalist" :bordered="false" :pagination="false" :loading="loading">
         <template #optional="{ record }">
           <a-space>
             <a-button v-if="buttons.includes('permission-group:modify')" type="text" size="mimi"  @click="handleOpenSingle('modify', record.id)">编辑</a-button>
             <a-popconfirm content="确定删除此权限组?" @ok="handleDelete(record.id)">
-              <a-button v-if="buttons.includes('permission-group:delete')" type="text" size="mimi" status="danger">删除</a-button>
+              <a-button v-if="buttons.includes('permission-group:delete') && record.children.length === 0" type="text" size="mimi" status="danger">删除</a-button>
             </a-popconfirm>
           </a-space>
         </template>

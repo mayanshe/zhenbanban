@@ -22,6 +22,7 @@ package com.zhenbanban.core.infrastructure.support.paging;
 
 import com.zhenbanban.core.infrastructure.persistence.mapper.PaginateMapper;
 
+import javax.security.auth.callback.Callback;
 import java.util.List;
 import java.util.Map;
 
@@ -33,6 +34,11 @@ import java.util.Map;
 public final class Pager {
     private Pager() {
         throw new UnsupportedOperationException("Pager is a utility class and cannot be instantiated");
+    }
+
+    @FunctionalInterface
+    public interface Callback<P, T> {
+        T handle(P source) throws Exception; // 允许抛出受检异常
     }
 
     public static <M extends PaginateMapper<P>, P> Pagination<P> paginate(
@@ -47,9 +53,39 @@ public final class Pager {
         }
 
         long offset = (page - 1) * pageSize;                                                    // 计算偏移量
-        List<P> items = mapper.searchByPage(condition, offset,  pageSize);                      // 分页查询
+        condition.put("offset", offset);                                                        // 设置偏移量
+        condition.put("limit", pageSize);                                                       // 设置每页大小
+        List<P> items = mapper.search(condition);                                               // 分页查询
 
         return new Pagination<>(page, pageSize, total, items);                                  // 返回分页结果
+    }
+
+    public static <M extends PaginateMapper<P>, P, T> Pagination<T> paginate(
+            M mapper, long page, long pageSize, Map<String, Object> condition, Callback callback ) {
+        page = Math.max(page, 1);
+        pageSize = Math.max(pageSize, 1);
+
+        int total = mapper.count(condition);                                                    // 获取总记录数
+
+        if (total == 0) {
+            return new Pagination<>(total, pageSize, page, List.of());
+        }
+
+        long offset = (page - 1) * pageSize;                                                    // 计算偏移量
+        condition.put("offset", offset);                                                        // 设置偏移量
+        condition.put("limit", pageSize);                                                       // 设置每页大小
+        List<P> sources = mapper.search(condition);                                             // 分页查询
+        List<T> items = sources.stream()
+                .map(source -> {
+                    try {
+                        return (T) callback.handle(source); // 使用回调处理每个源对象
+                    } catch (Exception e) {
+                        throw new RuntimeException("Error processing source object", e);
+                    }
+                })
+                .toList();
+
+        return new Pagination<>(total, pageSize, page, items);                                  // 返回分页结果
     }
 
 }

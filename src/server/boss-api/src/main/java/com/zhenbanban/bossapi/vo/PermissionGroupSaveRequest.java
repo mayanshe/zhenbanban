@@ -40,7 +40,7 @@ public class PermissionGroupSaveRequest {
 
     @NotBlank(message = "权限组名称不能为空")
     @Size(max = 75, message = "权限组名称不能超过75个字符")
-    @Pattern(regexp = "^[a-zA-Z\\-]+$", message = "权限组名称只能包含字母和-")
+    @Pattern(regexp = "^[a-zA-Z\\-:]+$", message = "权限组名称只能包含字母和-")
     private String groupName;             // 权限组名称
 
     @NotBlank(message = "权限组显示名称不能为空")
