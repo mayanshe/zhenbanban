@@ -20,6 +20,7 @@
  */
 package com.zhenbanban.core.infrastructure.persistence.converter;
 
+import com.zhenbanban.core.application.dto.ResourceDto;
 import com.zhenbanban.core.domain.accountcontext.entity.Resource;
 import com.zhenbanban.core.domain.accountcontext.valueobj.ResourceType;
 import com.zhenbanban.core.infrastructure.persistence.po.ResourcePo;
@@ -55,6 +56,12 @@ public interface ResourceConverter extends IConverter {
             @Mapping(target = "resourceType", source = "resourceType", qualifiedByName = "resourceTypeToString"),
     })
     ResourcePo updatePo(Resource resource, @MappingTarget ResourcePo po);
+
+    @Mappings({
+            @Mapping(target = "resourceType", source = "resourceType", qualifiedByName = "stringToResourceType"),
+            @Mapping(target = "showInMenu", source = "showInMenu", qualifiedByName = "shortToBoolean"),
+    })
+    ResourceDto toDto(ResourcePo po);
 
     @Mappings({
             @Mapping(target = "deleted", ignore = true),

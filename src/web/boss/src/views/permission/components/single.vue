@@ -86,11 +86,19 @@ const loadPermissionGroupDataList = async () => {
           })
         }
       }
-      options.push({
-        value: item.id,
-        label: item.displayName,
-        children: cs,
-      })
+
+      if (cs.length > 0) {
+        options.push({
+          value: item.id,
+          label: item.displayName,
+          children: cs,
+        })
+      } else {
+        options.push({
+          value: item.id,
+          label: item.displayName
+        })
+      }
     }
     groupOptions.value = options
   }
@@ -116,7 +124,7 @@ const rules = {
   permissionName: [
     { required: true, message: '请输入权限名称' },
     { maxLength: 45, message: '不能超过最大长度45个字符' },
-    { match: /^[a-zA-Z\\-\\:]+$/g, message: '只能由字母 - : 组成' },
+    { match: /^[a-zA-Z-\\:]+$/g, message: '只能由字母 - : 组成' },
   ],
   displayName: [
     { required: true, message: '请输入权限显示名称' },

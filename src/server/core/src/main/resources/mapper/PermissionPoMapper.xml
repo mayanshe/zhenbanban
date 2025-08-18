@@ -44,7 +44,7 @@
     </select>
 
     <select id="findAll" resultType="PermissionPo">
-        SELECT p.*,  g.display_name as group_name FROM
+        SELECT p.*, g.display_name as group_name FROM
         permissions AS p
         LEFT JOIN permission_groups AS g ON g.id = p.group_id
     </select>
@@ -81,15 +81,24 @@
                 )
             </if>
         </where>
-        ORDER BY <choose>
-        <when test="orderBy != null and orderBy != ''">
-            #{orderBy}
-        </when>
-        <otherwise>
-            p.id DESC
-        </otherwise>
+        ORDER BY
+        <choose>
+            <when test="orderBy != null and orderBy != ''">
+                #{orderBy}
+            </when>
+            <otherwise>
+                p.id DESC
+            </otherwise>
         </choose>
-        Limit #{offset}, #{limit}
+        <if test="offset != null and limit != null">
+            LIMIT #{offset}, #{limit}
+        </if>
+        <if test="offset == null and limit != null">
+            LIMIT #{limit}
+        </if>
+        <if test="offset != null and limit == null">
+            LIMIT #{offset}, 18446744073709551615
+        </if>
     </select>
 
     <select id="findPermissionsByRoleId" parameterType="Long" resultType="PermissionPo">

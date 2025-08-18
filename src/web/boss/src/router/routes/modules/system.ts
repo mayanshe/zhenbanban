@@ -33,10 +33,11 @@ const LIST: AppRouteRecordRaw = {
     {
       path: 'resources',
       name: 'ResourceManage',
-      component: () => import('@/views/list/card/index.vue'),
+      component: () => import('@/views/resource/index.vue'),
       meta: {
         locale: '资源',
         requiresAuth: false,
+        buttons: ['resource:add', 'resource:modify', 'resource:delete'],
       },
     },
     {

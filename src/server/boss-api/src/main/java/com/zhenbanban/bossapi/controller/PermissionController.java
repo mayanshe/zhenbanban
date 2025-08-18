@@ -116,6 +116,7 @@ public class PermissionController {
      * @return 权限分页信息
      */
     @GetMapping
+    @AdminPermit(permissions = {"permission:add", "permission:modify", "permission:delete"}, message = "您未被授权执行此操作：查询权限")
     public Pagination<PermissionDto> getPermissionPagination(
             @RequestParam(value = "page", defaultValue = "1", required = false) Integer page,
             @RequestParam(value = "pageSize", defaultValue = "15", required = false) Integer pageSize,

@@ -1,30 +1,34 @@
 <template>
   <div class="container">
-    <Breadcrumb :items="['系统', '权限组管理']" />
-    <a-card class="general-card" title="权限组管理">
+    <Breadcrumb :items="['系统', '资源管理']" />
+    <a-card class="general-card" title="资源管理（菜单 / 链接 / 按钮）">
       <a-divider style="margin-top: 0" />
+
       <a-row style="margin-bottom: 24px">
         <a-col :span="12">
           <a-space>
-            <a-button  v-if="buttons.includes('permission-group:add')" type="primary" @click="handleOpenSingle('add', '0')">
+            <a-button v-if="buttons.includes('resource:add')" type="primary" @click="handleOpenSingle('add', '0')">
               <template #icon>
                 <icon-plus />
               </template>
-              添加权限组
+              添加资源
             </a-button>
           </a-space>
         </a-col>
         <a-col :span="12" style="display: flex; align-items: center; justify-content: end; padding-top: 12px">
           <a-tooltip content="刷新">
-            <div class="action-icon" @click="load"><icon-refresh size="18" /></div>
+            <div class="action-icon" @click="loadResources"><icon-refresh size="18" /></div>
           </a-tooltip>
         </a-col>
       </a-row>
-      <a-table style="margin-bottom: 16px" :columns="columns" :data="datalist" :bordered="false" :pagination="false" :loading="loading">
+
+      <a-table style="margin-bottom: 16px" :columns="columns" :data="resources" :pagination="false">
         <template #optional="{ record }">
           <a-space>
-            <a-button v-if="buttons.includes('permission-group:modify')" type="text" size="mimi"  @click="handleOpenSingle('modify', record.id)">编辑</a-button>
-            <a-popconfirm content="确定删除此权限组?" @ok="handleDelete(record.id)" v-if="buttons.includes('permission-group:delete') && record.children.length === 0">
+            <a-button v-if="buttons.includes('resource:modify')" type="text" size="mimi" @click="handleOpenSingle('modify', record.id)">
+              编辑
+            </a-button>
+            <a-popconfirm content="确定删除此资源?" @ok="handleDelete(record.id)" v-if="buttons.includes('resource:delete') && record.children.length === 0">
               <a-button type="text" size="mimi" status="danger">删除</a-button>
             </a-popconfirm>
           </a-space>
@@ -33,19 +37,19 @@
     </a-card>
 
     <!-- 权限组编辑窗 -->
-    <PermissionGroupSingle v-model:open="single.open" :action="single.action" :single-id="single.id" @on-success="handleSuccess" />
+    <ResourceSingle v-model:open="single.open" :action="single.action" :single-id="single.id" @on-success="handleSuccess" />
   </div>
 </template>
 
 <script lang="ts" setup>
 import { ref } from 'vue'
-import {Message} from "@arco-design/web-vue";
-import { useRoute } from 'vue-router';
-import { PermissionGroupView, getPermissionGroupList, deletePermissionGroup } from '@/api/permission-group'
-import PermissionGroupSingle from './components/single.vue'
+import { useRoute } from 'vue-router'
+import { Message } from '@arco-design/web-vue'
+import { ResourceView, getResourceList, deleteResource } from '@/api/resource'
+import ResourceSingle from './components/single.vue'
 
-const route = useRoute();
-const buttons = route.meta.buttons || [];
+const route = useRoute()
+const buttons = route.meta.buttons || []
 
 // region 添加及编辑的交互
 const single = ref({
@@ -65,26 +69,11 @@ const handleOpenSingle = async (actionValue: string, idValue: string) => {
 
 // 响应弹窗成功事件
 const handleSuccess = () => {
-  load()
+  loadResources()
 }
 // endregion
 
-// region 权限组列表
-const loading = ref(false)
-
-// 列表数据
-const datalist = ref<PermissionGroupView[]>([])
-
-// 加载列表
-const load = async () => {
-  loading.value = true
-  datalist.value = (await getPermissionGroupList()) || []
-  loading.value = false
-}
-
-// 加载页面时加载
-load()
-
+// region 列表加载
 // 表格定义
 const columns = [
   {
@@ -92,28 +81,46 @@ const columns = [
     dataIndex: 'displayName',
   },
   {
-    title: '权限组名',
-    dataIndex: 'groupName',
+    title: '资源名称',
+    dataIndex: 'resourceName',
+  },
+  {
+    title: '资源类型',
+    dataIndex: 'resourceType.name',
+  },
+  {
+    title: '路径/Url',
+    dataIndex: 'path',
+    render: ({ record }) => {
+      return record.resourceType.code.toLowerCase() === 'link' ? record.url : record.path
+    },
   },
   {
     title: '创建时间',
     dataIndex: 'createdAt',
   },
   {
-    title: '修改时间',
+    title: '更新时间',
     dataIndex: 'updatedAt',
   },
   {
     title: '操作',
-    slotName: 'optional'
-  }
+    slotName: 'optional',
+  },
 ]
 
-// 删除权限组处理
+const resources = ref<ResourceView[]>([])
+
+const loadResources = async () => {
+  resources.value = (await getResourceList()) || []
+}
+
+loadResources()
+
 const handleDelete = async (id: string) => {
-  deletePermissionGroup(id).then(() => {
+  deleteResource(id).then(() => {
     Message.success('删除成功')
-    load()
+    loadResources()
   })
 }
 // endregion
@@ -121,7 +128,7 @@ const handleDelete = async (id: string) => {
 
 <script lang="ts">
 export default {
-  name: 'PermissionGroupManage',
+  name: 'ResourceManage',
 }
 </script>
 

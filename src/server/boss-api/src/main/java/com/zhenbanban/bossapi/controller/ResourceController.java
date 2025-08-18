@@ -24,11 +24,19 @@ import com.zhenbanban.bossapi.vo.IdResponse;
 import com.zhenbanban.bossapi.vo.ResourceSaveRequest;
 import com.zhenbanban.core.application.command.ResourceAmdCmdHandler;
 import com.zhenbanban.core.application.dto.ResourceAmdCommand;
+import com.zhenbanban.core.application.dto.ResourceDto;
+import com.zhenbanban.core.application.query.ResourceQueryHandler;
+import com.zhenbanban.core.domain.accountcontext.valueobj.ResourceType;
 import com.zhenbanban.core.infrastructure.support.annotation.AdminPermit;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Controller : 资源
@@ -40,10 +48,14 @@ import org.springframework.web.bind.annotation.*;
 public class ResourceController {
     private final ResourceAmdCmdHandler resourceAmdCmdHandler;
 
+    private final ResourceQueryHandler resourceQueryHandler;
+
     public ResourceController(
-            @Lazy ResourceAmdCmdHandler resourceAmdCmdHandler
+            @Lazy ResourceAmdCmdHandler resourceAmdCmdHandler,
+            @Lazy ResourceQueryHandler resourceQueryHandler
     ) {
         this.resourceAmdCmdHandler = resourceAmdCmdHandler;
+        this.resourceQueryHandler = resourceQueryHandler;
     }
 
     /**
@@ -83,6 +95,42 @@ public class ResourceController {
     @AdminPermit(permissions = {"resource:add"}, message = "您未被授权执行此操作：删除资源")
     public void destroyResource(@PathVariable("id") Long id) {
         resourceAmdCmdHandler.handleDestroy(id);
+    }
+
+    @GetMapping("/types")
+    @AdminPermit
+    public List<Map<String, String>> getResourceTypes() {
+        List<Map<String, String>> options = new ArrayList<>();
+        for (ResourceType type : ResourceType.all()) {
+            Map<String, String> option = new HashMap<>();
+            option.put("code", type.getCode());
+            option.put("name", type.getName());
+            options.add(option);
+        }
+        return options;
+    }
+
+    /**
+     * 获取资源
+     *
+     * @param id 资源ID
+     * @return 资源信息
+     */
+    @GetMapping("/{id}")
+    @AdminPermit(permissions = {"resource:add", "resource:modify", "resource:delete"}, message = "您未被授权执行此操作：查询资源")
+    public ResourceDto getResource(@PathVariable("id") Long id) {
+        return resourceQueryHandler.handleQuerySingle(id);
+    }
+
+    /**
+     * 获取资源列表
+     *
+     * @return 资源列表
+     */
+    @GetMapping
+    @AdminPermit(permissions = {"resource:add", "resource:modify", "resource:delete"}, message = "您未被授权执行此操作：查询资源列表")
+    public List<ResourceDto> getResourceList() {
+        return resourceQueryHandler.handleQueryList();
     }
 
 }

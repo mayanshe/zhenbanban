@@ -40,9 +40,9 @@ public class ResourceType {
     public static final ResourceType COMPONENT = new ResourceType("component", "组件");
     private static final List<ResourceType> ALL_TYPES = Collections.unmodifiableList(Arrays.asList(
             MENU,
-            BUTTON,
+            COMPONENT,
             LINK,
-            COMPONENT
+            BUTTON
     ));
 
     private final String code;       // 资源类型代码
@@ -68,7 +68,7 @@ public class ResourceType {
             return MENU;
         }
 
-        return switch (code) {
+        return switch (code.toUpperCase()) {
             case "MENU" -> MENU;
             case "BUTTON" -> BUTTON;
             case "LINK" -> LINK;

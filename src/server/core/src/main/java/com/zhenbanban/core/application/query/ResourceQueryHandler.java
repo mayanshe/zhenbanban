@@ -18,45 +18,20 @@
  * distribution of this code must also be licensed under the GPL. Failure
  * to comply with the terms of the GPL may result in legal action.
  */
-package com.zhenbanban.core.infrastructure.persistence.mapper;
+package com.zhenbanban.core.application.query;
 
-import com.zhenbanban.core.infrastructure.persistence.po.ResourcePo;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
+import com.zhenbanban.core.application.common.ISingleAndListQuery;
+import com.zhenbanban.core.application.dto.ResourceDto;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
 /**
- * Mybatis Mapper 接口  : 资源
+ * Query Interface : 资源(菜单及按钮)
  *
- * @author zhangxihai 2025/8/03
+ * @author zhangxihai 2025/8/17
  */
-@Mapper
-public interface ResourcePoMapper extends PaginateMapper<ResourcePo> {
-    Long insert(ResourcePo po);
+public interface ResourceQueryHandler {
+    ResourceDto handleQuerySingle(Long id);
 
-    int update(ResourcePo po);
-
-    int delete(Long id);
-
-    ResourcePo findById(Long id);
-
-    Long findIdByResourceName(String resourceName);
-
-    Long findIdByDisplayName(String displayName);
-
-    List<ResourcePo> findByParentId(Long parentId);
-
-    List<ResourcePo> findResourcesByRoleId(Long roleId);
-
-    Integer findMaxSortByParentId(Long parentId);
-
-    int countByIds(@Param("ids") Set<Long> ids);
-
-    List<ResourcePo> findRootByIds(@Param("ids") Set<Long> ids);
-
-    List<ResourcePo> findRootAll();
-
+    List<ResourceDto> handleQueryList();
 }

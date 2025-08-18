@@ -6,7 +6,7 @@
     <div>
       <a-alert :show-icon="true" class="remark">{{ dialog.remark }}</a-alert>
       <a-form layout="vertical" :model="formData" :rules="rules" ref="formRef">
-        <a-form-item field="parentId" label="父权限组">
+        <a-form-item field="parentId" label="父权限组 : ">
           <a-select placeholder="请选择" v-model="formData.parentId">
             <a-option v-for="(item, index) in rootPermissionGroups" :key="item.value" :value="item.value">{{ item.title }}</a-option>
           </a-select>
@@ -72,7 +72,7 @@ const rules = {
   groupName: [
     { required: true, message: '请输入权限组名称' },
     { maxLength: 45, message: '不能超过最大长度45个字符' },
-    { match: /^[a-zA-Z\\-\\:]+$/g, message: '只能由字母 - : 组成' },
+    { match: /^[a-zA-Z-\\:]+$/g, message: '只能由字母 - : 组成' },
   ],
   displayName: [
     { required: true, message: '请输入权限组显示名称' },

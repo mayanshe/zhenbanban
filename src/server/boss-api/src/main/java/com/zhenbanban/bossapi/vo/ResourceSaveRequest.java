@@ -44,7 +44,7 @@ public class ResourceSaveRequest {
     private Long parentId = 0L;               // 父资源ID
 
     @NotBlank(message = "请选择资源类型")
-    @InList(value = {"MENU", "COMPONENT", "LINK", "BUTTON"}, message = "请选择正确的资源类型")
+    @InList(value = {"menu", "component", "link", "button"}, message = "请选择正确的资源类型")
     private String resourceType;              // 资源类型
 
     @NotBlank(message = "资源名称不能为空")

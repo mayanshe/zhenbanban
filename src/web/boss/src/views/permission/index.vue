@@ -77,9 +77,8 @@
             >
               编辑
             </a-button>
-            <a-popconfirm content="确定删除此权限?" @ok="handleDelete(record.id)">
+            <a-popconfirm content="确定删除此权限?" @ok="handleDelete(record.id)"  v-if="buttons.includes('permission:delete')">
               <a-button
-                v-if="buttons.includes('permission:delete')"
                 type="text"
                 size="mimi"
                 status="danger"

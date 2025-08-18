@@ -64,18 +64,59 @@
             <if test="resourceType != null and resourceType != ''">
                 AND resource_type = #{resourceType}
             </if>
-            <if test="resourceName != null and resourceName != ''">
-                AND resource_name LIKE CONCAT('%', #{resourceName}, '%')
-            </if>
-            <if test="displayName != null and displayName != ''">
-                AND display_name LIKE CONCAT('%', #{displayName}, '%')
+            <if test="keywords != null and keywords.size() > 0">
+                AND (
+                <foreach item="w" collection="keywords" separator="OR">
+                    p.permission_name LIKE CONCAT('%', #{w}, '%') OR p.display_name LIKE CONCAT('%', #{w}, '%')
+                </foreach>
+                )
             </if>
         </where>
     </select>
 
+    <select id="search" parameterType="java.util.HashMap" resultMap="ResourceWithChildrenMap">
+        SELECT *
+        FROM resources
+        <where>
+            <if test="id != null">
+                AND id = #{id}
+            </if>
+            <if test="parentId != null">
+                AND parent_id = #{parentId}
+            </if>
+            <if test="resourceType != null and resourceType != ''">
+                AND resource_type = #{resourceType}
+            </if>
+            <if test="keywords != null and keywords.size() > 0">
+                AND (
+                <foreach item="w" collection="keywords" separator="OR">
+                    resource_name LIKE CONCAT('%', #{w}, '%') OR display_nameLIKE CONCAT('%', #{w}, '%')
+                </foreach>
+                )
+            </if>
+        </where>
+        ORDER BY
+        <choose>
+            <when test="orderBy != null and orderBy != ''">
+                #{orderBy}
+            </when>
+            <otherwise>
+                id DESC
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            LIMIT #{offset}, #{limit}
+        </if>
+        <if test="offset == null and limit != null">
+            LIMIT #{limit}
+        </if>
+        <if test="offset != null and limit == null">
+            LIMIT #{offset}, 18446744073709551615
+        </if>
+    </select>
+
     <select id="findById" parameterType="Long" resultMap="ResourceWithChildrenMap">
-        SELECT id, parent_id, resource_type, resource_name, display_name, description, url, icon, component,
-        show_in_menu, created_at, updated_at
+        SELECT *
         FROM resources
         WHERE id = #{id}
     </select>
@@ -97,26 +138,6 @@
         show_in_menu, created_at, updated_at
         FROM resources
         ORDER BY id ASC
-    </select>
-
-    <select id="search" parameterType="java.util.HashMap" resultMap="ResourceWithChildrenMap">
-        SELECT id, parent_id, resource_type, resource_name, display_name, description, url, icon, component,
-        show_in_menu, created_at, updated_at
-        FROM resources
-        <where>
-            <if test="resourceName != null and resourceName != ''">
-                AND resource_name LIKE CONCAT('%', #{resourceName}, '%')
-            </if>
-            <if test="displayName != null and displayName != ''">
-                AND display_name LIKE CONCAT('%', #{displayName}, '%')
-            </if>
-            <if test="description != null and description != ''">
-                AND description LIKE CONCAT('%', #{description}, '%')
-            </if>
-        </where>
-        <if test="orderBy != null and orderBy != ''">
-            ORDER BY ${orderBy}
-        </if>
     </select>
 
     <select id="findByParentId" parameterType="Long" resultMap="ResourceWithChildrenMap">

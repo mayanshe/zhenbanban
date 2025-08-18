@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 类型 : PermissionQuery
+ * Query : PermissionQuery
  *
  * @author zhangxihai 2025/8/15
  */
