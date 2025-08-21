@@ -18,44 +18,36 @@
  * distribution of this code must also be licensed under the GPL. Failure
  * to comply with the terms of the GPL may result in legal action.
  */
-package com.zhenbanban.core.infrastructure.persistence.mapper;
+package com.zhenbanban.core.application.dto;
 
-import com.zhenbanban.core.infrastructure.persistence.po.PermissionPo;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
+import lombok.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
- * Mybatis Mapper 接口：权限
+ * 类型 : GroupedPermissionDto
  *
- * @author zhangxihai 2025/08/02
+ * @author zhangxihai 2025/8/19
  */
-@Mapper
-public interface PermissionPoMapper extends PaginateMapper<PermissionPo> {
-    Long insert(PermissionPo permissionPo);
+@Getter
+@Setter
+@Builder(toBuilder = true)
+@NoArgsConstructor
+@AllArgsConstructor
+public class GroupedPermissionDto {
+    private String groupId;                                     // 权限组ID
 
-    int update(PermissionPo permissionPo);
+    private String groupName;                                   // 权限组名称
 
-    int removeGroup(Long groupId);
+    private String groupDisplayName;                            // 权限组显示名称
 
-    int delete(Long id);
+    @Builder.Default
+    private boolean collapse = false;
 
-    PermissionPo findById(Long id);
+    @Builder.Default
+    private List<GroupedPermissionDto> children = List.of();   // 子权限组列表
 
-    Long findIdByPermissionName(String roleName);
-
-    Long findByDisplayName(String displayName);
-
-    List<PermissionPo> findAll();
-
-    List<PermissionPo> findPermissionsByRoleId(Long roleId);
-
-    int countByIds(@Param("ids") Set<Long> ids);
-
-    List<PermissionPo> findByGroupId(Long groupId);
+    @Builder.Default
+    private List<PermissionDto> permissions = List.of();       // 权限列表
 
 }

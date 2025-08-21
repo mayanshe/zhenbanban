@@ -18,44 +18,42 @@
  * distribution of this code must also be licensed under the GPL. Failure
  * to comply with the terms of the GPL may result in legal action.
  */
-package com.zhenbanban.core.infrastructure.persistence.mapper;
+package com.zhenbanban.core.application.dto;
 
-import com.zhenbanban.core.infrastructure.persistence.po.PermissionPo;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
- * Mybatis Mapper 接口：权限
+ * Query : 角色
  *
- * @author zhangxihai 2025/08/02
+ * @author zhangxihai 2025/8/18
  */
-@Mapper
-public interface PermissionPoMapper extends PaginateMapper<PermissionPo> {
-    Long insert(PermissionPo permissionPo);
+@Getter
+@Setter
+@SuperBuilder(toBuilder = true)
+@NoArgsConstructor
+@AllArgsConstructor
+public class RoleQuery {
+    @Builder.Default
+    private int page = 1;
 
-    int update(PermissionPo permissionPo);
+    @Builder.Default
+    private int pageSize = 15;
 
-    int removeGroup(Long groupId);
+    private String keywords;   // 关键词
 
-    int delete(Long id);
-
-    PermissionPo findById(Long id);
-
-    Long findIdByPermissionName(String roleName);
-
-    Long findByDisplayName(String displayName);
-
-    List<PermissionPo> findAll();
-
-    List<PermissionPo> findPermissionsByRoleId(Long roleId);
-
-    int countByIds(@Param("ids") Set<Long> ids);
-
-    List<PermissionPo> findByGroupId(Long groupId);
+    public Map<String, Object> toMap() {
+        Map<String, Object> map = new HashMap<>();
+        if (keywords != null && !keywords.isBlank()) {
+            List<String> keywordList = Arrays.asList(keywords.split(" "));
+            map.put("keywords", keywordList);
+        }
+        return map;
+    }
 
 }

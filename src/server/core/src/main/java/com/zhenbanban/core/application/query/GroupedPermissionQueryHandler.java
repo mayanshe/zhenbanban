@@ -18,44 +18,20 @@
  * distribution of this code must also be licensed under the GPL. Failure
  * to comply with the terms of the GPL may result in legal action.
  */
-package com.zhenbanban.core.infrastructure.persistence.mapper;
+package com.zhenbanban.core.application.query;
 
-import com.zhenbanban.core.infrastructure.persistence.po.PermissionPo;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
+import com.zhenbanban.core.application.dto.GroupedPermissionDto;
+import com.zhenbanban.core.application.dto.PermissionDto;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
- * Mybatis Mapper 接口：权限
+ * Query Achieve : 分组权限查询处理器接口
  *
- * @author zhangxihai 2025/08/02
+ * @author zhangxihai 2025/8/19
  */
-@Mapper
-public interface PermissionPoMapper extends PaginateMapper<PermissionPo> {
-    Long insert(PermissionPo permissionPo);
-
-    int update(PermissionPo permissionPo);
-
-    int removeGroup(Long groupId);
-
-    int delete(Long id);
-
-    PermissionPo findById(Long id);
-
-    Long findIdByPermissionName(String roleName);
-
-    Long findByDisplayName(String displayName);
-
-    List<PermissionPo> findAll();
-
-    List<PermissionPo> findPermissionsByRoleId(Long roleId);
-
-    int countByIds(@Param("ids") Set<Long> ids);
-
-    List<PermissionPo> findByGroupId(Long groupId);
+public interface GroupedPermissionQueryHandler {
+    List<GroupedPermissionDto> handle();
 
 }

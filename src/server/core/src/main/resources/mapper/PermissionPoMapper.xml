@@ -119,4 +119,12 @@
         </foreach>
     </select>
 
+    <select id="findByGroupId" parameterType="Long" resultType="PermissionPo">
+        SELECT p.*, g.display_name as group_name FROM
+        permissions AS p
+        LEFT JOIN permission_groups AS g ON g.id = p.group_id
+        WHERE p.group_id = #{groupId}
+        ORDER BY p.id ASC
+    </select>
+
 </mapper>

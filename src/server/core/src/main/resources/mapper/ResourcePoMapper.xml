@@ -67,7 +67,7 @@
             <if test="keywords != null and keywords.size() > 0">
                 AND (
                 <foreach item="w" collection="keywords" separator="OR">
-                    p.permission_name LIKE CONCAT('%', #{w}, '%') OR p.display_name LIKE CONCAT('%', #{w}, '%')
+                    resource_name LIKE CONCAT('%', #{w}, '%') OR display_name LIKE CONCAT('%', #{w}, '%')
                 </foreach>
                 )
             </if>

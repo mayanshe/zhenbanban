@@ -18,44 +18,17 @@
  * distribution of this code must also be licensed under the GPL. Failure
  * to comply with the terms of the GPL may result in legal action.
  */
-package com.zhenbanban.core.infrastructure.persistence.mapper;
+package com.zhenbanban.core.application.query;
 
-import com.zhenbanban.core.infrastructure.persistence.po.PermissionPo;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import com.zhenbanban.core.application.common.ISingleAndListQuery;
+import com.zhenbanban.core.application.dto.RoleDto;
+import com.zhenbanban.core.application.dto.RoleQuery;
 
 /**
- * Mybatis Mapper 接口：权限
+ * Query Interface : 角色
  *
- * @author zhangxihai 2025/08/02
+ * @author zhangxihai 2025/8/18
  */
-@Mapper
-public interface PermissionPoMapper extends PaginateMapper<PermissionPo> {
-    Long insert(PermissionPo permissionPo);
-
-    int update(PermissionPo permissionPo);
-
-    int removeGroup(Long groupId);
-
-    int delete(Long id);
-
-    PermissionPo findById(Long id);
-
-    Long findIdByPermissionName(String roleName);
-
-    Long findByDisplayName(String displayName);
-
-    List<PermissionPo> findAll();
-
-    List<PermissionPo> findPermissionsByRoleId(Long roleId);
-
-    int countByIds(@Param("ids") Set<Long> ids);
-
-    List<PermissionPo> findByGroupId(Long groupId);
+public interface RoleQueryHandler extends ISingleAndListQuery<RoleDto, Long, RoleQuery> {
 
 }

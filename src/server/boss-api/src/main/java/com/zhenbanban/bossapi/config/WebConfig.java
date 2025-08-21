@@ -18,44 +18,33 @@
  * distribution of this code must also be licensed under the GPL. Failure
  * to comply with the terms of the GPL may result in legal action.
  */
-package com.zhenbanban.core.infrastructure.persistence.mapper;
+package com.zhenbanban.bossapi.config;
 
-import com.zhenbanban.core.infrastructure.persistence.po.PermissionPo;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import com.zhenbanban.core.infrastructure.support.annotation.AdminPermitInterceptor;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
- * Mybatis Mapper 接口：权限
+ * 配置 : WebConfig
  *
- * @author zhangxihai 2025/08/02
+ * @author zhangxihai 2025/8/20
  */
-@Mapper
-public interface PermissionPoMapper extends PaginateMapper<PermissionPo> {
-    Long insert(PermissionPo permissionPo);
+@Configuration
+public class WebConfig implements WebMvcConfigurer {
+    private final AdminPermitInterceptor adminPermitInterceptor;
 
-    int update(PermissionPo permissionPo);
+    public WebConfig(AdminPermitInterceptor adminPermitInterceptor) {
+        this.adminPermitInterceptor = adminPermitInterceptor;
+    }
 
-    int removeGroup(Long groupId);
-
-    int delete(Long id);
-
-    PermissionPo findById(Long id);
-
-    Long findIdByPermissionName(String roleName);
-
-    Long findByDisplayName(String displayName);
-
-    List<PermissionPo> findAll();
-
-    List<PermissionPo> findPermissionsByRoleId(Long roleId);
-
-    int countByIds(@Param("ids") Set<Long> ids);
-
-    List<PermissionPo> findByGroupId(Long groupId);
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(adminPermitInterceptor)
+                .addPathPatterns("/**")
+                .excludePathPatterns(
+                        "/access-tokens", "/assets/**"
+                );
+    }
 
 }

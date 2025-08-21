@@ -6,7 +6,7 @@
       <a-row style="margin-bottom: 24px">
         <a-col :span="12">
           <a-space>
-            <a-button  v-if="buttons.includes('permission-group:add')" type="primary" @click="handleOpenSingle('add', '0')">
+            <a-button v-if="buttons.includes('permission-group:add')" type="primary" @click="handleOpenSingle('add', '0')">
               <template #icon>
                 <icon-plus />
               </template>
@@ -23,8 +23,19 @@
       <a-table style="margin-bottom: 16px" :columns="columns" :data="datalist" :bordered="false" :pagination="false" :loading="loading">
         <template #optional="{ record }">
           <a-space>
-            <a-button v-if="buttons.includes('permission-group:modify')" type="text" size="mimi"  @click="handleOpenSingle('modify', record.id)">编辑</a-button>
-            <a-popconfirm content="确定删除此权限组?" @ok="handleDelete(record.id)" v-if="buttons.includes('permission-group:delete') && record.children.length === 0">
+            <a-button
+              v-if="buttons.includes('permission-group:modify')"
+              type="text"
+              size="mimi"
+              @click="handleOpenSingle('modify', record.id)"
+            >
+              编辑
+            </a-button>
+            <a-popconfirm
+              content="确定删除此权限组?"
+              @ok="handleDelete(record.id)"
+              v-if="buttons.includes('permission-group:delete') && record.children.length === 0"
+            >
               <a-button type="text" size="mimi" status="danger">删除</a-button>
             </a-popconfirm>
           </a-space>
@@ -39,13 +50,13 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue'
-import {Message} from "@arco-design/web-vue";
-import { useRoute } from 'vue-router';
+import { Message } from '@arco-design/web-vue'
+import { useRoute } from 'vue-router'
 import { PermissionGroupView, getPermissionGroupList, deletePermissionGroup } from '@/api/permission-group'
 import PermissionGroupSingle from './components/single.vue'
 
-const route = useRoute();
-const buttons = route.meta.buttons || [];
+const route = useRoute()
+const buttons = route.meta.buttons || []
 
 // region 添加及编辑的交互
 const single = ref({
@@ -105,8 +116,8 @@ const columns = [
   },
   {
     title: '操作',
-    slotName: 'optional'
-  }
+    slotName: 'optional',
+  },
 ]
 
 // 删除权限组处理

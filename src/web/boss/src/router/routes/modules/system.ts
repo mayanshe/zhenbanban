@@ -24,10 +24,11 @@ const LIST: AppRouteRecordRaw = {
     {
       path: 'roles',
       name: 'RoleManage',
-      component: () => import('@/views/list/card/index.vue'),
+      component: () => import('@/views/role/index.vue'),
       meta: {
         locale: '角色',
         requiresAuth: false,
+        buttons: ['role:add', 'role:modify', 'role:delete', 'role:assignment'],
       },
     },
     {

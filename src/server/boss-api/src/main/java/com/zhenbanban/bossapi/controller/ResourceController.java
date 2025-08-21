@@ -117,7 +117,7 @@ public class ResourceController {
      * @return 资源信息
      */
     @GetMapping("/{id}")
-    @AdminPermit(permissions = {"resource:add", "resource:modify", "resource:delete"}, message = "您未被授权执行此操作：查询资源")
+    @AdminPermit(permissions = {"resource:add", "resource:modify", "resource:delete", "role:assignment:modify"}, message = "您未被授权执行此操作：查询资源")
     public ResourceDto getResource(@PathVariable("id") Long id) {
         return resourceQueryHandler.handleQuerySingle(id);
     }

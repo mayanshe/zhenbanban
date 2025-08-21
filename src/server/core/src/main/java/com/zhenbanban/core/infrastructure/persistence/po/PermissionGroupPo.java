@@ -61,6 +61,8 @@ public class PermissionGroupPo {
     @Builder.Default
     private List<PermissionGroupPo> children = new ArrayList<>();     // 子权限组列表, 默认空列表
 
+    private List<PermissionPo> permissions = List.of();
+
     public boolean hasChildren() {
         return !children.isEmpty();
     }

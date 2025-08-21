@@ -7,7 +7,7 @@
       <a-alert :show-icon="true" class="remark">{{ dialog.remark }}</a-alert>
       <a-form layout="vertical" :model="formData" :rules="rules" ref="formRef">
         <a-form-item field="groupId" label="权限组 : ">
-          <a-cascader v-model="formData.groupId" :options="groupOptions" placeholder="请选择" />
+          <a-cascader v-model="formData.groupId" :options="groupOptions" placeholder="请选择" allow-clear />
         </a-form-item>
         <a-form-item field="permissionName" label="权限名称 : ">
           <a-input v-model="formData.permissionName" placeholder="字母及-及:" />
@@ -96,7 +96,7 @@ const loadPermissionGroupDataList = async () => {
       } else {
         options.push({
           value: item.id,
-          label: item.displayName
+          label: item.displayName,
         })
       }
     }

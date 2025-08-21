@@ -40,14 +40,16 @@ public interface PermissionGroupConverter {
     @Mappings({
             @Mapping(target = "createdAt", ignore = true),
             @Mapping(target = "updatedAt", ignore = true),
-            @Mapping(target = "children", ignore = true)
+            @Mapping(target = "children", ignore = true),
+            @Mapping(target = "permissions", ignore = true)
     })
     PermissionGroupPo toPo(PermissionGroup permissionGroup);
 
     @Mappings({
             @Mapping(target = "createdAt", ignore = true),
             @Mapping(target = "updatedAt", ignore = true),
-            @Mapping(target = "children", ignore = true)
+            @Mapping(target = "children", ignore = true),
+            @Mapping(target = "permissions", ignore = true)
     })
     PermissionGroupPo updatePo(PermissionGroup permissionGroup, @MappingTarget PermissionGroupPo po);
 

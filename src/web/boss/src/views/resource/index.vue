@@ -28,7 +28,11 @@
             <a-button v-if="buttons.includes('resource:modify')" type="text" size="mimi" @click="handleOpenSingle('modify', record.id)">
               编辑
             </a-button>
-            <a-popconfirm content="确定删除此资源?" @ok="handleDelete(record.id)" v-if="buttons.includes('resource:delete') && record.children.length === 0">
+            <a-popconfirm
+              content="确定删除此资源?"
+              @ok="handleDelete(record.id)"
+              v-if="buttons.includes('resource:delete') && record.children.length === 0"
+            >
               <a-button type="text" size="mimi" status="danger">删除</a-button>
             </a-popconfirm>
           </a-space>

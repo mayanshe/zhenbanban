@@ -12,8 +12,10 @@
         <result property="sort" column="sort"/>
         <result property="createdAt" column="created_at"/>
         <result property="updatedAt" column="updated_at"/>
-        <collection property="children" ofType="PermissionGroupPo" fetchType="lazy"
+        <collection property="children" ofType="PermissionGroupPo"
                     select="findByParentId" column="id"/>
+        <collection property="permissions" ofType="PermissionPo"
+                    select="com.zhenbanban.core.infrastructure.persistence.mapper.PermissionPoMapper.findByGroupId" column="id"/>
     </resultMap>
 
     <insert id="insert" parameterType="PermissionGroupPo" useGeneratedKeys="false">

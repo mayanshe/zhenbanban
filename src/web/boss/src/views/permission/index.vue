@@ -69,22 +69,11 @@
       >
         <template #optional="{ record }">
           <a-space>
-            <a-button
-              v-if="buttons.includes('permission:modify')"
-              type="text"
-              size="mimi"
-              @click="handleOpenSingle('modify', record.id)"
-            >
+            <a-button v-if="buttons.includes('permission:modify')" type="text" size="mimi" @click="handleOpenSingle('modify', record.id)">
               编辑
             </a-button>
-            <a-popconfirm content="确定删除此权限?" @ok="handleDelete(record.id)"  v-if="buttons.includes('permission:delete')">
-              <a-button
-                type="text"
-                size="mimi"
-                status="danger"
-              >
-                删除
-              </a-button>
+            <a-popconfirm content="确定删除此权限?" @ok="handleDelete(record.id)" v-if="buttons.includes('permission:delete')">
+              <a-button type="text" size="mimi" status="danger">删除</a-button>
             </a-popconfirm>
           </a-space>
         </template>
@@ -185,8 +174,8 @@ const columns = [
   },
   {
     title: '操作',
-    slotName: 'optional'
-  }
+    slotName: 'optional',
+  },
 ]
 
 const pager = ref<Pager>({
