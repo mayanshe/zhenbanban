@@ -20,7 +20,7 @@ export interface RoleView extends Role {
   createdAt: string
   updatedAt: string
   permissionIds: string[]
-  resourcesIds: string[]
+  resourceIds: string[]
 }
 
 /**
@@ -69,4 +69,12 @@ export function getRole(id: string) {
  */
 export function getRolePagination(data: RoleSearchModel, page: Pager) {
   return axios.get<Pagination<RoleView>>('/roles', { params: { ...data, ...page } })
+}
+
+/**
+ * 分配资源
+ * @param data
+ */
+export function modifyRoleAssignment(data: Role) {
+  return axios.put(`/roles/${data.id}/assignments`, data)
 }

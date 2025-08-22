@@ -1,5 +1,5 @@
 <template>
-  <a-modal :width="800" v-model:visible="dialog.open" @close="handleClose" unmountOnClose>
+  <a-modal :width="800" v-model:visible="dialog.open" @close="handleClose" @ok="handleModifyAssignment" unmountOnClose>
     <template #title>
       <div class="title">
         配置资源及权限 :&nbsp;&nbsp;&nbsp;&nbsp;
@@ -8,7 +8,7 @@
     </template>
     <div class="box">
       <div class="section">配置资源：</div>
-      <a-checkbox-group style="width: 100%" :default-value="assignment.resourceIds">
+      <a-checkbox-group style="width: 100%" v-model="role.resourceIds">
         <div class="resource">
           <div class="item first" v-for="item in resources" :key="item.id">
             <div class="row">
@@ -30,8 +30,8 @@
               <div class="item second" v-for="second in item.children" :key="item.id">
                 <div class="row">
                   <div class="name" @click="second.collapse = !second.collapse">
-                    <icon-minus v-show="second.children.length > 0 || second.buttons.length > 0" v-if="!second.collapse"/>
-                    <icon-plus v-show="second.children.length > 0 || second.buttons.length > 0"  v-else />
+                    <icon-minus v-show="second.children.length > 0 || second.buttons.length > 0" v-if="!second.collapse" />
+                    <icon-plus v-show="second.children.length > 0 || second.buttons.length > 0" v-else />
                     {{ second.name }}
                     <span style="color: #898989">{{ second.path }}</span>
                   </div>
@@ -47,7 +47,7 @@
                   <div class="item third" v-for="third in second.children" :key="item.id">
                     <div class="row">
                       <div class="name" @click="third.collapse = !third.collapse">
-                        <icon-minus v-show="third.children.length > 0 || third.buttons.length > 0" v-if="!third.collapse"  />
+                        <icon-minus v-show="third.children.length > 0 || third.buttons.length > 0" v-if="!third.collapse" />
                         <icon-plus v-show="third.children.length > 0 || third.buttons.length > 0" />
                         {{ third.name }} {{ second.path }}
                       </div>
@@ -74,12 +74,16 @@
       </a-checkbox-group>
 
       <div class="section" style="margin-top: 12px">配置权限：</div>
-      <a-checkbox-group style="width: 100%" :default-value="assignment.permissionIds">
+      <a-checkbox-group style="width: 100%" v-model="role.permissionIds">
         <div class="resource">
-          <div class="item first" v-for="item in groupedPermissions.filter(record => record.children.length > 0 || record.permissions.length > 0)" :key="item.groupId">
+          <div
+            class="item first"
+            v-for="item in groupedPermissions.filter((record) => record.children.length > 0 || record.permissions.length > 0)"
+            :key="item.groupId"
+          >
             <div class="row">
               <div class="name" @click="item.collapse = !item.collapse">
-                <icon-plus  v-if="!item.collapse" />
+                <icon-plus v-if="!item.collapse" />
                 <icon-minus v-else />
                 {{ item.groupDisplayName }}
               </div>
@@ -91,7 +95,11 @@
                   <span style="color: #676767">{{ fpm.displayName }}</span>
                 </a-checkbox>
               </div>
-              <div class="item second" v-for="first in item.children.filter(record => record.children.length > 0 || record.permissions.length > 0)" :key="first.groupId">
+              <div
+                class="item second"
+                v-for="first in item.children.filter((record) => record.children.length > 0 || record.permissions.length > 0)"
+                :key="first.groupId"
+              >
                 <div class="row">
                   <div class="name" @click="first.collapse = !first.collapse">
                     <icon-minus v-if="!first.collapse" />
@@ -119,7 +127,7 @@
 <script setup lang="ts">
 import { ref, unref, watch } from 'vue'
 import { Message } from '@arco-design/web-vue'
-import { RoleView, getRole } from '@/api/role'
+import { RoleView, getRole, modifyRoleAssignment } from '@/api/role'
 import { ResourceView, ResourceList, getResourceList } from '@/api/resource'
 import { GroupedPermission, getGroupedPermissionList } from '@/api/permission'
 
@@ -154,31 +162,32 @@ watch(
 )
 
 const handleClose = async () => {
+  role.value = generateRole()
   emit('update:open', false)
 }
 
 // region 加载角色
-const role = ref<RoleView>({
-  id: '0',
-  roleName: '',
-  displayName: '',
-  description: '',
-  createdAt: '',
-  updatedAt: '',
-  permissionIds: [] as string[],
-  resourcesIds: [] as string[],
-})
+const generateRole = () => {
+  return {
+    id: '0',
+    roleName: '',
+    displayName: '',
+    description: '',
+    createdAt: '',
+    updatedAt: '',
+    permissionIds: [] as string[],
+    resourceIds: [] as string[],
+  }
+}
+
+const role = ref<RoleView>(generateRole())
 
 const loadRole = async () => {
-  getRole(props.roleId)
-    .then((res: RoleView) => {
-      role.value = res
-      assignment.value.resourceIds = res.resourcesIds
-      assignment.value.permissionIds = res.permissionIds
-    })
-    .catch(() => {
-      handleClose()
-    })
+  role.value = (await getRole(props.roleId)) || generateRole()
+
+  if (role.value.id === '0') {
+    handleClose()
+  }
 }
 // endregion
 
@@ -243,15 +252,13 @@ const loadGroupedPermissions = async () => {
 // endregion
 
 // region 表单提交
-const generateAssignment = () => {
-  return {
-    resourceIds: [] as string[],
-    permissionIds: [] as string[]
-  }
+const handleModifyAssignment = () => {
+  modifyRoleAssignment(unref(role)).then(() => {
+    Message.success('修改资源配置成功')
+    handleClose()
+    emit('on-success')
+  })
 }
-
-const assignment = ref(generateAssignment());
-
 // endregion
 </script>
 

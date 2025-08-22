@@ -17,7 +17,8 @@
       <!-- 底部按钮区域 -->
       <a-layout-footer class="pop-footer">
         <a-space>
-          <a-button type="primary" @click="handleSubmit">提交</a-button>&nbsp;
+          <a-button type="primary" @click="handleSubmit">提交</a-button>
+          &nbsp;
           <a-button @click="handleReset">重置</a-button>
           <a-button @click="handleClose">关闭</a-button>
         </a-space>
@@ -41,9 +42,9 @@ const props = defineProps<{
 // 定义 emits
 const emit = defineEmits<{
   (e: 'update:open', value: boolean): void // 支持 v-model
-  (e: 'on-close'): void;
-  (e: 'on-reset'): void;
-  (e: 'on-submit'): void;
+  (e: 'on-close'): void
+  (e: 'on-reset'): void
+  (e: 'on-submit'): void
 }>()
 
 // 同步 props.open 到本地状态ox
