@@ -10,11 +10,12 @@
         <result property="resourceName" column="resource_name"/>
         <result property="displayName" column="display_name"/>
         <result property="description" column="description"/>
+        <result property="path" column="path"/>
         <result property="url" column="url"/>
         <result property="icon" column="icon"/>
         <result property="component" column="component"/>
         <result property="showInMenu" column="show_in_menu"/>
-        <result property="sort" column="sort" />
+        <result property="sort" column="sort"/>
         <result property="createdAt" column="created_at"/>
         <result property="updatedAt" column="updated_at"/>
         <collection property="children" ofType="ResourcePo"
@@ -22,9 +23,10 @@
     </resultMap>
 
     <insert id="insert" parameterType="ResourcePo" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO resources (id, parent_id, resource_type, resource_name, display_name, description, url, icon,
+        INSERT INTO resources (id, parent_id, resource_type, resource_name, display_name, description, path, url, icon,
         component, show_in_menu, sort, created_at)
-        VALUES (#{id}, #{parentId}, #{resourceType}, #{resourceName}, #{displayName}, #{description}, #{url}, #{icon},
+        VALUES (#{id}, #{parentId}, #{resourceType}, #{resourceName}, #{displayName}, #{description}, #{path}, #{url},
+        #{icon},
         #{component}, #{showInMenu}, #{sort}, #{createdAt})
     </insert>
 
@@ -35,6 +37,7 @@
         resource_name = #{resourceName},
         display_name = #{displayName},
         description = #{description},
+        path = #{path},
         url = #{url},
         icon = #{icon},
         component = #{component},
@@ -61,18 +64,59 @@
             <if test="resourceType != null and resourceType != ''">
                 AND resource_type = #{resourceType}
             </if>
-            <if test="resourceName != null and resourceName != ''">
-                AND resource_name LIKE CONCAT('%', #{resourceName}, '%')
-            </if>
-            <if test="displayName != null and displayName != ''">
-                AND display_name LIKE CONCAT('%', #{displayName}, '%')
+            <if test="keywords != null and keywords.size() > 0">
+                AND (
+                <foreach item="w" collection="keywords" separator="OR">
+                    resource_name LIKE CONCAT('%', #{w}, '%') OR display_name LIKE CONCAT('%', #{w}, '%')
+                </foreach>
+                )
             </if>
         </where>
     </select>
 
+    <select id="search" parameterType="java.util.HashMap" resultMap="ResourceWithChildrenMap">
+        SELECT *
+        FROM resources
+        <where>
+            <if test="id != null">
+                AND id = #{id}
+            </if>
+            <if test="parentId != null">
+                AND parent_id = #{parentId}
+            </if>
+            <if test="resourceType != null and resourceType != ''">
+                AND resource_type = #{resourceType}
+            </if>
+            <if test="keywords != null and keywords.size() > 0">
+                AND (
+                <foreach item="w" collection="keywords" separator="OR">
+                    resource_name LIKE CONCAT('%', #{w}, '%') OR display_nameLIKE CONCAT('%', #{w}, '%')
+                </foreach>
+                )
+            </if>
+        </where>
+        ORDER BY
+        <choose>
+            <when test="orderBy != null and orderBy != ''">
+                #{orderBy}
+            </when>
+            <otherwise>
+                id DESC
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            LIMIT #{offset}, #{limit}
+        </if>
+        <if test="offset == null and limit != null">
+            LIMIT #{limit}
+        </if>
+        <if test="offset != null and limit == null">
+            LIMIT #{offset}, 18446744073709551615
+        </if>
+    </select>
+
     <select id="findById" parameterType="Long" resultMap="ResourceWithChildrenMap">
-        SELECT id, parent_id, resource_type, resource_name, display_name, description, url, icon, component,
-        show_in_menu, created_at, updated_at
+        SELECT *
         FROM resources
         WHERE id = #{id}
     </select>
@@ -96,29 +140,8 @@
         ORDER BY id ASC
     </select>
 
-    <select id="search" parameterType="java.util.HashMap" resultMap="ResourceWithChildrenMap">
-        SELECT id, parent_id, resource_type, resource_name, display_name, description, url, icon, component,
-        show_in_menu, created_at, updated_at
-        FROM resources
-        <where>
-            <if test="resourceName != null and resourceName != ''">
-                AND resource_name LIKE CONCAT('%', #{resourceName}, '%')
-            </if>
-            <if test="displayName != null and displayName != ''">
-                AND display_name LIKE CONCAT('%', #{displayName}, '%')
-            </if>
-            <if test="description != null and description != ''">
-                AND description LIKE CONCAT('%', #{description}, '%')
-            </if>
-        </where>
-        <if test="orderBy != null and orderBy != ''">
-            ORDER BY ${orderBy}
-        </if>
-    </select>
-
     <select id="findByParentId" parameterType="Long" resultMap="ResourceWithChildrenMap">
-        SELECT id, parent_id, resource_type, resource_name, display_name, description, url, icon, component,
-        show_in_menu, created_at, updated_at
+        SELECT *
         FROM resources
         WHERE parent_id = #{parentId}
         ORDER BY id ASC
@@ -127,9 +150,9 @@
     <select id="findResourcesByRoleId" parameterType="Long" resultMap="ResourceWithChildrenMap">
         SELECT * FROM resources
         WHERE id IN (
-            SELECT resource_id
-            FROM role_resources
-            WHERE role_id = #{roleId}
+        SELECT resource_id
+        FROM role_resources
+        WHERE role_id = #{roleId}
         )
     </select>
 
@@ -137,6 +160,31 @@
         SELECT MAX(sort)
         FROM resources
         WHERE parent_id = #{parentId}
+    </select>
+
+    <select id="countByIds" parameterType="java.util.Map" resultType="Integer">
+        SELECT COUNT(id)
+        FROM resources
+        WHERE id IN
+        <foreach item="id" collection="ids" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
+    <select id="findRootByIds" parameterType="java.util.Set" resultMap="ResourceWithChildrenMap">
+        SELECT * FROM resources
+        WHERE id IN (
+        SELECT resource_id
+        FROM role_resources
+        WHERE role_id IN
+        <foreach item="roleId" collection="roleIds" open="(" separator="," close=")">
+            #{roleId}
+        </foreach>
+        ) AND parent_id = 0
+    </select>
+
+    <select id="findRootAll" resultMap="ResourceWithChildrenMap">
+        SELECT * FROM resources WHERE parent_id = 0 ORDER BY sort ASC, created_at DESC
     </select>
 
 </mapper>

@@ -133,6 +133,12 @@ public class Role extends AbsAggregate {
         this.addEvent(event);
     }
 
+    /**
+     * 修改角色的权限和资源分配
+     *
+     * @param permissionIds 角色拥有的权限ID集合
+     * @param resourceIds   角色拥有的资源ID集合
+     */
     public void modifyAssignment(Set<Long> permissionIds, Set<Long> resourceIds) {
         permissionIds = permissionIds == null ? Set.of() : permissionIds;
         resourceIds = resourceIds == null ? Set.of() : resourceIds;

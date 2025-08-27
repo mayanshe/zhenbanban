@@ -23,7 +23,6 @@ package com.zhenbanban.core.application.command.impl;
 import com.zhenbanban.core.application.command.AdminLogoutCmdHandler;
 import com.zhenbanban.core.domain.accountcontext.entity.Admin;
 import com.zhenbanban.core.domain.common.DomainEventPublisher;
-import com.zhenbanban.core.infrastructure.util.PrintUtils;
 import com.zhenbanban.core.shared.contract.IAuth;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -42,16 +41,18 @@ public class AdminLogoutCmdHandlerImpl implements AdminLogoutCmdHandler {
 
     @Override
     public void handle(Long id) {
-        Admin admin = auth.user();
+        try {
+            Admin admin = auth.user();
 
-        if (!admin.getId().equals(id)) {
-            return;
-        }
+            if (!admin.getId().equals(id)) {
+                return;
+            }
 
-        auth.logout();
+            admin.logout(auth.token());
+            auth.logout();
 
-        admin.logout(auth.token());
-        domainEventPublisher.publish(admin.getEvents());
+            domainEventPublisher.publish(admin.getEvents());
+        } catch (Exception ignore) {}
     }
 
 }

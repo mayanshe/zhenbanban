@@ -28,7 +28,6 @@ import com.zhenbanban.core.infrastructure.persistence.mapper.PermissionPoMapper;
 import com.zhenbanban.core.infrastructure.persistence.mapper.RolePermissionPoMapper;
 import com.zhenbanban.core.infrastructure.persistence.po.PermissionPo;
 import com.zhenbanban.core.infrastructure.support.annotation.StoreDomainEventsExecution;
-import com.zhenbanban.core.infrastructure.util.PrintUtils;
 import com.zhenbanban.core.shared.exception.*;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
@@ -39,7 +38,7 @@ import java.util.HashMap;
 /**
  * 领域仓储实现 : 权限
  *
- * @author zhangxihai 2025/7/11
+ * @author zhangxihai 2025/8/03
  */
 @Repository
 public class PermissionRepositoryImpl implements PermissionRepository {

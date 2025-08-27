@@ -26,7 +26,7 @@ import com.zhenbanban.core.application.dto.PermissionAmdCommand;
 /**
  * 命令接口 : 权限
  *
- * @author zhangxihai 2025/7/11
+ * @author zhangxihai 2025/8/03
  */
 public interface PermissionAmdCmdHandler extends IAmdCmdHandler<PermissionAmdCommand, Long> {
 

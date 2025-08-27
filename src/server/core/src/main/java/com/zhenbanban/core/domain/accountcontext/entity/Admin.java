@@ -23,7 +23,6 @@ package com.zhenbanban.core.domain.accountcontext.entity;
 import com.zhenbanban.core.domain.accountcontext.event.*;
 import com.zhenbanban.core.domain.common.AbsAggregate;
 import com.zhenbanban.core.infrastructure.util.BCryptUtils;
-import com.zhenbanban.core.infrastructure.util.PrintUtils;
 import com.zhenbanban.core.infrastructure.util.StrUtils;
 import com.zhenbanban.core.shared.exception.BadRequestException;
 import lombok.*;

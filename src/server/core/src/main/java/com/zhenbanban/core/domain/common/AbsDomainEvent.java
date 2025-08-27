@@ -3,7 +3,6 @@ package com.zhenbanban.core.domain.common;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.zhenbanban.core.infrastructure.util.ApplicationContextHolder;
 import com.zhenbanban.core.infrastructure.util.HttpUtils;
-import com.zhenbanban.core.infrastructure.util.PrintUtils;
 import com.zhenbanban.core.infrastructure.util.StrUtils;
 import com.zhenbanban.core.shared.valueobj.UserClaims;
 import lombok.*;
@@ -76,7 +75,7 @@ public abstract class AbsDomainEvent implements Serializable {
                         .build();
                 this.createdBy = userClaims.toString();
             }
-            PrintUtils.error(this.createdBy);
+
             return;
         }
 

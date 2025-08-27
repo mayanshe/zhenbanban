@@ -49,8 +49,6 @@ public class JwtAuthUtils<TUser> {
 
     private final RedisUtils redisUtils;                    // Redis工具类
 
-    private String token;                                   // 当前请求的Token
-
     private TUser user;                                     // 当前请求的用户信息
 
     /**
@@ -95,17 +93,13 @@ public class JwtAuthUtils<TUser> {
      * @return 当前请求的Token，如果没有则返回null
      */
     public String getToken() {
-        if (token == null || token.isEmpty()) {
-            String requestToken = HttpUtils.getAuthorization();
+        String requestToken = HttpUtils.getAuthorization();
 
-            if (requestToken.isEmpty() || !requestToken.startsWith(setting.getType())) {
-                return null;
-            }
-
-            token = requestToken.replace(setting.getType(), "").trim();
+        if (requestToken.isEmpty() || !requestToken.startsWith(setting.getType())) {
+            return null;
         }
 
-        return token;
+        return requestToken.replace(setting.getType(), "").trim();
     }
 
     /**
@@ -134,7 +128,7 @@ public class JwtAuthUtils<TUser> {
             String cacheKey = CacheKeyGenerator.getAccountTokenKey(scope);
             String cachedToken = redisUtils.hget(cacheKey, String.valueOf(userId)).toString();
             if (cachedToken == null || !cachedToken.equals(token)) {
-                throw new UnauthorizedException();
+                throw new UnauthorizedException("Token已失效或已被销毁，请重新登录");
             }
         } catch (Exception e) {
             throw new UnauthorizedException(message);
@@ -224,7 +218,7 @@ public class JwtAuthUtils<TUser> {
      */
     public void clearToken() {
         String token = getToken();
-        verifyToken(token, "您尚未登陆或登陆已失效");
+        verifyToken(token, "您尚未登陆或登陆已失效。");
         String scope = getScope();
         long userId = getUserId();
 
@@ -255,7 +249,7 @@ public class JwtAuthUtils<TUser> {
      * 验证token
      */
     public void validate() {
-        verifyToken(getToken(), "您尚未登陆或登陆已失效");
+        verifyToken(getToken(), "您尚未登陆或登陆已失效.");
     }
 
     @Async
@@ -268,6 +262,7 @@ public class JwtAuthUtils<TUser> {
 
     public TUser getUser(Class<TUser> clazz) {
         if (this.user == null) {
+            String token = getToken();
             verifyToken(token, "用户凭证已失效，请重新登录1");
 
             String cacheKey = CacheKeyGenerator.getAuthUserKey(getScope(), getUserId());

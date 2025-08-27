@@ -25,10 +25,12 @@ import com.zhenbanban.bossapi.vo.AdminSaveRequest;
 import com.zhenbanban.bossapi.vo.IdResponse;
 import com.zhenbanban.core.application.command.AdminAmdCmdHandler;
 import com.zhenbanban.core.application.command.AdminRolesBindingCmdHandler;
-import com.zhenbanban.core.application.command.impl.AdminRolesBindingCmdHandlerImpl;
 import com.zhenbanban.core.application.dto.AdminAmdCommand;
 import com.zhenbanban.core.application.dto.AdminRolesBindingCommand;
+import com.zhenbanban.core.application.query.AdminMenuQueryHandler;
+import com.zhenbanban.core.domain.accountcontext.entity.Admin;
 import com.zhenbanban.core.infrastructure.support.annotation.AdminPermit;
+import com.zhenbanban.core.shared.contract.IAuth;
 import jakarta.validation.Valid;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.web.bind.annotation.*;
@@ -45,12 +47,20 @@ public class AdminController {
 
     private final AdminRolesBindingCmdHandler adminRolesBindingCmdHandler;
 
+    private final IAuth<Admin> auth;
+
+    private final AdminMenuQueryHandler adminMenuQueryHandler;
+
     public AdminController(
             @Lazy AdminAmdCmdHandler adminAmdCmdHandler,
-            @Lazy AdminRolesBindingCmdHandler adminRolesBindingCmdHandler
+            @Lazy AdminRolesBindingCmdHandler adminRolesBindingCmdHandler,
+            @Lazy IAuth<Admin> auth,
+            @Lazy AdminMenuQueryHandler adminMenuQueryHandler
     ) {
         this.adminAmdCmdHandler = adminAmdCmdHandler;
         this.adminRolesBindingCmdHandler = adminRolesBindingCmdHandler;
+        this.auth = auth;
+        this.adminMenuQueryHandler = adminMenuQueryHandler;
     }
 
     /**
@@ -107,7 +117,7 @@ public class AdminController {
     /**
      * 修改管理员角色
      *
-     * @param id 管理员ID
+     * @param id      管理员ID
      * @param request 管理员角色绑定请求
      */
     @PutMapping("/{id}/roles")

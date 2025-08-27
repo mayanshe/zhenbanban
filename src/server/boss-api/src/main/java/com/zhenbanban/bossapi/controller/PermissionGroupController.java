@@ -24,6 +24,8 @@ import com.zhenbanban.bossapi.vo.IdResponse;
 import com.zhenbanban.bossapi.vo.PermissionGroupSaveRequest;
 import com.zhenbanban.core.application.command.PermissionGroupAmdCmdHandler;
 import com.zhenbanban.core.application.dto.PermissionGroupAmdCommand;
+import com.zhenbanban.core.application.dto.PermissionGroupDto;
+import com.zhenbanban.core.application.query.PermissionGroupQueryHandler;
 import com.zhenbanban.core.infrastructure.support.annotation.AdminPermit;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
@@ -31,19 +33,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * 控制器 : 权限组
  *
- * @author zhangxihai 2025/7/11
+ * @author zhangxihai 2025/8/03
  */
 @RestController
 @RequestMapping("/permission-groups")
 public class PermissionGroupController {
     private final PermissionGroupAmdCmdHandler permissionGroupAmdCmdHandler;
 
+    private final PermissionGroupQueryHandler permissionGroupQueryHandler;
+
     @Autowired
-    public PermissionGroupController(@Lazy PermissionGroupAmdCmdHandler permissionGroupAmdCmdHandler) {
+    public PermissionGroupController(
+            @Lazy PermissionGroupAmdCmdHandler permissionGroupAmdCmdHandler,
+            @Lazy PermissionGroupQueryHandler permissionGroupQueryHandler
+    ) {
         this.permissionGroupAmdCmdHandler = permissionGroupAmdCmdHandler;
+        this.permissionGroupQueryHandler = permissionGroupQueryHandler;
     }
 
     /**
@@ -84,6 +94,24 @@ public class PermissionGroupController {
     @AdminPermit(permissions = {"permission-group:delete"}, message = "您未被授权执行此操作：删除权限组")
     public void destroyPermissionGroup(@PathVariable("id") Long id) {
         permissionGroupAmdCmdHandler.handleDestroy(id);
+    }
+
+    /**
+     * 查询权限组信息
+     *
+     * @param id 权限组ID
+     * @return 权限组视图
+     */
+    @GetMapping("/{id}")
+    @AdminPermit(permissions = {"permission-group:add", "permission-group:modify"}, message = "您未被授权执行此操作：查询权限组信息")
+    public PermissionGroupDto getPermissionGroup(@PathVariable("id") Long id) {
+        return permissionGroupQueryHandler.handleQuerySingle(id);
+    }
+
+    @GetMapping
+    @AdminPermit(permissions = {"permission-group:add", "permission-group:modify", "permission-group:delete"}, message = "您未被授权执行此操作：查询权限组列表")
+    public List<PermissionGroupDto> getPermissionGroups() {
+        return permissionGroupQueryHandler.handleQueryRootList();
     }
 
 }

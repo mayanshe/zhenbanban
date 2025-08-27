@@ -29,7 +29,7 @@ import java.util.Set;
 /**
  * 事件 : 资源分配修改事件(权限及资源)
  *
- * @author zhangxihai 2025/7/11
+ * @author zhangxihai 2025/8/03
  */
 @Getter
 @Setter

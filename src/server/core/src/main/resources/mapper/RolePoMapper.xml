@@ -10,11 +10,11 @@
         <result property="description" column="description"/>
         <result property="createdAt" column="created_at"/>
         <result property="updatedAt" column="updated_at"/>
-        <collection fetchType="lazy" property="permissions" column="id"
+        <collection property="permissions" column="id"
                     ofType="java.util.Set"
                     select="com.zhenbanban.core.infrastructure.persistence.mapper.PermissionPoMapper.findPermissionsByRoleId"/>
-        <collection fetchType="lazy" property="resources" column="id"
-                    ofType="jva.util.Set"
+        <collection  property="resources" column="id"
+                    ofType="java.util.Set"
                     select="com.zhenbanban.core.infrastructure.persistence.mapper.ResourcePoMapper.findResourcesByRoleId"/>
     </resultMap>
 
@@ -56,21 +56,54 @@
         SELECT * FROM roles ORDER BY id ASC
     </select>
 
+    <select id="count" parameterType="java.util.HashMap" resultType="Integer">
+        SELECT COUNT(id)
+        FROM roles
+        <where>
+            <if test="id != null">
+                AND id = #{id}
+            </if>
+            <if test="keywords != null and keywords.size() > 0">
+                AND (
+                <foreach item="w" collection="keywords" separator="OR">
+                    role_name LIKE CONCAT('%', #{w}, '%') OR display_name LIKE CONCAT('%', #{w}, '%')
+                </foreach>
+                )
+            </if>
+        </where>
+    </select>
+
     <select id="search" parameterType="java.util.Map" resultMap="RoleWithAssignmentMap">
         SELECT * FROM roles
         <where>
-            <if test="roleName != null and roleName != ''">
-                AND role_name LIKE CONCAT('%', #{roleName}, '%')
+            <if test="id != null">
+                AND id = #{id}
             </if>
-            <if test="displayName != null and displayName != ''">
-                AND display_name LIKE CONCAT('%', #{displayName}, '%')
-            </if>
-            <if test="description != null and description != ''">
-                AND description LIKE CONCAT('%', #{description}, '%')
+            <if test="keywords != null and keywords.size() > 0">
+                AND (
+                <foreach item="w" collection="keywords" separator="OR">
+                    role_name LIKE CONCAT('%', #{w}, '%') OR display_name LIKE CONCAT('%', #{w}, '%')
+                </foreach>
+                )
             </if>
         </where>
-        <if test="orderBy != null and orderBy != ''">
-            ORDER BY ${orderBy}
+        ORDER BY
+        <choose>
+            <when test="orderBy != null and orderBy != ''">
+                #{orderBy}
+            </when>
+            <otherwise>
+                id DESC
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            LIMIT #{offset}, #{limit}
+        </if>
+        <if test="offset == null and limit != null">
+            LIMIT #{limit}
+        </if>
+        <if test="offset != null and limit == null">
+            LIMIT #{offset}, 18446744073709551615
         </if>
     </select>
 

@@ -24,8 +24,6 @@ import com.zhenbanban.core.infrastructure.persistence.po.RolePo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
@@ -35,7 +33,7 @@ import java.util.Set;
  * @author zhangxihai 2025/08/01
  */
 @Mapper
-public interface RolePoMapper {
+public interface RolePoMapper extends PaginateMapper<RolePo> {
     Long insert(RolePo rolePo);
 
     int update(RolePo rolePo);
@@ -51,8 +49,6 @@ public interface RolePoMapper {
     Long findByDisplayName(String displayName);
 
     List<RolePo> findAll();
-
-    List<RolePo> search(HashMap<String, Object> params);
 
     int countByIds(@Param("ids") Set<Long> ids);
 

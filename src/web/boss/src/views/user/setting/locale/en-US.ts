@@ -1,7 +1,7 @@
 export default {
   'menu.user.setting': 'User Setting',
   'userSetting.menu.title.info': 'Personal Information',
-  'userSetting.menu.title.account': 'Account Setting',
+  'userSetting.menu.title.account': 'User Setting',
   'userSetting.menu.title.password': 'Password',
   'userSetting.menu.title.message': 'Message Notification',
   'userSetting.menu.title.result': 'Result',
@@ -20,7 +20,7 @@ export default {
   // new
   'userSetting.label.certification': 'Certification',
   'userSetting.label.phone': 'Phone',
-  'userSetting.label.accountId': 'Account Id',
+  'userSetting.label.accountId': 'User Id',
   'userSetting.label.registrationDate': 'Registration Date',
   'userSetting.tab.basicInformation': 'Basic Information',
   'userSetting.tab.securitySettings': 'Security Settings',
@@ -57,7 +57,7 @@ export default {
   'userSetting.SecuritySettings.button.update': 'Update',
   'userSetting.certification.title.enterprise': 'Enterprise Real Name Authentication',
   'userSetting.certification.extra.enterprise': 'Modifying an Authentication Body',
-  'userSetting.certification.label.accountType': 'Account Type',
+  'userSetting.certification.label.accountType': 'User Type',
   'userSetting.certification.label.status': 'status',
   'userSetting.certification.label.time': 'time',
   'userSetting.certification.label.legalPerson': 'Legal Person Name',

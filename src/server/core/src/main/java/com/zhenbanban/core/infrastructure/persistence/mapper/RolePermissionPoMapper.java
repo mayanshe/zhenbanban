@@ -23,18 +23,15 @@ package com.zhenbanban.core.infrastructure.persistence.mapper;
 import com.zhenbanban.core.infrastructure.persistence.po.RolePermissionPo;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Mybatis Mapper 接口 : 角色权限关联关系
  *
- * @author zhangxihai 2025/7/11
+ * @author zhangxihai 2025/8/03
  */
 public interface RolePermissionPoMapper {
-    Long insert(RolePermissionPo rolePermissionPo);
-
-    int batchInsert(List<RolePermissionPo> rolePermissionPos);
-
-    int batchDelete(List<RolePermissionPo> rolePermissionPos);
+    int insert(Map<String, Object> params);
 
     int deleteByRoleId(Long roleId);
 

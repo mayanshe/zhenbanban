@@ -41,7 +41,7 @@ import java.util.List;
 /**
  * 领域仓储实现 : 权限分组
  *
- * @author zhangxihai 2025/7/11
+ * @author zhangxihai 2025/8/03
  */
 @Repository
 public class PermissionGroupRepositoryImpl implements PermissionGroupRepository {

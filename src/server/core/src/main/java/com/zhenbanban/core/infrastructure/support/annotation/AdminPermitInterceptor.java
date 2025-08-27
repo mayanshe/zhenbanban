@@ -58,13 +58,15 @@ public class AdminPermitInterceptor implements HandlerInterceptor {
         }
 
         Admin admin = auth.user();
+
         if (admin == null) {
             throw new UnauthorizedException();
         }
 
         // 检查角色
         List<String> permitRoles = Arrays.asList(annotation.roles());
-        permitRoles.add("administrator");
+        permitRoles = permitRoles.isEmpty() ? List.of("administrator") : permitRoles;
+
         Set<String> roleNames = admin.getRoleNames() == null ? new HashSet<>() : new HashSet<>(admin.getRoleNames());
         for (String role : permitRoles) {
             if (roleNames.contains(role)) {

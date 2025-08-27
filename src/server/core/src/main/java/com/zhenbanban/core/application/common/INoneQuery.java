@@ -18,12 +18,13 @@
  * distribution of this code must also be licensed under the GPL. Failure
  * to comply with the terms of the GPL may result in legal action.
  */
-package com.zhenbanban.core.application.query;
+package com.zhenbanban.core.application.common;
 
 /**
- * 类型 : ExampleQuery
+ * 领域层通用接口 : 无参数Query
  *
- * @author zhangxihai 2025/7/18
+ * @author zhangxihai 2025/8/11
  */
-public class ExampleQuery {
+public interface INoneQuery<T> {
+    T handle();
 }

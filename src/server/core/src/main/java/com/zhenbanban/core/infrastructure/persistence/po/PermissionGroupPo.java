@@ -29,7 +29,7 @@ import java.util.List;
 /**
  * 类型 : PermissionGroupPo
  *
- * @author zhangxihai 2025/7/11
+ * @author zhangxihai 2025/8/03
  */
 @Getter
 @Setter
@@ -50,6 +50,9 @@ public class PermissionGroupPo {
     private String description = "";                                  // 权限组描述
 
     @Builder.Default
+    private int sort = 0;                                             // 排序，倒叙
+
+    @Builder.Default
     private long createdAt = 0L;                                      // 创建时间戳, 默认0表示未设置
 
     @Builder.Default
@@ -57,6 +60,8 @@ public class PermissionGroupPo {
 
     @Builder.Default
     private List<PermissionGroupPo> children = new ArrayList<>();     // 子权限组列表, 默认空列表
+
+    private List<PermissionPo> permissions = List.of();
 
     public boolean hasChildren() {
         return !children.isEmpty();

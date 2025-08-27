@@ -11,28 +11,6 @@
     </div>
     <ul class="right-side">
       <li>
-        <a-tooltip :content="$t('settings.search')">
-          <a-button class="nav-btn" type="outline" :shape="'circle'">
-            <template #icon>
-              <icon-search />
-            </template>
-          </a-button>
-        </a-tooltip>
-      </li>
-      <li>
-        <a-dropdown trigger="click" @select="changeLocale as any">
-          <div ref="triggerBtn" class="trigger-btn"></div>
-          <template #content>
-            <a-doption v-for="item in locales" :key="item.value" :value="item.value">
-              <template #icon>
-                <icon-check v-show="item.value === currentLocale" />
-              </template>
-              {{ item.label }}
-            </a-doption>
-          </template>
-        </a-dropdown>
-      </li>
-      <li>
         <a-tooltip :content="theme === 'light' ? $t('settings.navbar.theme.toDark') : $t('settings.navbar.theme.toLight')">
           <a-button class="nav-btn" type="outline" :shape="'circle'" @click="handleToggleTheme">
             <template #icon>
@@ -86,69 +64,19 @@
       <li>
         <a-dropdown trigger="click">
           <a-avatar :size="32" :style="{ marginRight: '8px' }">
-            <img alt="avatar" :src="avatar" />
+            <img alt="avatar" :src="avatar == '' ? avatar : 'src/assets/images/avatar.jpeg'" />
           </a-avatar>
           <template #content>
             <a-doption>
-              <a-space @click="switchGit">
-                <icon-github />
-                <span>开源地址</span>
-              </a-space>
-            </a-doption>
-            <a-doption>
-              <a-space @click="switchRoles">
-                <icon-tag />
-                <span>
-                  {{ $t('messageBox.switchRoles') }}
-                </span>
-              </a-space>
-            </a-doption>
-            <a-doption>
-              <a-space @click="$router.push({ name: 'info' })">
-                <icon-user />
-                <span>
-                  {{ $t('messageBox.userCenter') }}
-                </span>
-              </a-space>
-            </a-doption>
-            <a-doption>
-              <a-space @click="$router.push({ name: 'setting' })">
-                <icon-settings />
-                <span>
-                  {{ $t('messageBox.userSettings') }}
-                </span>
-              </a-space>
-            </a-doption>
-            <a-doption>
-              <a-space @click="open('/shop-vite')">
-                <icon-tag />
-                <span>shop vite</span>
-              </a-space>
-            </a-doption>
-            <a-doption>
-              <a-space @click="open('/admin-plus')">
-                <icon-tag />
-                <span>admin plus</span>
-              </a-space>
-            </a-doption>
-            <a-doption>
               <a-space @click="open('/admin-pro')">
                 <icon-tag />
-                <span>admin pro</span>
-              </a-space>
-            </a-doption>
-            <a-doption>
-              <a-space @click="open('/vue-admin-better')">
-                <icon-tag />
-                <span>admin better</span>
+                <span>个人资料</span>
               </a-space>
             </a-doption>
             <a-doption>
               <a-space @click="handleLogout">
                 <icon-export />
-                <span>
-                  {{ $t('messageBox.logout') }}
-                </span>
+                <span>退出登陆</span>
               </a-space>
             </a-doption>
           </template>

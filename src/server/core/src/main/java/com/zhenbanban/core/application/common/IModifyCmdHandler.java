@@ -23,7 +23,7 @@ package com.zhenbanban.core.application.common;
 /**
  * Command Base Interface : 修改
  *
- * @author zhangxihai 2025/7/11
+ * @author zhangxihai 2025/8/03
  */
 public interface IModifyCmdHandler<Cmd extends BaseCommand<Key>, Key> {
     void handle(Cmd cmd);
