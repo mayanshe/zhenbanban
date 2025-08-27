@@ -27,7 +27,7 @@ import lombok.experimental.SuperBuilder;
 /**
  * Command : 资源
  *
- * @author zhangxihai 2025/7/11
+ * @author zhangxihai 2025/8/03
  */
 @Getter
 @Setter
@@ -35,8 +35,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ResourceAmdCommand extends BaseCommand<Long> {
-    @Builder.Default
-    private Long parentId = 0L;           // 父资源ID
+    private Long parentId;                 // 父资源ID
 
     private String resourceType;           // 资源类型
 
@@ -44,22 +43,19 @@ public class ResourceAmdCommand extends BaseCommand<Long> {
 
     private String displayName;            // 资源显示名称
 
-    @Builder.Default
-    private String description = "";       // 资源描述
+    private String description;            // 资源描述
 
-    @Builder.Default
-    private String url = "";               // 资源URL
+    private String path;                   // 资源路径
 
-    @Builder.Default
-    private String icon = "";              // 资源图标
+    private String url;                    // 资源URL
 
-    @Builder.Default
-    private String component = "";         // 资源组件路径\
+    private String icon;                   // 资源图标
 
-    @Builder.Default
-    private boolean showInMenu = false;    // 是否在菜单中显示，默认不显示
+    private String component;               // 资源组件路径
 
-    @Builder.Default
-    private int sort = 0;                  // 资源排序，默认0表示不排序
+
+    private boolean showInMenu;             // 是否在菜单中显示，默认不显示
+
+    private int sort;                       // 资源排序，默认0表示不排序
 
 }

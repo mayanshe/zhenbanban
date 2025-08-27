@@ -47,7 +47,9 @@ public final class PrintUtils {
                 try {
                     String json = objectMapper.writeValueAsString(arg);
                     message = message.replaceFirst("\\{\\}", json);
-                } catch (Exception ignore) {}
+                } catch (Exception e) {
+                    System.out.printf("\u001B[31m%s\u001B[0m %n",  e.getMessage());
+                }
             }
         }
 
@@ -62,7 +64,9 @@ public final class PrintUtils {
                 try {
                     String json = objectMapper.writeValueAsString(arg);
                     message = message.replaceFirst("\\{\\}", json);
-                } catch (Exception ignore) {}
+                } catch (Exception e) {
+                    System.out.printf("\u001B[31m%s\u001B[0m %n",  e.getMessage());
+                }
             }
         }
 

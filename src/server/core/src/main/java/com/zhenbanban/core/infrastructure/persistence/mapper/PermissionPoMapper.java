@@ -22,9 +22,12 @@ package com.zhenbanban.core.infrastructure.persistence.mapper;
 
 import com.zhenbanban.core.infrastructure.persistence.po.PermissionPo;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Mybatis Mapper 接口：权限
@@ -32,7 +35,7 @@ import java.util.List;
  * @author zhangxihai 2025/08/02
  */
 @Mapper
-public interface PermissionPoMapper {
+public interface PermissionPoMapper extends PaginateMapper<PermissionPo> {
     Long insert(PermissionPo permissionPo);
 
     int update(PermissionPo permissionPo);
@@ -49,8 +52,10 @@ public interface PermissionPoMapper {
 
     List<PermissionPo> findAll();
 
-    List<PermissionPo> search(HashMap<String, Object> params);
-
     List<PermissionPo> findPermissionsByRoleId(Long roleId);
+
+    int countByIds(@Param("ids") Set<Long> ids);
+
+    List<PermissionPo> findByGroupId(Long groupId);
 
 }

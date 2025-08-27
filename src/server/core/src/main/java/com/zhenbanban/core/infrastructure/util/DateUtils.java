@@ -53,4 +53,35 @@ public final class DateUtils {
         return roundedDateTime.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
     }
 
+    /**
+     * 将时间戳转换为格式化的日期字符串
+     *
+     * @param timestamp 时间戳（秒）
+     * @return 格式化后的日期字符串（yyyy-MM-dd HH:mm:ss）
+     */
+    public static String timestampToFormattedDate(long timestamp) {
+        timestamp = timestamp <= 99_999_999_999L ? timestamp : timestamp / 1000;
+
+        if (timestamp <= 0) {
+            return "";
+        }
+
+        LocalDateTime dateTime = LocalDateTime.ofEpochSecond(timestamp, 0, java.time.ZoneOffset.UTC);
+        return dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+    }
+
+    /**
+     * 将时间戳字符串转换为格式化的日期字符串
+     *
+     * @param timestamp 时间戳字符串（秒）
+     * @return 格式化后的日期字符串（yyyy-MM-dd HH:mm:ss）
+     */
+    public static String timestampToFormattedDate(String timestamp) {
+        try {
+            long ts = Long.parseLong(timestamp);
+            return timestampToFormattedDate(ts);
+        } catch (NumberFormatException e) {
+            return "";
+        }
+    }
 }

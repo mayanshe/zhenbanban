@@ -27,8 +27,7 @@ import com.zhenbanban.core.domain.accountcontext.repository.AdminRepository;
 import com.zhenbanban.core.domain.accountcontext.service.AccountLoginAttemptServ;
 import com.zhenbanban.core.domain.common.DomainEventPublisher;
 import com.zhenbanban.core.infrastructure.util.JwtAuthUtils;
-import com.zhenbanban.core.infrastructure.util.PrintUtils;
-import com.zhenbanban.core.shared.exception.UnauthorizedException;
+import com.zhenbanban.core.shared.exception.BadRequestException;
 import com.zhenbanban.core.shared.valueobj.Token;
 import com.zhenbanban.core.shared.valueobj.UserClaims;
 import org.springframework.context.annotation.Lazy;
@@ -83,7 +82,7 @@ public class AdminLoginCmdHandlerImpl implements AdminLoginCmdHandler {
                     command.getAccount(),
                     command.getClientIp()
             );
-            throw new UnauthorizedException();
+            throw new BadRequestException("账号或密码错误");
         }
 
         // 检查账号是否被删除或密码是否正确
@@ -93,6 +92,7 @@ public class AdminLoginCmdHandlerImpl implements AdminLoginCmdHandler {
                     command.getAccount(),
                     command.getClientIp()
             );
+            throw new BadRequestException("账号或密码错误");
         }
 
         // 生成token

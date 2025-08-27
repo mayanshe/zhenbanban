@@ -34,7 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * 命令实现 : 权限组
  *
- * @author zhangxihai 2025/7/11
+ * @author zhangxihai 2025/8/03
  */
 @Service
 @RequiredArgsConstructor

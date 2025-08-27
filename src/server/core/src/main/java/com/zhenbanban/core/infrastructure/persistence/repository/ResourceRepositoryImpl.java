@@ -27,7 +27,6 @@ import com.zhenbanban.core.infrastructure.persistence.mapper.ResourcePoMapper;
 import com.zhenbanban.core.infrastructure.persistence.mapper.RoleResourcePoMapper;
 import com.zhenbanban.core.infrastructure.persistence.po.ResourcePo;
 import com.zhenbanban.core.infrastructure.support.annotation.StoreDomainEventsExecution;
-import com.zhenbanban.core.infrastructure.util.PrintUtils;
 import com.zhenbanban.core.shared.exception.ResourceNotFoundException;
 import com.zhenbanban.core.shared.exception.ServiceUnavailableException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +39,7 @@ import java.util.HashMap;
 /**
  * Domain Repository Achieve : 资源
  *
- * @author zhangxihai 2025/7/11
+ * @author zhangxihai 2025/8/03
  */
 @Repository
 public class ResourceRepositoryImpl implements ResourceRepository {

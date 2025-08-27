@@ -43,7 +43,7 @@ public class AccountLoginAttemptServImpl implements AccountLoginAttemptServ {
 
     @Override
     public void checkLoginAttempts(String scope, String account, int accountLimit, String clientIp, int clientIpLimit) {
-        String accountKey = CacheKeyGenerator.getAccountFailedAttempLimitKey(scope, account);
+        String accountKey = CacheKeyGenerator.getAccountFailedAttemptLimitKey(scope, account);
         String clientIpKey = CacheKeyGenerator.getIpFailedAttempLimitKey(scope, clientIp);
 
         int accountAttempts = redisUtils.get(accountKey, Integer.class, 0);
@@ -56,7 +56,7 @@ public class AccountLoginAttemptServImpl implements AccountLoginAttemptServ {
 
     @Override
     public void recordFailedAttempt(String scope, String account, String clienIp) {
-        String accountKey = CacheKeyGenerator.getAccountFailedAttempLimitKey(scope, account);
+        String accountKey = CacheKeyGenerator.getAccountFailedAttemptLimitKey(scope, account);
         if (redisUtils.hasKey(accountKey)) {
             redisUtils.incr(accountKey, 1);
         } else {
@@ -73,7 +73,7 @@ public class AccountLoginAttemptServImpl implements AccountLoginAttemptServ {
 
     @Override
     public void clearFailedAttempts(String scope, String account, String clientIp) {
-        String accountKey = CacheKeyGenerator.getAccountFailedAttempLimitKey(scope, account);
+        String accountKey = CacheKeyGenerator.getAccountFailedAttemptLimitKey(scope, account);
         if (redisUtils.hasKey(accountKey)) {
             redisUtils.del(accountKey);
         }
@@ -83,4 +83,5 @@ public class AccountLoginAttemptServImpl implements AccountLoginAttemptServ {
             redisUtils.del(clientIpKey);
         }
     }
+
 }

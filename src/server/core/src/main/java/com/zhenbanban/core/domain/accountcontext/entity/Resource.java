@@ -25,7 +25,6 @@ import com.zhenbanban.core.domain.accountcontext.event.ResourceDestroyedEvent;
 import com.zhenbanban.core.domain.accountcontext.event.ResourceModifiedEvent;
 import com.zhenbanban.core.domain.accountcontext.valueobj.ResourceType;
 import com.zhenbanban.core.domain.common.AbsAggregate;
-import com.zhenbanban.core.infrastructure.util.PrintUtils;
 import lombok.*;
 
 import java.util.List;
@@ -33,7 +32,7 @@ import java.util.List;
 /**
  * Aggregate : 资源
  *
- * @author zhangxihai 2025/7/11
+ * @author zhangxihai 2025/8/03
  */
 @Data
 @Builder(toBuilder = true)
@@ -53,6 +52,9 @@ public class Resource extends AbsAggregate {
 
     @Builder.Default
     private String description = "";                    // 资源描述
+
+    @Builder.Default
+    private String path = "";                          // 资源路径（用于路由）
 
     @Builder.Default
     private String url = "";                           // 资源URL
@@ -80,6 +82,7 @@ public class Resource extends AbsAggregate {
      */
     public void add() {
         this.setDeleted(false);
+        this.verify();
 
         ResourceAddedEvent event = ResourceAddedEvent.builder()
                 .refId(this.getId())
@@ -102,6 +105,7 @@ public class Resource extends AbsAggregate {
      */
     public void modify() {
         this.setDeleted(false);
+        this.verify();
 
         ResourceModifiedEvent event = ResourceModifiedEvent.builder()
                 .refId(this.getId())
@@ -123,7 +127,6 @@ public class Resource extends AbsAggregate {
      * 删除资源
      */
     public void destroy() {
-        PrintUtils.toConsole(this.childIds);
         if (this.childIds != null && !this.childIds.isEmpty()) {
             throw new IllegalStateException("无法删除资源，存在子资源，请先删除子资源");
         }
@@ -145,5 +148,54 @@ public class Resource extends AbsAggregate {
 
         this.addEvent(event);
     }
+
+    /**
+     * 验证资源的完整性和一致性
+     */
+    private void verify() {
+        if (this.getResourceType().equals(ResourceType.MENU)) {
+            if (this.getPath() == null || this.getPath().isEmpty()) {
+                throw new IllegalArgumentException("菜单资源必须指定路径");
+            }
+
+            this.setUrl("");
+
+            return;
+        }
+
+        if (this.getResourceType().equals(ResourceType.COMPONENT)) {
+            if (this.getPath() == null || this.getPath().isEmpty()) {
+                throw new IllegalArgumentException("菜单资源必须指定路径");
+            }
+
+            if (this.getComponent() == null || this.getComponent().isEmpty()) {
+                throw new IllegalArgumentException("组件资源必须指定组件路径");
+            }
+
+            this.setUrl("");
+
+            return;
+        }
+
+        if (this.getResourceType().equals(ResourceType.LINK)) {
+            if (this.getUrl() == null || this.getUrl().isEmpty()) {
+                throw new IllegalArgumentException("链接资源必须指定URL");
+            }
+            this.setPath("");
+            this.setComponent("");
+
+            return;
+        }
+
+        if (this.getResourceType().equals(ResourceType.BUTTON)) {
+            this.setPath("");
+            this.setComponent("");
+            this.setUrl("");
+            this.setShowInMenu(false);
+
+            return;
+        }
+    }
+
 
 }

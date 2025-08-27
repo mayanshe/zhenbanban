@@ -23,12 +23,9 @@ package com.zhenbanban.core.infrastructure.persistence.repository;
 import com.zhenbanban.core.domain.accountcontext.entity.Role;
 import com.zhenbanban.core.domain.accountcontext.repository.RoleRepository;
 import com.zhenbanban.core.infrastructure.persistence.converter.RoleConverter;
-import com.zhenbanban.core.infrastructure.persistence.mapper.RolePermissionPoMapper;
-import com.zhenbanban.core.infrastructure.persistence.mapper.RolePoMapper;
-import com.zhenbanban.core.infrastructure.persistence.mapper.RoleResourcePoMapper;
+import com.zhenbanban.core.infrastructure.persistence.mapper.*;
 import com.zhenbanban.core.infrastructure.persistence.po.*;
 import com.zhenbanban.core.infrastructure.support.annotation.StoreDomainEventsExecution;
-import com.zhenbanban.core.infrastructure.util.PrintUtils;
 import com.zhenbanban.core.shared.exception.InternalServerException;
 import com.zhenbanban.core.shared.exception.RequestConflictException;
 import com.zhenbanban.core.shared.exception.ResourceNotFoundException;
@@ -39,6 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -55,15 +53,23 @@ public class RoleRepositoryImpl implements RoleRepository {
 
     private final RoleResourcePoMapper roleResourcePoMapper;
 
+    private final PermissionPoMapper permissionPoMapper;
+
+    private final ResourcePoMapper resourcePoMapper;
+
     @Autowired
     public RoleRepositoryImpl(
             @Lazy RolePoMapper roleMapper,
             @Lazy RolePermissionPoMapper rolePermissionMapper,
-            @Lazy RoleResourcePoMapper roleResourcePoMapper
+            @Lazy RoleResourcePoMapper roleResourcePoMapper,
+            @Lazy PermissionPoMapper permissionPoMapper,
+            @Lazy ResourcePoMapper resourcePoMapper
     ) {
         this.roleMapper = roleMapper;
         this.rolePermissionMapper = rolePermissionMapper;
         this.roleResourcePoMapper = roleResourcePoMapper;
+        this.permissionPoMapper = permissionPoMapper;
+        this.resourcePoMapper = resourcePoMapper;
     }
 
     @Override
@@ -102,9 +108,7 @@ public class RoleRepositoryImpl implements RoleRepository {
             return po.getId();
         }
 
-
         // 更新
-        saveAssignment(aggregate, po);
         if (roleMapper.update(po) <= 0) {
             throw new InternalServerException("角色更新失败");
         }
@@ -112,160 +116,41 @@ public class RoleRepositoryImpl implements RoleRepository {
         return po.getId();
     }
 
-    /**
-     * 保存角色与权限、资源的关联
-     *
-     * @param aggregate 角色聚合根
-     * @param po        角色持久化对象
-     */
-    private void saveAssignment(Role aggregate, RolePo po) {
-        Long roleId = po.getId();
-        List<PermissionPo> permissions = po.getPermissions();
-        List<ResourcePo> resources = po.getResources();
 
-        Set<Long> oldPermissionIds = permissions == null ? Set.of() :
-                permissions.stream().map(PermissionPo::getId).collect(Collectors.toSet());
-        Set<Long> oldResourceIds = resources == null ? Set.of() :
-                resources.stream().map(ResourcePo::getId).collect(Collectors.toSet());
+    @Override
+    @StoreDomainEventsExecution
+    @Transactional
+    public void modifyAssignment(Role aggregate) {
+        Long roleId = aggregate.getId();
+        Set<Long> permissionIds = aggregate.getPermissionIds();
+        Set<Long> resourceIds = aggregate.getResourceIds();
 
-        List<RolePermissionPo> insetRolePermissionPos = List.of();
-        List<RolePermissionPo> deleteRolePermissionPos = List.of();
-        List<RoleResourcePo> insertRoleResourcePos = List.of();
-        List<RoleResourcePo> deleteRoleResourcePos = List.of();
-
-        geTRolePermissionChange(
-                roleId,
-                oldPermissionIds,
-                aggregate.getPermissionIds(),
-                insetRolePermissionPos,
-                deleteRolePermissionPos
-        );
-
-        getRoleResourceChange(
-                roleId,
-                oldResourceIds,
-                aggregate.getResourceIds(),
-                insertRoleResourcePos,
-                deleteRoleResourcePos
-        );
-
-        // 添加权限绑定
-        if (!insertRoleResourcePos.isEmpty()) {
-            if (rolePermissionMapper.batchInsert(insetRolePermissionPos) <= 0) {
-                throw new InternalServerException("角色权限/菜单修改失败");
+        // 修改权限
+        rolePermissionMapper.deleteByRoleId(aggregate.getId());
+        if (permissionIds != null && !permissionIds.isEmpty()) {
+            if (permissionPoMapper.countByIds(permissionIds) != permissionIds.size()) {
+                throw new InternalServerException("部分权限不存在");
             }
+
+            Map<String, Object> permissionParams = Map.of(
+                    "roleId", roleId,
+                    "permissionIds", permissionIds
+            );
+            rolePermissionMapper.insert(permissionParams);
         }
 
-        // 删除权限绑定
-        if (!deleteRolePermissionPos.isEmpty()) {
-            if (rolePermissionMapper.batchDelete(deleteRolePermissionPos) <= 0) {
-                throw new InternalServerException("角色权限/菜单修改失败");
+        // 修改资源
+        roleResourcePoMapper.deleteByRoleId(roleId);
+        if (resourceIds != null && !resourceIds.isEmpty()) {
+            if (resourcePoMapper.countByIds(resourceIds) != resourceIds.size()) {
+                throw new InternalServerException("部分资源不存在");
             }
-        }
 
-        // 添加资源绑定
-        if (!insertRoleResourcePos.isEmpty()) {
-            if (roleResourcePoMapper.batchInsert(insertRoleResourcePos) <= 0) {
-                throw new InternalServerException("角色权限/菜单修改失败");
-            }
-        }
-
-        // 删除资源绑定
-        if (!deleteRoleResourcePos.isEmpty()) {
-            if (roleResourcePoMapper.batchDelete(deleteRoleResourcePos) <= 0) {
-                throw new InternalServerException("角色资源修改失败");
-            }
-        }
-    }
-
-    /**
-     * 获取角色权限变更
-     *
-     * @param roleId
-     * @param oldPermissionIds
-     * @param newPermissionIds
-     * @param insetRolePermissionPos
-     * @param deleteRolePermissionPos
-     */
-    private void geTRolePermissionChange(
-            Long roleId,
-            Set<Long> oldPermissionIds,
-            Set<Long> newPermissionIds,
-            List<RolePermissionPo> insetRolePermissionPos,
-            List<RolePermissionPo> deleteRolePermissionPos
-
-    ) {
-        Set<Long> deletePermissionIds = new HashSet<>(oldPermissionIds);
-        Set<Long> insertPermissionIds = new HashSet<>(newPermissionIds);
-        deletePermissionIds.removeAll(newPermissionIds);
-        insertPermissionIds.removeAll(oldPermissionIds);
-
-        if (!deletePermissionIds.isEmpty()) {
-            for (long permissionId : deletePermissionIds) {
-                deleteRolePermissionPos.add(
-                        RolePermissionPo.builder()
-                                .roleId(roleId)
-                                .permissionId(permissionId)
-                                .build()
-                );
-            }
-        }
-
-        if (!insertPermissionIds.isEmpty()) {
-            for (long permissionId : insertPermissionIds) {
-                insetRolePermissionPos.add(
-                        RolePermissionPo.builder()
-                                .roleId(roleId)
-                                .permissionId(permissionId)
-                                .createdAt(System.currentTimeMillis())
-                                .build()
-                );
-            }
-        }
-    }
-
-    /**
-     * 获取角色资源变更
-     *
-     * @param roleId
-     * @param oldResourceIds
-     * @param newResourceIds
-     * @param insertRoleResourcePos
-     * @param deleteRoleResourcePos
-     */
-    private void getRoleResourceChange(
-            Long roleId,
-            Set<Long> oldResourceIds,
-            Set<Long> newResourceIds,
-            List<RoleResourcePo> insertRoleResourcePos,
-            List<RoleResourcePo> deleteRoleResourcePos
-    ) {
-        Set<Long> deleteResourceIds = new HashSet<>(oldResourceIds);
-        Set<Long> insertResourceIds = new HashSet<>(newResourceIds);
-        deleteResourceIds.removeAll(newResourceIds);
-        insertResourceIds.removeAll(oldResourceIds);
-
-        if (!deleteResourceIds.isEmpty()) {
-            for (long resourceId : deleteResourceIds) {
-                deleteRoleResourcePos.add(
-                        RoleResourcePo.builder()
-                                .roleId(roleId)
-                                .resourceId(resourceId)
-                                .build()
-                );
-            }
-        }
-
-        if (!insertResourceIds.isEmpty()) {
-            for (long resourceId : insertResourceIds) {
-                insertRoleResourcePos.add(
-                        RoleResourcePo.builder()
-                                .roleId(roleId)
-                                .resourceId(resourceId)
-                                .createAt(System.currentTimeMillis())
-                                .build()
-                );
-            }
+            Map<String, Object> resourceParams = Map.of(
+                    "roleId", roleId,
+                    "resourceIds", resourceIds
+            );
+            roleResourcePoMapper.insert(resourceParams);
         }
     }
 

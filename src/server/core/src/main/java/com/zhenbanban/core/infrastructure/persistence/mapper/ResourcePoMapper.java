@@ -22,24 +22,24 @@ package com.zhenbanban.core.infrastructure.persistence.mapper;
 
 import com.zhenbanban.core.infrastructure.persistence.po.ResourcePo;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Mybatis Mapper 接口  : 资源
  *
- * @author zhangxihai 2025/7/11
+ * @author zhangxihai 2025/8/03
  */
 @Mapper
-public interface ResourcePoMapper {
+public interface ResourcePoMapper extends PaginateMapper<ResourcePo> {
     Long insert(ResourcePo po);
 
     int update(ResourcePo po);
 
     int delete(Long id);
-
-    int count(HashMap<String, Object> params);
 
     ResourcePo findById(Long id);
 
@@ -52,5 +52,11 @@ public interface ResourcePoMapper {
     List<ResourcePo> findResourcesByRoleId(Long roleId);
 
     Integer findMaxSortByParentId(Long parentId);
+
+    int countByIds(@Param("ids") Set<Long> ids);
+
+    List<ResourcePo> findRootByIds(@Param("ids") Set<Long> ids);
+
+    List<ResourcePo> findRootAll();
 
 }

@@ -29,5 +29,10 @@ import com.zhenbanban.core.domain.common.IDomainRepository;
  * @author zhangxihai 2025/08/01
  */
 public interface RoleRepository extends IDomainRepository<Role, Long> {
+    /**
+     * 修改角色的权限和资源分配
+     * @param aggregate 角色聚合根
+     */
+    void  modifyAssignment(Role aggregate);
 
 }

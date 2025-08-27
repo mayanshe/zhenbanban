@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
 /**
  * 转换器 : PermissionGroupConverter
  *
- * @author zhangxihai 2025/7/11
+ * @author zhangxihai 2025/8/03
  */
 @Mapper
 public interface PermissionGroupConverter {
@@ -40,14 +40,16 @@ public interface PermissionGroupConverter {
     @Mappings({
             @Mapping(target = "createdAt", ignore = true),
             @Mapping(target = "updatedAt", ignore = true),
-            @Mapping(target = "children", ignore = true)
+            @Mapping(target = "children", ignore = true),
+            @Mapping(target = "permissions", ignore = true)
     })
     PermissionGroupPo toPo(PermissionGroup permissionGroup);
 
     @Mappings({
             @Mapping(target = "createdAt", ignore = true),
             @Mapping(target = "updatedAt", ignore = true),
-            @Mapping(target = "children", ignore = true)
+            @Mapping(target = "children", ignore = true),
+            @Mapping(target = "permissions", ignore = true)
     })
     PermissionGroupPo updatePo(PermissionGroup permissionGroup, @MappingTarget PermissionGroupPo po);
 

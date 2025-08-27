@@ -32,7 +32,7 @@ import java.util.List;
 /**
  * 聚合根 : 全线组
  *
- * @author zhangxihai 2025/7/11
+ * @author zhangxihai 2025/8/03
  */
 @Data
 @Builder(toBuilder = true)
@@ -49,6 +49,8 @@ public class PermissionGroup extends AbsAggregate {
     private String displayName;            // 权限组显示名称
 
     private String description;            // 权限组描述
+
+    private int sort;                      // 排序
 
     @Builder.Default
     private boolean deleted = false;       // 是否已删除

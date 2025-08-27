@@ -23,18 +23,15 @@ package com.zhenbanban.core.infrastructure.persistence.mapper;
 import com.zhenbanban.core.infrastructure.persistence.po.RoleResourcePo;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Mybatis Mapper Interface : 角色资源关联关系
  *
- * @author zhangxihai 2025/7/11
+ * @author zhangxihai 2025/8/03
  */
 public interface RoleResourcePoMapper {
-    Long insert(RoleResourcePo roleResourcePo);
-
-    int batchInsert(List<RoleResourcePo> roleResourcePos);
-
-    int batchDelete(List<RoleResourcePo> roleResourcePos);
+    int insert(Map<String, Object> params);
 
     int deleteByRoleId(Long roleId);
 

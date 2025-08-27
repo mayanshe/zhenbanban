@@ -45,7 +45,7 @@ public class RoleAssignmentModifyCmdHandlerImpl implements RoleAssignmentModifyC
         Role role = roleRepository.load(command.getRoleId());
         role.modifyAssignment(command.getPermissionIds(), command.getResourceIds());
 
-        roleRepository.save(role, false);
+        roleRepository.modifyAssignment(role);
         domainEventPublisher.publish(role.getEvents());
     }
 

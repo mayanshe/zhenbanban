@@ -1,10 +1,10 @@
 export default {
-  path: 'https://arco.design',
+  path: 'https://zhenbanban.com',
   name: 'arcoWebsite',
   meta: {
-    locale: 'menu.arcoWebsite',
+    locale: '诊伴伴',
     icon: 'icon-link',
     requiresAuth: true,
-    order: 8,
+    order: 10000,
   },
 }
