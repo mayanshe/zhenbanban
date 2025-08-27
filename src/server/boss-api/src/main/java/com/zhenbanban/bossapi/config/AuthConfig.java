@@ -81,7 +81,7 @@ public class AuthConfig {
                             redisUtils.set(cacheKey, admin, 600);      // 缓存10分钟，避免频繁查询数据库
                         }
                     } catch (Exception e) {
-                        throw new UnauthorizedException("您尚未登陆或者登陆已失效");
+                        throw new UnauthorizedException("您尚未登陆或者登陆已失效！");
                     }
                 }
 

@@ -24,7 +24,11 @@ import com.zhenbanban.bossapi.vo.IdResponse;
 import com.zhenbanban.bossapi.vo.PermissionSaveRequest;
 import com.zhenbanban.core.application.command.PermissionAmdCmdHandler;
 import com.zhenbanban.core.application.dto.PermissionAmdCommand;
+import com.zhenbanban.core.application.dto.PermissionDto;
+import com.zhenbanban.core.application.dto.PermissionQuery;
+import com.zhenbanban.core.application.query.PermissionQueryHandler;
 import com.zhenbanban.core.infrastructure.support.annotation.AdminPermit;
+import com.zhenbanban.core.infrastructure.support.paging.Pagination;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,16 +38,22 @@ import org.springframework.web.bind.annotation.*;
 /**
  * 控制器 : 权限
  *
- * @author zhangxihai 2025/7/11
+ * @author zhangxihai 2025/8/03
  */
 @RestController
 @RequestMapping("/permissions")
 public class PermissionController {
     private final PermissionAmdCmdHandler permissionAmdCmdHandler;
 
+    private final PermissionQueryHandler permissionQueryHandler;
+
     @Autowired
-    public PermissionController(@Lazy PermissionAmdCmdHandler permissionAmdCmdHandler) {
+    public PermissionController(
+            @Lazy PermissionAmdCmdHandler permissionAmdCmdHandler,
+            @Lazy PermissionQueryHandler permissionQueryHandler
+    ) {
         this.permissionAmdCmdHandler = permissionAmdCmdHandler;
+        this.permissionQueryHandler = permissionQueryHandler;
     }
 
     /**
@@ -82,6 +92,45 @@ public class PermissionController {
     @AdminPermit(permissions = {"permission:delete"}, message = "您未被授权执行此操作：删除权限")
     public void deletePermission(@PathVariable("id") Long id) {
         permissionAmdCmdHandler.handleDestroy(id);
+    }
+
+    /**
+     * 获取权限
+     *
+     * @param id 权限ID
+     * @return 权限信息
+     */
+    @GetMapping("/{id}")
+    @AdminPermit(permissions = {"permission:add", "permission:modify", "permission:delete"}, message = "您未被授权执行此操作：查询权限")
+    public PermissionDto getPermission(@PathVariable("id") Long id) {
+        return permissionQueryHandler.handleQuerySingle(id);
+    }
+
+    /**
+     * 获取权限分页列表
+     *
+     * @param page     当前页
+     * @param pageSize 页码
+     * @param groupId  分组ID
+     * @param keywords 关键词
+     * @return 权限分页信息
+     */
+    @GetMapping
+    @AdminPermit(permissions = {"permission:add", "permission:modify", "permission:delete"}, message = "您未被授权执行此操作：查询权限")
+    public Pagination<PermissionDto> getPermissionPagination(
+            @RequestParam(value = "page", defaultValue = "1", required = false) Integer page,
+            @RequestParam(value = "pageSize", defaultValue = "15", required = false) Integer pageSize,
+            @RequestParam(value = "groupId", defaultValue = "0", required = false) Long groupId,
+            @RequestParam(value = "keywords", defaultValue = "", required = false) String keywords
+    ) {
+        PermissionQuery query = PermissionQuery.builder()
+                .page(page)
+                .pageSize(pageSize)
+                .groupId(groupId)
+                .keywords(keywords)
+                .build();
+
+        return permissionQueryHandler.handleQueryPage(query);
     }
 
 }

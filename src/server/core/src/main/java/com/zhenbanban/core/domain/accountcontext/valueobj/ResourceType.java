@@ -31,7 +31,7 @@ import java.util.Objects;
 /**
  * Value : 资源类型
  *
- * @author zhangxihai 2025/7/11
+ * @author zhangxihai 2025/8/03
  */
 public class ResourceType {
     public static final ResourceType MENU = new ResourceType("menu", "菜单");
@@ -40,9 +40,9 @@ public class ResourceType {
     public static final ResourceType COMPONENT = new ResourceType("component", "组件");
     private static final List<ResourceType> ALL_TYPES = Collections.unmodifiableList(Arrays.asList(
             MENU,
-            BUTTON,
+            COMPONENT,
             LINK,
-            COMPONENT
+            BUTTON
     ));
 
     private final String code;       // 资源类型代码
@@ -68,7 +68,7 @@ public class ResourceType {
             return MENU;
         }
 
-        return switch (code) {
+        return switch (code.toUpperCase()) {
             case "MENU" -> MENU;
             case "BUTTON" -> BUTTON;
             case "LINK" -> LINK;

@@ -20,9 +20,7 @@
  */
 package com.zhenbanban.bossapi.vo;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -31,7 +29,7 @@ import lombok.NoArgsConstructor;
 /**
  * Vo : 保持权限组请求
  *
- * @author zhangxihai 2025/7/11
+ * @author zhangxihai 2025/8/03
  */
 @Data
 @Builder(toBuilder = true)
@@ -42,7 +40,7 @@ public class PermissionGroupSaveRequest {
 
     @NotBlank(message = "权限组名称不能为空")
     @Size(max = 75, message = "权限组名称不能超过75个字符")
-    @Pattern(regexp = "^[a-zA-Z\\-]+$", message = "权限组名称只能包含字母和-")
+    @Pattern(regexp = "^[a-zA-Z\\-:]+$", message = "权限组名称只能包含字母和-")
     private String groupName;             // 权限组名称
 
     @NotBlank(message = "权限组显示名称不能为空")
@@ -52,5 +50,9 @@ public class PermissionGroupSaveRequest {
     @Builder.Default
     @Size(max = 255, message = "权限组描述不能超过255个字符")
     private String description = "";     // 权限组描述
+
+    @NotNull(message = "排序不能为空")
+    @Min(value = 0, message = "排序必须为非负整数")
+    private Integer sort = 0;            // 排序，倒叙
 
 }

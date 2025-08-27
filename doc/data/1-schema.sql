@@ -28,6 +28,31 @@ CREATE TABLE IF NOT EXISTS `_events`
   AUTO_INCREMENT = 1 COMMENT '事件表';
 
 -- ---------------------------------------------------------------------------------------------------------------------
+-- Table Name:  媒体资源
+-- Description:
+-- ---------------------------------------------------------------------------------------------------------------------
+DROP TABLE IF EXISTS `medias`;
+CREATE TABLE IF NOT EXISTS `medias`
+(
+    `id`                BIGINT UNSIGNED         NOT NULL PRIMARY KEY COMMENT '媒体资源ID',
+    `media_type`        ENUM('image', 'video', 'audio', 'document', 'archive', 'other') NOT NULL DEFAULT 'image' COMMENT '媒体资源类型 image:图片 video:视频 audio:音频 document:文档 archive:压缩包 other:其他',
+    `file_md5`          CHAR(32)                NOT NULL DEFAULT '' COMMENT '文件MD5值',
+    `file_name`         VARCHAR(255)            NOT NULL DEFAULT '' COMMENT '文件名称',
+    `file_path`         VARCHAR(512)            NOT NULL DEFAULT '' COMMENT '文件路径',
+    `file_size`         BIGINT UNSIGNED         NOT NULL DEFAULT 0 COMMENT '文件大小, 单位字节',
+    `file_extension`    VARCHAR(25)             NOT NULL DEFAULT '' COMMENT '文件扩展名',
+    `mime_type`         VARCHAR(100)            NOT NULL DEFAULT '' COMMENT '文件MIME类型',
+    `url`               VARCHAR(1024)            NOT NULL DEFAULT '' COMMENT '文件访问URL',
+    `thumbnail_url`     VARCHAR(1024)            NOT NULL DEFAULT '' COMMENT '缩略图URL, 仅图片和视频有效',
+    `description`       VARCHAR(512)            NOT NULL DEFAULT '' COMMENT '文件描述',
+    `created_at`        BIGINT(11) UNSIGNED     NOT NULL DEFAULT 0 COMMENT '创建时间',
+    `updated_at`        BIGINT(11) UNSIGNED     NOT NULL DEFAULT 0 COMMENT '更新时间',
+    INDEX `idx_media_type` (`media_type`) USING BTREE COMMENT '媒体资源类型索引',
+    INDEX `idx_file_name` (`file_name`) USING BTREE COMMENT '文件名称索引'
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 1 COMMENT '媒体资源表';
+
+-- ---------------------------------------------------------------------------------------------------------------------
 -- Table Name:  系统配置表
 -- Description:
 -- ---------------------------------------------------------------------------------------------------------------------
@@ -35,14 +60,14 @@ DROP TABLE IF EXISTS `options`;
 CREATE TABLE IF NOT EXISTS `options`
 (
     `id`                 BIGINT UNSIGNED         NOT NULL PRIMARY KEY COMMENT '配置ID',
-    `option_group`       VARCHAR(75)             NOT NULL DEFAULT '' COMMENT '配置分组',
     `option_name`        VARCHAR(75)             NOT NULL UNIQUE COMMENT '配置名',
     `display_name`       VARCHAR(75)             NOT NULL DEFAULT '' COMMENT '配置显示名',
     `option_value`       TEXT                    NOT NULL COMMENT '配置值',
     `description`        VARCHAR(512)            NOT NULL DEFAULT '' COMMENT '配置描述',
     `created_at`         BIGINT(11) UNSIGNED     NOT NULL DEFAULT 0 COMMENT '创建时间',
     `updated_at`         BIGINT(11) UNSIGNED     NOT NULL DEFAULT 0 COMMENT '更新时间',
-    INDEX `idx_option_name` (`option_name`) USING BTREE COMMENT '配置键索引'
+    `customized`         TINYINT(2) UNSIGNED     NOT NULL DEFAULT 0 COMMENT '是否为自定义配置 0:否 1:是',
+    UNIQUE KEY `uk_option_name` (`option_name`) USING BTREE COMMENT '配置键索引'
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 1 COMMENT '系统配置表';
 
@@ -123,7 +148,7 @@ CREATE TABLE IF NOT EXISTS `syndromes`
 DROP TABLE IF EXISTS `therapeutics`;
 CREATE TABLE IF NOT EXISTS `therapeutics`
 (
-    `id`   BIGINT UNSIGNED             NOT NULL               PRIMARY KEY AUTO_INCREMENT COMMENT '治法ID',
+    `id`   BIGINT UNSIGNED             NOT NULL               PRIMARY KEY COMMENT '治法ID',
     `therapeutics_code`                VARCHAR(20)            NOT NULL DEFAULT ''    COMMENT '治法编码',
     `therapeutics_name`                VARCHAR(255)           NOT NULL DEFAULT ''    COMMENT '治法名称',
     `therapeutics_name_pinyin`         VARCHAR(255)           NOT NULL DEFAULT '' COMMENT '治法名称拼音',
@@ -207,7 +232,6 @@ CREATE TABLE IF NOT EXISTS `medicines`
   CREATE TABLE IF NOT EXISTS `regions`
   (
       `id`            BIGINT UNSIGNED        NOT NULL PRIMARY KEY AUTO_INCREMENT COMMENT '区域ID',
-      `parent_id`     BIGINT UNSIGNED        NOT NULL COMMENT '上级区域ID',
       `region_name`   VARCHAR(255)           NOT NULL DEFAULT '' COMMENT '区域名称',
       `pinyin`        VARCHAR(255)           NOT NULL DEFAULT '' COMMENT '区域拼音',
       `pinyin_prefix` VARCHAR(1)             NOT NULL DEFAULT '' COMMENT '区域拼音首字母',
@@ -338,10 +362,11 @@ DROP TABLE IF EXISTS `resources`;
 CREATE TABLE IF NOT EXISTS `resources` (
     `id`               BIGINT UNSIGNED                                NOT NULL PRIMARY KEY  COMMENT '主键',
     `parent_id`        BIGINT UNSIGNED                                NOT NULL DEFAULT 0 COMMENT '父级ID',
-    `resource_type`    enum('menu', 'button', 'link', 'component')    NOT NULL DEFAULT 'menu' COMMENT '资源类型 menu:菜单 button:按钮 link:链接 component:组件',
+    `resource_type`    enum('MENU', 'COMPONENT', 'LINK', 'BUTTON')    NOT NULL DEFAULT 'menu' COMMENT '资源类型 menu:菜单 component:组件 LINK:链接 BUTTON:按钮',
     `resource_name`    VARCHAR(75)                                    NOT NULL UNIQUE COMMENT '资源名称',
     `display_name`     VARCHAR(75)                                    NOT NULL DEFAULT '' COMMENT '资源显示名称',
     `description`      VARCHAR(255)                                   NOT NULL DEFAULT '' COMMENT '资源描述',
+    `path`             VARCHAR(255)                                   NOT NULL DEFAULT '' COMMENT '资源路径',
     `url`              VARCHAR(255)                                   NOT NULL DEFAULT '' COMMENT '资源链接',
     `icon`             VARCHAR(75)                                    NOT NULL DEFAULT '' COMMENT '资源图标',
     `component`        VARCHAR(255)                                   NOT NULL DEFAULT '' COMMENT '前端组件',
@@ -405,13 +430,14 @@ CREATE TABLE IF NOT EXISTS `hospitals` (
     `ownership_type`                 ENUM('PUBLIC', 'PRIVATE', 'OTHER')  NOT NULL DEFAULT 'OTHER' COMMENT '医院所有制类型：PUBLIC=公立 PRIVATE=私立 OTHER=其他',
     `hospital_type`                  ENUM('GENERAL', 'SPECIALTY', 'TRADITIONAL', 'ETHNIC', 'REHABILITATION', 'OTHER')    NOT NULL DEFAULT 'OTHER' COMMENT '医疗机构类型：GENERAL=综合医院 SPECIALTY=专科医院 TRADITIONAL=中医医院 ETHNIC=民族医医院 REHABILITATION=康复医院 OTHER=其他',
     `hospital_level`                 ENUM('LEVEL-3A', 'LEVEL-3B', 'LEVEL-2A', 'LEVEL-2B', 'LEVEL-1', 'OTHER')            NOT NULL DEFAULT 'OTHER' COMMENT '机构等级：LEVEL-3A=三甲、LEVEL-2A=三乙、LEVEL-2A=二甲、LEVEL-2B=二乙、LEVEL-1=一级、OTHER=其他',
-    `status`                         ENUM('PENDING', 'ACTIVE', 'INACTIVE', 'SUSPENDED')                                  NOT NULL DEFAULT 'PENDING' COMMENT '医院状态：PENDING=待审核 ACTIVE=启用 INACTIVE=禁用 SUSPENDED=暂停',
+    `status`                         ENUM('PENDING', 'ACTIVE', 'INACTIVE')                                               NOT NULL DEFAULT 'PENDING' COMMENT '医院状态：PENDING=待审核 ACTIVE=启用 INACTIVE=禁用',
     `insurance_code`                 CHAR(12)                            NOT NULL DEFAULT '' COMMENT '医保定点机构编码',
-    `hospital_code`                  CHAR(22)                            NOT NULL COMMENT '医疗机构登记号',
-    `hospital_name`                  VARCHAR(100)                        NOT NULL DEFAULT '' COMMENT '医疗机构名称',
+    `uscc_code`                      CHAR(18)                            NOT NULL DEFAULT '' COMMENT '统一社会信用代码',
+    `hospital_code`                  CHAR(22)                            NOT NULL COMMENT '医院机构登记号',
+    `hospital_name`                  VARCHAR(100)                        NOT NULL DEFAULT '' COMMENT '医院名称',
     `province_id`                    BIGINT UNSIGNED                     NOT NULL DEFAULT 0 COMMENT '所在省份编码',
     `city_id`                        BIGINT UNSIGNED                     NOT NULL DEFAULT 0 COMMENT '所在城市编码',
-    `county_id`                      BIGINT UNSIGNED                     NOT NULLtext DEFAULT 0 COMMENT '所在区县编码',
+    `county_id`                      BIGINT UNSIGNED                     NOT NULL DEFAULT 0 COMMENT '所在区县编码',
     `address`                        VARCHAR(255)                        NOT NULL DEFAULT '' COMMENT '详细地址',
     `postal_code`                    CHAR(6)                             NOT NULL DEFAULT '' COMMENT '邮政编码',
     `longitude`                      DECIMAL(10, 6)                      DEFAULT NULL COMMENT '经度',
@@ -420,14 +446,13 @@ CREATE TABLE IF NOT EXISTS `hospitals` (
     `contact_phone`                  VARCHAR(20)                         NOT NULL DEFAULT '' COMMENT '联系电话',
     `contact_email`                  VARCHAR(125)                        NOT NULL DEFAULT '' COMMENT '联系邮箱',
     `website`                        VARCHAR(255)                        NOT NULL DEFAULT '' COMMENT '医院官网',
-    `license_number`                 VARCHAR(100)                        NOT NULL DEFAULT '' COMMENT '医疗机构执业许可证号',
     `companion_diagnosis_enabled`    TINYINT(2)                          NOT NULL DEFAULT 0 COMMENT '是否启用伴诊断服务',
     `meal_service_enabled`           TINYINT(2)                          NOT NULL DEFAULT 0 COMMENT '是否启用配餐服务',
     `testing_delivery_enabled`       TINYINT(2)                          NOT NULL DEFAULT 0 COMMENT '是否启用送检测服务',
     `created_at`                     BIGINT(11) UNSIGNED                 NOT NULL DEFAULT 0 COMMENT '创建时间',
     `updated_at`                     BIGINT(11) UNSIGNED                 NOT NULL DEFAULT 0 COMMENT '更新时间',
     UNIQUE KEY `uk_hospital_code` (`hospital_code`) USING BTREE COMMENT '医院编码索引',
-    INDEX `idx_hospital_name` (`hospital_name`) USING BTREE COMMENT '医院名称索引'
+    INDEX `idx_hospital_name` (`hospital_name`) USING BTREE COMMENT '医院名称索
 ) ENGINE = InnoDB COMMENT '医院表';
 
 -- ---------------------------------------------------------------------------------------------------------------------

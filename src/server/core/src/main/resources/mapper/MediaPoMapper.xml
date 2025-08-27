@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//dtd/Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhenbanban.core.infrastructure.persistence.mapper.MediaPoMapper">
+    <!-- 媒体资源(medias)表映射 -->
+
+    <insert id="insert" parameterType="MediaPo" useGeneratedKeys="false">
+        INSERT INTO medias (id, file_md5, file_name, file_path, file_size, file_extension, mime_type, url, thumbnail_url, description, created_at)
+        VALUES (#{id}, #{fileMd5}, #{fileName}, #{filePath}, #{fileSize}, #{fileExtension}, #{mimeType}, #{url}, #{thumbnailUrl}, #{description}, #{createdAt})
+    </insert>
+
+    <update id="update" parameterType="MediaPo">
+        UPDATE medias
+        SET
+            file_md5 = #{fileMd5},
+            file_name = #{fileName},
+            file_path = #{filePath},
+            file_size = #{fileSize},
+            file_extension = #{fileExtension},
+            mime_type = #{mimeType},
+            url = #{url},
+            thumbnail_url = #{thumbnailUrl},
+            description = #{description},
+            updated_at = UNIX_TIMESTAMP(NOW(3)) * 1000
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="Long">
+        DELETE FROM medias WHERE id = #{id}
+    </delete>
+
+    <select id="findById" parameterType="Long" resultType="MediaPo">
+        SELECT * FROM medias WHERE id = #{id}
+    </select>
+
+    <select id="findByFileMd5" parameterType="String" resultType="MediaPo">
+        SELECT * FROM medias WHERE file_md5 = #{fileMd5}
+    </select>
+
+    <select id="count" parameterType="java.util.Map" resultType="Integer">
+        SELECT COUNT(id) FROM medias
+        <where>
+            <if test="keywords != null and keywords.size() > 0">
+                AND (
+                <foreach item="w" collection="keywords" separator="OR">
+                    fileName LIKE CONCAT('%', #{w}, '%') OR description LIKE CONCAT('%', #{w}, '%')
+                </foreach>
+                )
+            </if>
+            <if test="mediaType != null and mediaType != ''">
+                AND mediaType = #{mediaType}
+            </if>
+        </where>
+    </select>
+
+    <select id="search" parameterType="java.util.Map" resultType="MediaPo">
+        SELECT * FROM medias
+        <where>
+            <if test="id != null and id > 0">
+                AND id = #{id}
+            </if>
+            <if test="keywords != null and keywords.size() > 0">
+                AND (
+                <foreach item="w" collection="keywords" separator="OR">
+                    fileName LIKE CONCAT('%', #{w}, '%') OR description LIKE CONCAT('%', #{w}, '%')
+                </foreach>
+                )
+            </if>
+        </where>
+        ORDER BY
+        <choose>
+            <when test="orderBy != null and orderBy != ''">
+                #{orderBy}
+            </when>
+            <otherwise>
+                id DESC
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            LIMIT #{offset}, #{limit}
+        </if>
+        <if test="offset == null and limit != null">
+            LIMIT #{limit}
+        </if>
+        <if test="offset != null and limit == null">
+            LIMIT #{offset}, 18446744073709551615
+        </if>
+    </select>
+</mapper>

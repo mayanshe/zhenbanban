@@ -87,4 +87,51 @@ public final class StrUtils {
         return email.matches(regex);
     }
 
+    /**
+     * 脱敏电子邮件地址
+     *
+     * @param email 电子邮件地址字符串
+     * @return 脱敏后的电子邮件地址
+     */
+    public static String desensitizeEmail(String email) {
+        if (email == null || email.isEmpty()) {
+            return "";
+        }
+        String[] parts = email.split("@");
+        if (parts.length != 2) {
+            return email; // 如果格式不正确，返回原始邮箱
+        }
+        String localPart = parts[0];
+        String domainPart = parts[1];
+
+        if (localPart.length() <= 2) {
+            return email; // 如果本地部分长度小于等于2，返回原始邮箱
+        }
+
+        StringBuilder desensitizedLocalPart = new StringBuilder();
+        desensitizedLocalPart.append(localPart.charAt(0)); // 保留第一个字符
+        for (int i = 1; i < localPart.length() - 1; i++) {
+            desensitizedLocalPart.append('*'); // 中间部分用星号替换
+        }
+        desensitizedLocalPart.append(localPart.charAt(localPart.length() - 1)); // 保留最后一个字符
+
+        return desensitizedLocalPart + "@" + domainPart;
+    }
+
+    /**
+     * 脱敏中国手机号码
+     *
+     * @param phoneNumber 手机号码字符串
+     * @return 脱敏后的手机号码
+     */
+    public static String desensitizePhoneNumber(String phoneNumber) {
+        if (phoneNumber == null || phoneNumber.isEmpty()) {
+            return "";
+        }
+        if (!isValidChinesePhoneNumber(phoneNumber)) {
+            return phoneNumber; // 如果格式不正确，返回原始手机号
+        }
+        return phoneNumber.replaceAll("(?<=\\d{3})\\d(?=\\d{4})", "*");
+    }
+
 }

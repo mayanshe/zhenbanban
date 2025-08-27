@@ -24,6 +24,8 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Po: 角色
@@ -55,5 +57,17 @@ public class RolePo {
 
     @Builder.Default
     private List<ResourcePo> resources = List.of();        // 角色资源列表
+
+    public Set<Long> getPermissionIds() {
+        return getPermissions().stream()
+                .map(PermissionPo::getId)
+                .collect(Collectors.toSet());
+    }
+
+    public Set<Long> getResourceIds() {
+        return getResources().stream()
+                .map(ResourcePo::getId)
+                .collect(Collectors.toSet());
+    }
 
 }

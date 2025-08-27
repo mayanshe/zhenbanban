@@ -6,10 +6,10 @@ const PROFILE: AppRouteRecordRaw = {
   name: 'profile',
   component: DEFAULT_LAYOUT,
   meta: {
-    locale: 'menu.profile',
+    locale: '个人资料',
     requiresAuth: true,
     icon: 'icon-file',
-    order: 4,
+    order: 24000,
   },
   children: [
     {
@@ -17,9 +17,9 @@ const PROFILE: AppRouteRecordRaw = {
       name: 'Basic',
       component: () => import('@/views/profile/basic/index.vue'),
       meta: {
-        locale: 'menu.profile.basic',
+        locale: '个人基础资料',
         requiresAuth: true,
-        roles: ['admin'],
+        roles: ['a'],
       },
     },
   ],

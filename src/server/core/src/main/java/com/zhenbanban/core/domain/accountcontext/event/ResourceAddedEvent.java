@@ -28,7 +28,7 @@ import lombok.experimental.SuperBuilder;
 /**
  * 类型 : 资源创建成功事件
  *
- * @author zhangxihai 2025/7/11
+ * @author zhangxihai 2025/8/03
  */
 @Getter
 @Setter

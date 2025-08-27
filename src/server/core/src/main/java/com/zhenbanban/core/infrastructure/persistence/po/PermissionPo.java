@@ -38,6 +38,8 @@ public class PermissionPo {
 
     private Long groupId;                 // 权限组ID
 
+    private String groupName;             // 权限组名称
+
     private String permissionName;       // 权限名称
 
     private String displayName;          // 权限显示名称

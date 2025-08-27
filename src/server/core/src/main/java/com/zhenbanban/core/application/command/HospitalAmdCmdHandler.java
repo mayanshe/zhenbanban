@@ -18,12 +18,17 @@
  * distribution of this code must also be licensed under the GPL. Failure
  * to comply with the terms of the GPL may result in legal action.
  */
-package com.zhenbanban.core.application.query;
+package com.zhenbanban.core.application.command;
+
+import com.zhenbanban.core.application.common.IAmdCmdHandler;
+import com.zhenbanban.core.application.dto.HospitalAmdCommand;
 
 /**
- * 类型 : ExampleQuery
+ * 命令处理结构：医院增删改
  *
- * @author zhangxihai 2025/7/18
+ * @author zhangxihai 2025/08/11
  */
-public class ExampleQuery {
+public interface HospitalAmdCmdHandler extends IAmdCmdHandler<HospitalAmdCommand, Long> {
+    void handleActivate(Long id);
+
 }

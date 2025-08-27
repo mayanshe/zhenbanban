@@ -28,7 +28,7 @@ import java.util.List;
 /**
  * PO : 资源
  *
- * @author zhangxihai 2025/7/11
+ * @author zhangxihai 2025/8/03
  */
 @Getter
 @Setter
@@ -51,6 +51,9 @@ public class ResourcePo {
 
     @Builder.Default
     private String url = "";                           // 资源URL
+
+    @Builder.Default
+    private String path = "";                          // 资源路径（用于路由）
 
     @Builder.Default
     private String icon = "";                          // 资源图标

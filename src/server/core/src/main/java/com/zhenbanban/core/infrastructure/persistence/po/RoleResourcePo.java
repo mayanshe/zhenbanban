@@ -26,7 +26,7 @@ import lombok.experimental.SuperBuilder;
 /**
  * PO : 角色资源关联关系
  *
- * @author zhangxihai 2025/7/11
+ * @author zhangxihai 2025/8/03
  */
 @Getter
 @Setter

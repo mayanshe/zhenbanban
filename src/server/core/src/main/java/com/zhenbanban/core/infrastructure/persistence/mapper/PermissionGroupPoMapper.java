@@ -20,6 +20,7 @@
  */
 package com.zhenbanban.core.infrastructure.persistence.mapper;
 
+import com.zhenbanban.core.application.dto.PermissionGroupDto;
 import com.zhenbanban.core.infrastructure.persistence.po.PermissionGroupPo;
 
 import java.util.HashMap;
@@ -28,7 +29,7 @@ import java.util.List;
 /**
  * Mybatis Mapper 接口 : 权限组
  *
- * @author zhangxihai 2025/7/11
+ * @author zhangxihai 2025/8/03
  */
 public interface PermissionGroupPoMapper {
     int insert(PermissionGroupPo permissionGroupPo);
@@ -46,6 +47,8 @@ public interface PermissionGroupPoMapper {
     Long findIdByDisplayName(String displayName);
 
     List<PermissionGroupPo> findAll();
+
+    List<PermissionGroupPo> findRootAll();
 
     List<PermissionGroupPo> search(HashMap<String, Object> params);
 

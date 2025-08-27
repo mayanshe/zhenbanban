@@ -7,6 +7,16 @@ import configArcoStyleImportPlugin from './plugin/arcoStyleImport'
 
 export default defineConfig({
   base: './',
+  server: {
+    port: 8082,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:8081',
+        changeOrigin: true, // 修改请求头中的 Origin 为目标地址
+        rewrite: (path) => path.replace(/^\/api/, ''),
+      },
+    },
+  },
   plugins: [vue(), vueJsx(), svgLoader({ svgoConfig: {} }), configArcoStyleImportPlugin()],
   resolve: {
     alias: [

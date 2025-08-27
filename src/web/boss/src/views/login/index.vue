@@ -11,15 +11,13 @@
         <span style="color: #1f6f56">扫码登录</span>
       </div>
       <a-modal v-model:visible="showQr" title="扫码登录" :footer="false" width="320px">
-        <div class="qr-modal-content">
-          暂不支持扫码登录，请使用账号密码登录。
-        </div>
+        <div class="qr-modal-content">暂不支持扫码登录，请使用账号密码登录。</div>
       </a-modal>
       <div class="logo">
         <img alt="logo" src="assets/logo.png" />
-        <div class="logo-text" style="color:#20b88b">诊伴伴</div>
+        <div class="logo-text" style="color: #20b88b">诊伴伴</div>
       </div>
-      <LoginBanner/>
+      <LoginBanner />
       <div class="content">
         <div class="content-inner">
           <LoginForm />
@@ -41,6 +39,7 @@ export default defineComponent({
   },
   setup() {
     const showQr = ref(false)
+
     return { showQr }
   },
 })

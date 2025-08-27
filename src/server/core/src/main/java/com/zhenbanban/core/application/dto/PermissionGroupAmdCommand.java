@@ -27,7 +27,7 @@ import lombok.experimental.SuperBuilder;
 /**
  * 命令载体 : 权限组
  *
- * @author zhangxihai 2025/7/11
+ * @author zhangxihai 2025/8/03
  */
 @Getter
 @Setter
@@ -45,6 +45,8 @@ public class PermissionGroupAmdCommand extends BaseCommand<Long> {
 
     @Builder.Default
     private boolean deleted = false;     // 是否已删除，默认未删除
+
+    private int sort;                    // 排序，倒叙
 
 
 }

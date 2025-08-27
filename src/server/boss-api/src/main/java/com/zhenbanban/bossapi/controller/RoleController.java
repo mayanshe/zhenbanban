@@ -21,15 +21,24 @@
 package com.zhenbanban.bossapi.controller;
 
 import com.zhenbanban.bossapi.vo.IdResponse;
+import com.zhenbanban.bossapi.vo.RoleAssignmentModifyRequest;
 import com.zhenbanban.bossapi.vo.RoleSaveRequest;
 import com.zhenbanban.core.application.command.RoleAmdCmdHandler;
+import com.zhenbanban.core.application.command.RoleAssignmentModifyCmdHandler;
 import com.zhenbanban.core.application.dto.RoleAmdCommand;
+import com.zhenbanban.core.application.dto.RoleAssignmentModifyCommand;
+import com.zhenbanban.core.application.dto.RoleDto;
+import com.zhenbanban.core.application.dto.RoleQuery;
+import com.zhenbanban.core.application.query.RoleQueryHandler;
 import com.zhenbanban.core.infrastructure.support.annotation.AdminPermit;
+import com.zhenbanban.core.infrastructure.support.paging.Pagination;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 控制器: 系统角色管理
@@ -41,9 +50,19 @@ import org.springframework.web.bind.annotation.*;
 public class RoleController {
     private final RoleAmdCmdHandler roleAmdCmdHandler;
 
+    private final RoleAssignmentModifyCmdHandler roleAssignmentModifyCmdHandler;
+
+    private final RoleQueryHandler roleQueryHandler;
+
     @Autowired
-    public RoleController(@Lazy RoleAmdCmdHandler roleAmdCmdHandler) {
+    public RoleController(
+            @Lazy RoleAmdCmdHandler roleAmdCmdHandler,
+            @Lazy RoleAssignmentModifyCmdHandler roleAssignmentModifyCmdHandler,
+            @Lazy RoleQueryHandler roleQueryHandler
+    ) {
         this.roleAmdCmdHandler = roleAmdCmdHandler;
+        this.roleAssignmentModifyCmdHandler = roleAssignmentModifyCmdHandler;
+        this.roleQueryHandler = roleQueryHandler;
     }
 
     /**
@@ -82,6 +101,50 @@ public class RoleController {
     @AdminPermit(permissions = {"role:add"}, message = "您未被授权执行此操作：删除角色")
     public void destroyRole(@PathVariable("id") Long id) {
         roleAmdCmdHandler.handleDestroy(id);
+    }
+
+    @PutMapping("/{id}/assignments")
+    @AdminPermit(permissions = {"role:assignment:modify"}, message = "您未被授权执行此操作：修改角色的资源/权限分配")
+    public void modifyRoleAssignments(@PathVariable("id") Long id, @Valid @RequestBody RoleAssignmentModifyRequest request) {
+        RoleAssignmentModifyCommand command = (new ModelMapper()).map(request, RoleAssignmentModifyCommand.class);
+        command.setRoleId(id);
+
+        roleAssignmentModifyCmdHandler.handle(command);
+    }
+
+    /**
+     * 查询角色信息
+     *
+     * @param id 角色ID
+     */
+    @GetMapping("/{id}")
+    @AdminPermit(permissions = {"role:add", "role:modify", "role:delete", "role:assignment:modify"}, message = "您未被授权执行此操作：查询角色信息")
+    public RoleDto getRole(@PathVariable("id") Long id) {
+        return roleQueryHandler.handleQuerySingle(id);
+    }
+
+    /**
+     * 查询角色列表分页
+     *
+     * @param page     当前页码
+     * @param pageSize 每页大小
+     * @param keywords 关键词搜索
+     * @return 角色分页信息
+     */
+    @GetMapping
+    @AdminPermit(permissions = {"role:add", "role:modify", "role:delete", "role:assignment:modify"}, message = "您未被授权执行此操作：查询角色列表")
+    public Pagination<RoleDto> getRolePagination(
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
+            @RequestParam(value = "keywords", required = false) String keywords
+    ) {
+        RoleQuery query = RoleQuery.builder()
+                .page(page)
+                .pageSize(pageSize)
+                .keywords(keywords)
+                .build();
+
+        return roleQueryHandler.handleQueryPage(query);
     }
 
 }

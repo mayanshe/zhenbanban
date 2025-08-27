@@ -27,7 +27,7 @@ package com.zhenbanban.core.shared.exception;
  */
 public class UnauthorizedException extends AbsBaseException {
     public UnauthorizedException() {
-        super("You Are Unauthorized", "您尚未登陆或登陆已失效");
+        super("You Are Unauthorized", "您尚未登陆或登陆已失效!");
     }
 
     public UnauthorizedException(String message) {

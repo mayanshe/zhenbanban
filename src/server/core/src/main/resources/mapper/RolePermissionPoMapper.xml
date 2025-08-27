@@ -3,26 +3,14 @@
 <mapper namespace="com.zhenbanban.core.infrastructure.persistence.mapper.RolePermissionPoMapper">
     <!-- 角色权限关联关系(role_permissions)表映射 -->
 
-    <insert id="insert" parameterType="RolePermissionPo" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO role_permissions (role_id, permission_id, created_at)
-        VALUES (#{roleId}, #{permissionId}, #{createdAt})
+    <insert id="insert" parameterType="java.util.Map">
+        <if test="permissionIds != null and permissionIds.size > 0">
+            INSERT INTO role_permissions (role_id, permission_id, created_at) VALUES
+            <foreach collection="permissionIds" item="permissionId" separator=",">
+                (#{roleId}, #{permissionId},  UNIX_TIMESTAMP(NOW(3)) * 1000)
+            </foreach>
+        </if>
     </insert>
-
-    <insert id="batchInsert" parameterType="java.util.List">
-        INSERT INTO role_permissions (role_id, permission_id, created_at)
-        VALUES
-        <foreach collection="list" item="item" separator=",">
-            (#{item.roleId}, #{item.permissionId}, #{item.createdAt})
-        </foreach>
-    </insert>
-
-    <delete id="batchDelete" parameterType="java.util.List">
-        DELETE FROM role_permissions
-        WHERE 1=0
-        <foreach collection="list" item="item">
-            OR (role_id = #{item.roleId} AND permission_id = #{item.permissionId})
-        </foreach>
-    </delete>
 
     <delete id="deleteByRoleId" parameterType="Long">
         DELETE FROM role_permissions WHERE role_id = #{roleId}

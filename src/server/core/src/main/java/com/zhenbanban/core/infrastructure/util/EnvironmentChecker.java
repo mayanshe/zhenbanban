@@ -26,7 +26,7 @@ import org.springframework.stereotype.Component;
 /**
  * 工具 : 检测当前环境
  *
- * @author zhangxihai 2025/7/11
+ * @author zhangxihai 2025/8/03
  */
 @Component
 public class EnvironmentChecker {
