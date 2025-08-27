@@ -36,7 +36,7 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class OptionCreatedEvent extends AbsDomainEvent {
+public class OptionAddedEvent extends AbsDomainEvent {
     private Long optionId; // 配置ID
 
     private String optionName; // 配置名称

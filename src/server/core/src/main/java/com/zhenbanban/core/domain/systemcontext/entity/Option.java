@@ -21,7 +21,7 @@
 package com.zhenbanban.core.domain.systemcontext.entity;
 
 import com.zhenbanban.core.domain.common.AbsAggregate;
-import com.zhenbanban.core.domain.systemcontext.event.OptionCreatedEvent;
+import com.zhenbanban.core.domain.systemcontext.event.OptionAddedEvent;
 import com.zhenbanban.core.domain.systemcontext.event.OptionDestroyedEvent;
 import com.zhenbanban.core.domain.systemcontext.event.OptionModifiedEvent;
 import lombok.*;
@@ -58,7 +58,7 @@ public class Option extends AbsAggregate {
      */
     public void add() {
         this.setDeleted(false);
-        OptionCreatedEvent event = OptionCreatedEvent.builder()
+        OptionAddedEvent event = OptionAddedEvent.builder()
                 .optionId(this.getId())
                 .optionName(this.getOptionName())
                 .displayName(this.getDisplayName())
