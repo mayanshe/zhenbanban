@@ -18,12 +18,47 @@
  * distribution of this code must also be licensed under the GPL. Failure
  * to comply with the terms of the GPL may result in legal action.
  */
-package com.zhenbanban.core.infrastructure.external;
+package com.zhenbanban.core.application.dto;
+
+import lombok.*;
+import lombok.experimental.SuperBuilder;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * 类型 : example
+ * 类型 : MediaQuery
  *
- * @author zhangxihai 2025/8/11
+ * @author zhangxihai 2025/8/26
  */
-public class example {
+@Getter
+@Setter
+@SuperBuilder(toBuilder = true)
+@NoArgsConstructor
+@AllArgsConstructor
+public class MediaQuery {
+    @Builder.Default
+    private int page = 1;
+
+    @Builder.Default
+    private int pageSize = 15;
+
+    private String keywords;
+
+    private String mediaType;
+
+    public Map<String, Object> toMap() {
+        Map<String, Object> map = new HashMap<>();
+        if (keywords != null && !keywords.isBlank()) {
+            java.util.List<String> keywordList = java.util.Arrays.asList(keywords.split(" "));
+            map.put("keywords", keywordList);
+        }
+
+        if (mediaType != null && !mediaType.isBlank()) {
+            map.put("mediaType", mediaType);
+        }
+
+        return map;
+    }
+
 }

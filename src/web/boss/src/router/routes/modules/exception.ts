@@ -19,6 +19,7 @@ const EXCEPTION: AppRouteRecordRaw = {
       meta: {
         locale: '403',
         requiresAuth: true,
+        roles: ['a'],
       },
     },
     {
@@ -28,7 +29,7 @@ const EXCEPTION: AppRouteRecordRaw = {
       meta: {
         locale: '404',
         requiresAuth: true,
-        roles: ['*'],
+        roles: ['a'],
       },
     },
     {
@@ -38,7 +39,7 @@ const EXCEPTION: AppRouteRecordRaw = {
       meta: {
         locale: '500',
         requiresAuth: true,
-        roles: ['*'],
+        roles: ['a'],
       },
     },
   ],

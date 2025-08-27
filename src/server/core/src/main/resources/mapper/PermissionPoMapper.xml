@@ -3,7 +3,7 @@
 <mapper namespace="com.zhenbanban.core.infrastructure.persistence.mapper.PermissionPoMapper">
     <!-- 权限(permissions)表映射 -->
 
-    <insert id="insert" parameterType="PermissionPo" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert" parameterType="PermissionPo" useGeneratedKeys="false">
         INSERT INTO permissions (id, group_id, permission_name, display_name, description, created_at)
         VALUES (#{id}, #{groupId}, #{permissionName}, #{displayName}, #{description}, #{createdAt})
     </insert>

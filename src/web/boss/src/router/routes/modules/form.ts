@@ -19,7 +19,7 @@ const FORM: AppRouteRecordRaw = {
       meta: {
         locale: '分步表单',
         requiresAuth: true,
-        roles: ['*'],
+        roles: ['a'],
       },
     },
     {
@@ -29,7 +29,7 @@ const FORM: AppRouteRecordRaw = {
       meta: {
         locale: '分组表单',
         requiresAuth: true,
-        roles: ['*'],
+        roles: ['a'],
       },
     },
   ],

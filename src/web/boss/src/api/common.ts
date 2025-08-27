@@ -28,3 +28,8 @@ export interface CascaderOption {
   label: string
   children?: CascaderOption[]
 }
+
+export interface ValueObject {
+  code: string
+  name: string
+}

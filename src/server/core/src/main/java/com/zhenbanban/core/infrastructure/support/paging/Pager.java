@@ -22,7 +22,6 @@ package com.zhenbanban.core.infrastructure.support.paging;
 
 import com.zhenbanban.core.infrastructure.persistence.mapper.PaginateMapper;
 
-import javax.security.auth.callback.Callback;
 import java.util.List;
 import java.util.Map;
 

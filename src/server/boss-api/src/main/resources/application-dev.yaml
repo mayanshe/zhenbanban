@@ -3,6 +3,10 @@ snowflake:
     id: 0
 
 spring:
+  servlet:
+    multipart:
+      max-file-size: 200MB
+      max-request-size: 200MB
   datasource:
     url: jdbc:mysql://localhost:3306/zhenbanban-com?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
     username: root

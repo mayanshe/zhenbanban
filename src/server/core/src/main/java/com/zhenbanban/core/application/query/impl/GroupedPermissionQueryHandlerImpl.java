@@ -24,7 +24,6 @@ import com.zhenbanban.core.application.dto.GroupedPermissionDto;
 import com.zhenbanban.core.application.query.GroupedPermissionQueryHandler;
 import com.zhenbanban.core.infrastructure.persistence.mapper.PermissionGroupPoMapper;
 import com.zhenbanban.core.infrastructure.persistence.po.PermissionGroupPo;
-import com.zhenbanban.core.infrastructure.util.PrintUtils;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;

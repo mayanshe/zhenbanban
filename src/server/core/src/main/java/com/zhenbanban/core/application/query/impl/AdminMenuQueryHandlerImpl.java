@@ -51,7 +51,7 @@ public class AdminMenuQueryHandlerImpl implements AdminMenuQueryHandler {
 
     @Override
     public List<AdminMenuDto> handle(Admin admin) {
-        String cacheKey = CacheKeyGenerator.getAdminMenusCacheKey(admin.getId());
+        String cacheKey = CacheKeyGenerator.getAdminMenusKey(admin.getId());
         if (redisUtils.hasKey(cacheKey)) return redisUtils.get(cacheKey, List.class, Collections.emptyList());
 
         Set<Long> roleIds = admin.getRoleIds();

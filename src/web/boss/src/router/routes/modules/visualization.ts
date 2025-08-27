@@ -19,7 +19,7 @@ const VISUALIZATION: AppRouteRecordRaw = {
       meta: {
         locale: '分析页',
         requiresAuth: true,
-        roles: ['*'],
+        roles: ['a'],
       },
     },
     {
@@ -29,7 +29,7 @@ const VISUALIZATION: AppRouteRecordRaw = {
       meta: {
         locale: '多维数据分析',
         requiresAuth: true,
-        roles: ['*'],
+        roles: ['a'],
       },
     },
   ],

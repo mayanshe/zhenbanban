@@ -28,6 +28,31 @@ CREATE TABLE IF NOT EXISTS `_events`
   AUTO_INCREMENT = 1 COMMENT '事件表';
 
 -- ---------------------------------------------------------------------------------------------------------------------
+-- Table Name:  媒体资源
+-- Description:
+-- ---------------------------------------------------------------------------------------------------------------------
+DROP TABLE IF EXISTS `medias`;
+CREATE TABLE IF NOT EXISTS `medias`
+(
+    `id`                BIGINT UNSIGNED         NOT NULL PRIMARY KEY COMMENT '媒体资源ID',
+    `media_type`        ENUM('image', 'video', 'audio', 'document', 'archive', 'other') NOT NULL DEFAULT 'image' COMMENT '媒体资源类型 image:图片 video:视频 audio:音频 document:文档 archive:压缩包 other:其他',
+    `file_md5`          CHAR(32)                NOT NULL DEFAULT '' COMMENT '文件MD5值',
+    `file_name`         VARCHAR(255)            NOT NULL DEFAULT '' COMMENT '文件名称',
+    `file_path`         VARCHAR(512)            NOT NULL DEFAULT '' COMMENT '文件路径',
+    `file_size`         BIGINT UNSIGNED         NOT NULL DEFAULT 0 COMMENT '文件大小, 单位字节',
+    `file_extension`    VARCHAR(25)             NOT NULL DEFAULT '' COMMENT '文件扩展名',
+    `mime_type`         VARCHAR(100)            NOT NULL DEFAULT '' COMMENT '文件MIME类型',
+    `url`               VARCHAR(1024)            NOT NULL DEFAULT '' COMMENT '文件访问URL',
+    `thumbnail_url`     VARCHAR(1024)            NOT NULL DEFAULT '' COMMENT '缩略图URL, 仅图片和视频有效',
+    `description`       VARCHAR(512)            NOT NULL DEFAULT '' COMMENT '文件描述',
+    `created_at`        BIGINT(11) UNSIGNED     NOT NULL DEFAULT 0 COMMENT '创建时间',
+    `updated_at`        BIGINT(11) UNSIGNED     NOT NULL DEFAULT 0 COMMENT '更新时间',
+    INDEX `idx_media_type` (`media_type`) USING BTREE COMMENT '媒体资源类型索引',
+    INDEX `idx_file_name` (`file_name`) USING BTREE COMMENT '文件名称索引'
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 1 COMMENT '媒体资源表';
+
+-- ---------------------------------------------------------------------------------------------------------------------
 -- Table Name:  系统配置表
 -- Description:
 -- ---------------------------------------------------------------------------------------------------------------------
@@ -35,14 +60,14 @@ DROP TABLE IF EXISTS `options`;
 CREATE TABLE IF NOT EXISTS `options`
 (
     `id`                 BIGINT UNSIGNED         NOT NULL PRIMARY KEY COMMENT '配置ID',
-    `option_group`       VARCHAR(75)             NOT NULL DEFAULT '' COMMENT '配置分组',
     `option_name`        VARCHAR(75)             NOT NULL UNIQUE COMMENT '配置名',
     `display_name`       VARCHAR(75)             NOT NULL DEFAULT '' COMMENT '配置显示名',
     `option_value`       TEXT                    NOT NULL COMMENT '配置值',
     `description`        VARCHAR(512)            NOT NULL DEFAULT '' COMMENT '配置描述',
     `created_at`         BIGINT(11) UNSIGNED     NOT NULL DEFAULT 0 COMMENT '创建时间',
     `updated_at`         BIGINT(11) UNSIGNED     NOT NULL DEFAULT 0 COMMENT '更新时间',
-    INDEX `idx_option_name` (`option_name`) USING BTREE COMMENT '配置键索引'
+    `customized`         TINYINT(2) UNSIGNED     NOT NULL DEFAULT 0 COMMENT '是否为自定义配置 0:否 1:是',
+    UNIQUE KEY `uk_option_name` (`option_name`) USING BTREE COMMENT '配置键索引'
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 1 COMMENT '系统配置表';
 
@@ -123,7 +148,7 @@ CREATE TABLE IF NOT EXISTS `syndromes`
 DROP TABLE IF EXISTS `therapeutics`;
 CREATE TABLE IF NOT EXISTS `therapeutics`
 (
-    `id`   BIGINT UNSIGNED             NOT NULL               PRIMARY KEY AUTO_INCREMENT COMMENT '治法ID',
+    `id`   BIGINT UNSIGNED             NOT NULL               PRIMARY KEY COMMENT '治法ID',
     `therapeutics_code`                VARCHAR(20)            NOT NULL DEFAULT ''    COMMENT '治法编码',
     `therapeutics_name`                VARCHAR(255)           NOT NULL DEFAULT ''    COMMENT '治法名称',
     `therapeutics_name_pinyin`         VARCHAR(255)           NOT NULL DEFAULT '' COMMENT '治法名称拼音',

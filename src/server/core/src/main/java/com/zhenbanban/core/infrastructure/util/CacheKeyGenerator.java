@@ -118,8 +118,22 @@ public final class CacheKeyGenerator {
      * @param adminId 管理员ID
      * @return 缓存键
      */
-    public static String getAdminMenusCacheKey(long adminId) {
+    public static String getAdminMenusKey(long adminId) {
         return generate("ADMIN-MENUS", adminId);
+    }
+
+    /**
+     * 获取对象存储服务配置缓存键
+     */
+    public static String getCosSettingKey() {
+        return generate("COS-SETTING");
+    }
+
+    /**
+     * 获取对象存储服务配置缓存键
+     */
+    public static String getCosCredentialsKey() {
+        return generate("COS-CREDENTIALS");
     }
 
 }

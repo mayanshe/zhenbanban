@@ -19,7 +19,7 @@ const PROFILE: AppRouteRecordRaw = {
       meta: {
         locale: '个人基础资料',
         requiresAuth: true,
-        roles: ['*'],
+        roles: ['a'],
       },
     },
   ],
