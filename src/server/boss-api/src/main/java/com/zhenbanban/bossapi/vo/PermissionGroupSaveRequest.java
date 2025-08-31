@@ -51,6 +51,7 @@ public class PermissionGroupSaveRequest {
     @Size(max = 255, message = "权限组描述不能超过255个字符")
     private String description = "";     // 权限组描述
 
+    @Builder.Default
     @NotNull(message = "排序不能为空")
     @Min(value = 0, message = "排序必须为非负整数")
     private Integer sort = 0;            // 排序，倒叙

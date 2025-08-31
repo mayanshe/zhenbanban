@@ -74,8 +74,10 @@ public class Admin extends AbsAggregate {
     @Builder.Default
     private Set<String> roleNames = Set.of();       // 管理员角色名称集合
 
+    @Builder.Default
     private Set<String> permissionNames = Set.of(); // 管理员权限名称集合
 
+    @Builder.Default
     private boolean superAdmin = false;             // 是否为系统管理员
 
     /**
