@@ -42,6 +42,7 @@ public class CosSettingRequest {
     @NotBlank(message = "用户ID不能为空")
     private String uid;                            // 用户ID
 
+    @Builder.Default
     private String cdnDomain = "";                 // CDN域名
 
     @Builder.Default

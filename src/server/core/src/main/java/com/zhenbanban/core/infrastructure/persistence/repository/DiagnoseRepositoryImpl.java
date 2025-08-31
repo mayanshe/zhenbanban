@@ -37,7 +37,7 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * 领域仓储实现 : 疾病诊断
  *
- * @author zhangxihai 2025/8/03
+ * @author zhangxihai 2025/8/27
  */
 @Repository
 public class DiagnoseRepositoryImpl implements DiagnoseRepository {
@@ -65,7 +65,7 @@ public class DiagnoseRepositoryImpl implements DiagnoseRepository {
     public Long save(Diagnose aggregate, boolean isNew) {
         if (aggregate.isDeleted()) {
             if (diagnoseMapper.delete(aggregate.getId()) <= 0) {
-                throw new ServiceUnavailableException("删除疾病诊断失败");
+                throw new InternalServerException("删除疾病诊断失败");
             }
             return aggregate.getId();
         }
@@ -76,7 +76,7 @@ public class DiagnoseRepositoryImpl implements DiagnoseRepository {
 
         if (isNew) {
             if (diagnoseMapper.insert(po) <= 0) {
-                throw new ServiceUnavailableException("添加疾病诊断失败");
+                throw new InternalServerException("添加疾病诊断失败");
             }
             return po.getId();
         }
@@ -106,4 +106,5 @@ public class DiagnoseRepositoryImpl implements DiagnoseRepository {
 
         return diagnoseMapper.findById(id);
     }
+
 }

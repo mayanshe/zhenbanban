@@ -21,13 +21,14 @@
 package com.zhenbanban.core.application.dto;
 
 import com.zhenbanban.core.application.common.BaseCommand;
+import com.zhenbanban.core.infrastructure.util.PinyinUtils;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 /**
  * 命令载体 : 疾病诊断
  *
- * @author zhangxihai 2025/8/03
+ * @author zhangxihai 2025/8/27
  */
 @Getter
 @Setter
@@ -35,20 +36,72 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DiagnoseAmdCommand extends BaseCommand<Long> {
-    private Integer icdType;
-    private String icdCode;
-    private String icdName;
-    private String icdNamePinyin;
-    private String icdNamePinyinAbbr;
-    private String icdOptionalName;
-    private String icdOptionalNamePinyin;
-    private String icdOptionalNamePinyinAbbr;
-    private String icdAliasName;
-    private String icdAliasNamePinyin;
-    private String icdAliasNamePinyinAbbr;
-    private String description;
-    private String chapterCode;
-    private String chapterName;
-    private String blockCode;
-    private String blockName;
+    private Integer icdType;                      // 诊断类型
+
+    private String icdCode;                       // 诊断编码
+
+    private String icdName;                       // 诊断名
+
+    private String icdNamePinyin;                 // 诊断名拼音
+
+    private String icdNamePinyinAbbr;             //  诊断名拼音首字母
+
+    private String icdOptionalName;               // 可选用名
+
+    private String icdOptionalNamePinyin;         // 可选用名拼音
+
+    private String icdOptionalNamePinyinAbbr;     // 可选用名拼音首字母
+
+    private String icdAliasName;                  // 别名
+
+    private String icdAliasNamePinyin;            // 别名拼音
+
+    private String icdAliasNamePinyinAbbr;        // 别名拼音首字母
+
+    private String description;                   // 诊断描述
+
+    private String chapterCode;                   // 章节编码
+
+    private String chapterName;                   // 章节名称
+
+    private String blockCode;                     // 病种编码
+
+    private String blockName;                     // 病种名称
+
+    private void setIcdNamePinyin(String value) {}
+
+    public String getIcdNamePinyin() {
+        return PinyinUtils.getPinyin(this.icdName);
+    }
+
+    private void setIcdNamePinyinAbbr(String value) {}
+
+    public String getIcdNamePinyinAbbr() {
+        return PinyinUtils.getPinyinInitial(this.icdName);
+    }
+
+    private void setIcdOptionalNamePinyin(String value) {}
+
+    public String getIcdOptionalNamePinyin() {
+        return PinyinUtils.getPinyin(this.icdOptionalName);
+    }
+
+    private void setIcdOptionalNamePinyinAbbr(String value) {}
+
+    public String getIcdOptionalNamePinyinAbbr() {
+        return PinyinUtils.getPinyinInitial(this.icdOptionalName);
+    }
+
+    private void setIcdAliasNamePinyin(String value) {}
+
+    public String getIcdAliasNamePinyin() {
+        return PinyinUtils.getPinyin(this.icdAliasName);
+    }
+
+    private void setIcdAliasNamePinyinAbbr(String value) {}
+
+    public String getIcdAliasNamePinyinAbbr() {
+        return PinyinUtils.getPinyinInitial(this.icdAliasName);
+    }
+
 }

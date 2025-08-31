@@ -14,9 +14,9 @@
                 </a-form-item>
               </a-col>
               <a-col :span="8">
-                <a-form-item field="icdType" label="ICD类型:">
+                <a-form-item field="icdType" label="诊断类型:">
                   <a-select v-model="searchData.icdType" placeholder="请选择" allow-clear>
-                    <a-option :value="1">国临2.0</a-option>
+                    <a-option :value="1">ICD国临2.0</a-option>
                     <a-option :value="2">中医GB/T15657-2021</a-option>
                     <a-option :value="3">医保2.0</a-option>
                   </a-select>
@@ -53,7 +53,7 @@
               <template #icon>
                 <icon-plus />
               </template>
-              添加
+              添加疾病诊断
             </a-button>
           </a-space>
         </a-col>
@@ -73,7 +73,7 @@
       >
         <template #optional="{ record }">
           <a-space>
-            <a-button type="text" size="mimi" @click="handleOpenSingle('modify', record.id)">
+            <a-button type="text" size="mimi" @click="console.log(JSON.stringify(record));handleOpenSingle('modify', record.id)">
               编辑
             </a-button>
             <a-popconfirm content="确定删除此诊断?" @ok="handleDelete(record.id)">
@@ -106,7 +106,7 @@ const handleOpenSingle = async (actionValue: string, idValue: string) => {
   single.value = {
     open: true,
     action: actionValue,
-    id: idValue,
+    id: idValue.toString(),
   }
 }
 
@@ -117,14 +117,14 @@ const handleSuccess = async () => {
 
 // region 列表
 const columns = [
-  { title: 'ICD编码', dataIndex: 'icdCode' },
-  { title: 'ICD名称', dataIndex: 'icdName' },
-  { title: 'ICD类型', dataIndex: 'icdType',
+  { title: '诊断编码', dataIndex: 'icdCode' },
+  { title: '诊断名称', dataIndex: 'icdName' },
+  { title: '诊断类型', dataIndex: 'icdType',
     render: (data: any) => {
         const record = data.record as DiagnoseView;
         switch (record.icdType) {
             case 1:
-                return '国临2.0';
+                return 'ICD国临2.0';
             case 2:
                 return '中医GB/T15657-2021';
             case 3:
@@ -148,6 +148,7 @@ const generateSearchModel = (): DiagnoseSearchModel => {
   return {
     keywords: '',
     icdType: null,
+    deleted: false
   }
 }
 

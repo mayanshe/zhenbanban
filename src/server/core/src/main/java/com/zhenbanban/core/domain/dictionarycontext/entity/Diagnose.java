@@ -68,7 +68,6 @@ public class Diagnose extends AbsAggregate {
                 .diagnoseId(this.getId())
                 .icdName(this.getIcdName())
                 .build();
-        event.setCreatedBy("current");
 
         this.addEvent(event);
     }
@@ -84,7 +83,6 @@ public class Diagnose extends AbsAggregate {
                 .diagnoseId(this.getId())
                 .icdName(this.getIcdName())
                 .build();
-        event.setCreatedBy("current");
 
         this.addEvent(event);
     }
@@ -100,8 +98,8 @@ public class Diagnose extends AbsAggregate {
                 .diagnoseId(this.getId())
                 .icdName(this.getIcdName())
                 .build();
-        event.setCreatedBy("current");
 
         this.addEvent(event);
     }
+
 }

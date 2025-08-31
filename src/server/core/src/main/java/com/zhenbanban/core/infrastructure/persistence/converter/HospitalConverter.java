@@ -42,6 +42,8 @@ public interface HospitalConverter extends IConverter {
     HospitalConverter INSTANCE = Mappers.getMapper(HospitalConverter.class);
 
     @Mappings({
+            @Mapping(target = "createdAt", ignore = true),
+            @Mapping(target = "updatedAt", ignore = true),
             @Mapping(target = "ownershipType", source = "ownershipType", qualifiedByName = "ownershipTypeToString"),
             @Mapping(target = "hospitalType", source = "hospitalType", qualifiedByName = "hospitalTypeToString"),
             @Mapping(target = "hospitalLevel", source = "hospitalLevel", qualifiedByName = "hospitalLevelToString"),

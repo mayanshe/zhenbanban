@@ -1,5 +1,5 @@
 <template>
-  <a-drawer :width="420" :visible="dialog.open" @before-ok="handleValidate" @ok="handleSubmit" @cancel="handleClose" unmountOnClose>
+  <a-drawer :width="520" :visible="dialog.open" @before-ok="handleValidate" @ok="handleSubmit" @cancel="handleClose" unmountOnClose>
     <template #title>
       {{ dialog.title }}
     </template>
@@ -13,35 +13,17 @@
             <a-option :value="3">医保2.0</a-option>
           </a-select>
         </a-form-item>
-        <a-form-item field="icdCode" label="ICD编码 : ">
+        <a-form-item field="icdCode" label="诊断编码 : ">
           <a-input v-model="formData.icdCode" placeholder="请输入ICD编码" />
         </a-form-item>
-        <a-form-item field="icdName" label="ICD名称 : ">
+        <a-form-item field="icdName" label="诊断名称 : ">
           <a-input v-model="formData.icdName" placeholder="请输入ICD名称" />
         </a-form-item>
-        <a-form-item field="icdNamePinyin" label="ICD名称拼音 : ">
-          <a-input v-model="formData.icdNamePinyin" placeholder="请输入ICD名称拼音" />
-        </a-form-item>
-        <a-form-item field="icdNamePinyinAbbr" label="ICD名称拼音首字母 : ">
-          <a-input v-model="formData.icdNamePinyinAbbr" placeholder="请输入ICD名称拼音首字母" />
-        </a-form-item>
-        <a-form-item field="icdOptionalName" label="ICD可选名称 : ">
+        <a-form-item field="icdOptionalName" label="诊断可选名称 : ">
           <a-input v-model="formData.icdOptionalName" placeholder="请输入ICD可选名称" />
         </a-form-item>
-        <a-form-item field="icdOptionalNamePinyin" label="ICD可选名称拼音 : ">
-          <a-input v-model="formData.icdOptionalNamePinyin" placeholder="请输入ICD可选名称拼音" />
-        </a-form-item>
-        <a-form-item field="icdOptionalNamePinyinAbbr" label="ICD可选名称拼音首字母 : ">
-          <a-input v-model="formData.icdOptionalNamePinyinAbbr" placeholder="请输入ICD可选名称拼音首字母" />
-        </a-form-item>
-        <a-form-item field="icdAliasName" label="ICD别名 : ">
+        <a-form-item field="icdAliasName" label="诊断别名 : ">
           <a-input v-model="formData.icdAliasName" placeholder="请输入ICD别名" />
-        </a-form-item>
-        <a-form-item field="icdAliasNamePinyin" label="ICD别名拼音 : ">
-          <a-input v-model="formData.icdAliasNamePinyin" placeholder="请输入ICD别名拼音" />
-        </a-form-item>
-        <a-form-item field="icdAliasNamePinyinAbbr" label="ICD别名拼音首字母 : ">
-          <a-input v-model="formData.icdAliasNamePinyinAbbr" placeholder="请输入ICD别名拼音首字母" />
         </a-form-item>
         <a-form-item field="description" label="描述 : ">
           <a-textarea v-model="formData.description" row="3" />
@@ -111,14 +93,8 @@ const generate = (): Diagnose => {
     icdType: 1,
     icdCode: '',
     icdName: '',
-    icdNamePinyin: '',
-    icdNamePinyinAbbr: '',
     icdOptionalName: '',
-    icdOptionalNamePinyin: '',
-    icdOptionalNamePinyinAbbr: '',
     icdAliasName: '',
-    icdAliasNamePinyin: '',
-    icdAliasNamePinyinAbbr: '',
     description: '',
     chapterCode: '',
     chapterName: '',

@@ -20,32 +20,58 @@
  */
 package com.zhenbanban.bossapi.vo;
 
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.validation.constraints.Size;
+import lombok.*;
 
+/**
+ * Vo : 疾病诊断
+ *
+ * @author zhangxihai 2025/8/27
+ */
 @Getter
 @Setter
-@Builder
+@Builder(toBuilder = true)
+@NoArgsConstructor
+@AllArgsConstructor
 public class DiagnoseSaveRequest {
-    @NotBlank(message = "ICD类型不能为空")
+    @Min(value = 1, message = "诊断类型不能为空")
     private Integer icdType;
-    @NotBlank(message = "ICD编码不能为空")
+
+    @NotBlank(message = "诊断编码不能为空")
+    @Size(max = 20, message = "ICD编码长度不能超过20个字符")
     private String icdCode;
-    @NotBlank(message = "ICD名称不能为空")
+
+    @NotBlank(message = "诊断名称不能为空")
+    @Size(max = 255, message = "诊断名称长度不能超过200个字符")
     private String icdName;
-    private String icdNamePinyin;
-    private String icdNamePinyinAbbr;
-    private String icdOptionalName;
-    private String icdOptionalNamePinyin;
-    private String icdOptionalNamePinyinAbbr;
-    private String icdAliasName;
-    private String icdAliasNamePinyin;
-    private String icdAliasNamePinyinAbbr;
-    private String description;
-    private String chapterCode;
-    private String chapterName;
-    private String blockCode;
-    private String blockName;
+
+    @Size(max = 255, message = "诊断可选用名长度不能超过200个字符")
+    @Builder.Default
+    private String icdOptionalName = "";
+
+    @Size(max = 512, message = "诊断别名长度不能超过512个字符")
+    @Builder.Default
+    private String icdAliasName = "";
+
+    @Builder.Default
+    private String description = "";
+
+    @Builder.Default
+    @Size(max = 5, message = "章节编码长度不能超过5个字符")
+    private String chapterCode = "";
+
+    @Builder.Default
+    @Size(max = 255, message = "章节名称长度不能超过255个字符")
+    private String chapterName = "";
+
+    @Builder.Default
+    @Size(max = 10, message = "大类编码长度不能超过10个字符")
+    private String blockCode = "";
+
+    @Builder.Default
+    @Size(max = 255, message = "大类名称长度不能超过255个字符")
+    private String blockName = "";
+
 }

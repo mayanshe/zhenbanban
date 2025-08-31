@@ -60,6 +60,7 @@ public class CosSetting implements Serializable {
     @Builder.Default
     private int durationSeconds = 3600;              // 临时密钥有效期，单位：秒，默认1800秒
 
+    @Builder.Default
     private transient boolean configured = false;    // 是否已配置
 
     public boolean isConfigured() {

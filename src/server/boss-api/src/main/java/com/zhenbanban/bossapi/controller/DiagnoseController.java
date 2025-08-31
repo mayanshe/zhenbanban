@@ -38,7 +38,7 @@ import org.springframework.web.bind.annotation.*;
 /**
  * 控制器 : 疾病诊断
  *
- * @author zhangxihai 2025/8/03
+ * @author zhangxihai 2025/8/27
  */
 @RestController
 @RequestMapping("/diagnoses")
@@ -119,16 +119,21 @@ public class DiagnoseController {
     public Pagination<DiagnoseDto> getDiagnosePagination(
             @RequestParam(value = "page", defaultValue = "1", required = false) Integer page,
             @RequestParam(value = "pageSize", defaultValue = "15", required = false) Integer pageSize,
-            @RequestParam(value = "icdType", required = false) Integer icdType,
-            @RequestParam(value = "keywords", defaultValue = "", required = false) String keywords
+            @RequestParam(value = "icdType", defaultValue = "0", required = false) Integer icdType,
+            @RequestParam(value = "keywords", defaultValue = "", required = false) String keywords,
+            @RequestParam(value = "icdCode", defaultValue = "", required = false) String icdCode,
+            @RequestParam(value = "deleted", defaultValue = "false", required = false) boolean deleted
     ) {
         DiagnoseQuery query = DiagnoseQuery.builder()
                 .page(page)
                 .pageSize(pageSize)
                 .icdType(icdType)
                 .keywords(keywords)
+                .icdCode(icdCode)
+                .deleted(deleted)
                 .build();
 
         return diagnoseQueryHandler.handleQueryPage(query);
     }
+
 }

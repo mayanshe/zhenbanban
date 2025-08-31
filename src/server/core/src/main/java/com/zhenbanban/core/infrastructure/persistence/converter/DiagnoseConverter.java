@@ -31,23 +31,23 @@ import org.mapstruct.factory.Mappers;
 /**
  * 转换器 : 疾病诊断
  *
- * @author zhangxihai 2025/7/13
+ * @author zhangxihai 2025/8/27
  */
 @Mapper
-public interface DiagnoseConverter {
+public interface DiagnoseConverter extends IConverter {
     DiagnoseConverter INSTANCE = Mappers.getMapper(DiagnoseConverter.class);
 
     @Mappings({
             @Mapping(target = "createdAt", ignore = true),
             @Mapping(target = "updatedAt", ignore = true),
-            @Mapping(target = "deletedAt", ignore = true)
+            @Mapping(target = "deletedAt", source = "deleted", qualifiedByName = "isDeletedToDeletedAt")
     })
     DiagnosePo toPo(Diagnose diagnose);
 
     @Mappings({
             @Mapping(target = "createdAt", ignore = true),
             @Mapping(target = "updatedAt", ignore = true),
-            @Mapping(target = "deletedAt", ignore = true)
+            @Mapping(target = "deletedAt", source = "deleted", qualifiedByName = "isDeletedToDeletedAt")
     })
     DiagnosePo updatePo(Diagnose diagnose, @MappingTarget DiagnosePo po);
 

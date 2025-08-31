@@ -64,4 +64,5 @@ public class DiagnoseQueryHandlerImpl implements DiagnoseQueryHandler {
         return Pager.paginate(mapper, query.getPage(), query.getPageSize(), query.toMap(),
                 source -> (new ModelMapper()).map(source, DiagnoseDto.class));
     }
+
 }

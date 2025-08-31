@@ -20,32 +20,72 @@
  */
 package com.zhenbanban.core.application.dto;
 
+import com.zhenbanban.core.infrastructure.util.DateUtils;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.bouncycastle.pqc.crypto.newhope.NHSecretKeyProcessor;
 
+/**
+ * Dto : 疾病诊断
+ *
+ * @author zhangxihai 2025/8/27
+ */
 @Getter
 @Setter
 @SuperBuilder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
 public class DiagnoseDto {
-    private Long id;
-    private Integer icdType;
-    private String icdCode;
-    private String icdName;
-    private String icdNamePinyin;
-    private String icdNamePinyinAbbr;
-    private String icdOptionalName;
-    private String icdOptionalNamePinyin;
-    private String icdOptionalNamePinyinAbbr;
-    private String icdAliasName;
-    private String icdAliasNamePinyin;
-    private String icdAliasNamePinyinAbbr;
-    private String description;
-    private String chapterCode;
-    private String chapterName;
-    private String blockCode;
-    private String blockName;
-    private long createdAt;
-    private long updatedAt;
+    private String id;                             // 主键ID
+
+    private Integer icdType;                     // 诊断类型 1-ICD-10 2-ICD-9 3-ICD-11
+
+    private String icdCode;                      // 诊断编码
+
+    private String icdName;                      // 诊断名
+
+    private String icdNamePinyin;                // 诊断名拼音
+
+    private String icdNamePinyinAbbr;            //  诊断名拼音首字母
+
+    private String icdOptionalName;              // 可选用名
+
+    private String icdOptionalNamePinyin;        // 可选用名拼音
+
+    private String icdOptionalNamePinyinAbbr;    // 可选用名拼音首字母
+
+    private String icdAliasName;                 // 别名
+
+    private String icdAliasNamePinyin;           // 别名拼音
+
+    private String icdAliasNamePinyinAbbr;       // 别名拼音首字母
+
+    private String description;                  // 诊断描述
+
+    private String chapterCode;                  // 章节编码
+
+    private String chapterName;                  // 章节名称
+
+    private String blockCode;                    // 疾病组编码
+
+    private String blockName;                    // 疾病组名称
+
+    private String createdAt;                      // 创建时间
+
+    private String updatedAt;                      // 最后修改时间
+
+    private String deletedAt;                      // 删除时间 0-未删除，非0-删除时间
+
+    public String getCreatedAt() {
+        return createdAt == null || createdAt.isBlank() ? "" : DateUtils.timestampToFormattedDate(createdAt);
+    }
+
+    public String getUpdatedAt() {
+        return updatedAt == null || updatedAt.isBlank() ? "" : DateUtils.timestampToFormattedDate(updatedAt);
+    }
+
+    public String getDeletedAt() {
+        return deletedAt == null || deletedAt.isBlank() || "0".equals(deletedAt) ? "" : DateUtils.timestampToFormattedDate(deletedAt);
+    }
+
 }

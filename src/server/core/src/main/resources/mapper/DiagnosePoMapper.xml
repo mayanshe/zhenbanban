@@ -5,40 +5,40 @@
 
     <insert id="insert" parameterType="DiagnosePo" useGeneratedKeys="false">
         INSERT INTO diagnoses (id, icd_type, icd_code, icd_name, icd_name_pinyin, icd_name_pinyin_abbr,
-                               icd_optional_name, icd_optional_name_pinyin, icd_optional_name_pinyin_abbr,
-                               icd_alias_name, icd_alias_name_pinyin, icd_alias_name_pinyin_abbr, description,
-                               chapter_code, chapter_name, block_code, block_name, created_at, updated_at, deleted_at)
+        icd_optional_name, icd_optional_name_pinyin, icd_optional_name_pinyin_abbr,
+        icd_alias_name, icd_alias_name_pinyin, icd_alias_name_pinyin_abbr, description,
+        chapter_code, chapter_name, block_code, block_name, created_at)
         VALUES (#{id}, #{icdType}, #{icdCode}, #{icdName}, #{icdNamePinyin}, #{icdNamePinyinAbbr},
-                #{icdOptionalName}, #{icdOptionalNamePinyin}, #{icdOptionalNamePinyinAbbr}, #{icdAliasName},
-                #{icdAliasNamePinyin}, #{icdAliasNamePinyinAbbr}, #{description}, #{chapterCode}, #{chapterName},
-                #{blockCode}, #{blockName}, #{createdAt}, #{updatedAt}, #{deletedAt})
+        #{icdOptionalName}, #{icdOptionalNamePinyin}, #{icdOptionalNamePinyinAbbr}, #{icdAliasName},
+        #{icdAliasNamePinyin}, #{icdAliasNamePinyinAbbr}, #{description}, #{chapterCode}, #{chapterName},
+        #{blockCode}, #{blockName}, #{createdAt})
     </insert>
 
     <update id="update" parameterType="DiagnosePo">
         UPDATE diagnoses
-        SET icd_type                            = #{icdType},
-            icd_code                            = #{icdCode},
-            icd_name                            = #{icdName},
-            icd_name_pinyin                     = #{icdNamePinyin},
-            icd_name_pinyin_abbr                = #{icdNamePinyinAbbr},
-            icd_optional_name                   = #{icdOptionalName},
-            icd_optional_name_pinyin            = #{icdOptionalNamePinyin},
-            icd_optional_name_pinyin_abbr       = #{icdOptionalNamePinyinAbbr},
-            icd_alias_name                      = #{icdAliasName},
-            icd_alias_name_pinyin               = #{icdAliasNamePinyin},
-            icd_alias_name_pinyin_abbr          = #{icdAliasNamePinyinAbbr},
-            description                         = #{description},
-            chapter_code                        = #{chapterCode},
-            chapter_name                        = #{chapterName},
-            block_code                          = #{blockCode},
-            block_name                          = #{blockName},
-            updated_at                          = #{updatedAt}
+        SET icd_type = #{icdType},
+        icd_code = #{icdCode},
+        icd_name = #{icdName},
+        icd_name_pinyin = #{icdNamePinyin},
+        icd_name_pinyin_abbr = #{icdNamePinyinAbbr},
+        icd_optional_name = #{icdOptionalName},
+        icd_optional_name_pinyin = #{icdOptionalNamePinyin},
+        icd_optional_name_pinyin_abbr = #{icdOptionalNamePinyinAbbr},
+        icd_alias_name = #{icdAliasName},
+        icd_alias_name_pinyin = #{icdAliasNamePinyin},
+        icd_alias_name_pinyin_abbr = #{icdAliasNamePinyinAbbr},
+        description = #{description},
+        chapter_code = #{chapterCode},
+        chapter_name = #{chapterName},
+        block_code = #{blockCode},
+        block_name = #{blockName},
+        updated_at = #{updatedAt}
         WHERE id = #{id}
     </update>
 
     <delete id="delete" parameterType="Long">
-        DELETE
-        FROM diagnoses
+        UPDATE diagnoses
+        SET deleted_at = UNIX_TIMESTAMP(NOW(3)) * 1000
         WHERE id = #{id}
     </delete>
 
@@ -59,9 +59,21 @@
         FROM diagnoses
     </select>
 
-    <select id="count" parameterType="java.util.Map" resultType="long">
+    <select id="count" parameterType="java.util.Map" resultType="int">
         SELECT COUNT(id) FROM diagnoses
         <where>
+            <if test="id != null and id > 0">
+                AND id = #{id}
+            </if>
+            <if test="deleted != null and deleted">
+                AND deleted_at > 0
+            </if>
+            <if test="deleted != null and !deleted">
+                AND deleted_at = 0
+            </if>
+            <if test="icdCode != null and icdCode.length > 0">
+                AND icd_code = #{icdCode}
+            </if>
             <if test="icdType != null and icdType > 0">
                 AND icd_type = #{icdType}
             </if>
@@ -113,7 +125,7 @@
                 #{orderBy}
             </when>
             <otherwise>
-                id DESC
+                id ASC
             </otherwise>
         </choose>
         <if test="offset != null and limit != null">

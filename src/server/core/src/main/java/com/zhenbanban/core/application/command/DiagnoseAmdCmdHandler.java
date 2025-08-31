@@ -26,7 +26,7 @@ import com.zhenbanban.core.application.dto.DiagnoseAmdCommand;
 /**
  * 命令接口 : 疾病诊断
  *
- * @author zhangxihai 2025/8/03
+ * @author zhangxihai 2025/8/27
  */
 public interface DiagnoseAmdCmdHandler extends IAmdCmdHandler<DiagnoseAmdCommand, Long> {
 

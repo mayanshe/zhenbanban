@@ -29,9 +29,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Query : DiagnoseQuery
+ * Query : 疾病诊断
  *
- * @author zhangxihai 2025/8/15
+ * @author zhangxihai 2025/8/27
  */
 @Getter
 @Setter
@@ -45,12 +45,23 @@ public class DiagnoseQuery {
     @Builder.Default
     private int pageSize = 15;
 
+    private Long id;
+
     private String keywords;
 
     private Integer icdType;
 
+    private String icdCode;
+
+    private boolean deleted;
+
     public Map<String, Object> toMap() {
         Map<String, Object> map = new HashMap<>();
+
+        if (id != null && id > 0) {
+            map.put("id", id);
+        }
+
         if (keywords != null && !keywords.isBlank()) {
             List<String> keywordList = Arrays.asList(keywords.split(" "));
             map.put("keywords", keywordList);
@@ -60,6 +71,13 @@ public class DiagnoseQuery {
             map.put("icdType", icdType);
         }
 
+        if (icdCode != null && !icdCode.isBlank()) {
+            map.put("icdCode", icdCode);
+        }
+
+        map.put("deleted", deleted);
+
         return map;
     }
+
 }

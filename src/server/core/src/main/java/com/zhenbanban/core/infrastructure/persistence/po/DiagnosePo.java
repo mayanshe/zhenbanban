@@ -34,27 +34,47 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DiagnosePo {
-    private Long id;
-    private Integer icdType;
-    private String icdCode;
-    private String icdName;
-    private String icdNamePinyin;
-    private String icdNamePinyinAbbr;
-    private String icdOptionalName;
-    private String icdOptionalNamePinyin;
-    private String icdOptionalNamePinyinAbbr;
-    private String icdAliasName;
-    private String icdAliasNamePinyin;
-    private String icdAliasNamePinyinAbbr;
-    private String description;
-    private String chapterCode;
-    private String chapterName;
-    private String blockCode;
-    private String blockName;
+    private Long id;                              // 主键ID
+
+    private Integer icdType;                      // ICD 版本类型
+
+    private String icdCode;                       // 诊断代码
+
+    private String icdName;                       // 诊断名称
+
+    private String icdNamePinyin;                 // 诊断拼音
+
+    private String icdNamePinyinAbbr;             // 诊断拼音首字母
+
+    private String icdOptionalName;              // 可选用名
+
+    private String icdOptionalNamePinyin;        // 可选用名拼音
+
+    private String icdOptionalNamePinyinAbbr;    // 可选用名拼音首字母
+
+    private String icdAliasName;                 // 别名
+
+    private String icdAliasNamePinyin;           // 别名拼音
+
+    private String icdAliasNamePinyinAbbr;       // 别名拼音首字母
+
+    private String description;                  // 诊断描述
+
+    private String chapterCode;                  // 章节代码
+
+    private String chapterName;                  // 章节名称
+
+    private String blockCode;                    // 章代码
+
+    private String blockName;                    // 章名称
+
     @Builder.Default
-    private long createdAt = 0L;
+    private long createdAt = 0L;                 // 创建时间
+
     @Builder.Default
-    private long updatedAt = 0L;
+    private long updatedAt = 0L;                 // 最后修改时间
+
     @Builder.Default
-    private long deletedAt = 0L;
+    private long deletedAt = 0L;                 // 删除时间
+
 }

@@ -26,7 +26,7 @@ import com.zhenbanban.core.domain.dictionarycontext.entity.Diagnose;
 /**
  * 领域仓储接口 : 疾病诊断
  *
- * @author zhangxihai 2025/8/03
+ * @author zhangxihai 2025/8/27
  */
 public interface DiagnoseRepository extends IDomainRepository<Diagnose, Long> {
 

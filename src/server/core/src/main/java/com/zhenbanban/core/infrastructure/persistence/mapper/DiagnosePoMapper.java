@@ -33,7 +33,7 @@ import java.util.List;
  */
 @Mapper
 public interface DiagnosePoMapper extends PaginateMapper<DiagnosePo> {
-    Long insert(DiagnosePo diagnosePo);
+    int insert(DiagnosePo diagnosePo);
 
     int update(DiagnosePo diagnosePo);
 
@@ -44,4 +44,5 @@ public interface DiagnosePoMapper extends PaginateMapper<DiagnosePo> {
     Long findIdByCodeAndName(@Param("icdCode") String icdCode, @Param("icdName") String icdName);
 
     List<DiagnosePo> findAll();
+
 }

@@ -27,7 +27,7 @@ import com.zhenbanban.core.application.dto.DiagnoseQuery;
 /**
  * Query Interface : 疾病诊断查询处理器
  *
- * @author zhangxihai 2025/8/15
+ * @author zhangxihai 2025/8/27
  */
 public interface DiagnoseQueryHandler extends ISingleAndListQuery<DiagnoseDto, Long, DiagnoseQuery> {
 

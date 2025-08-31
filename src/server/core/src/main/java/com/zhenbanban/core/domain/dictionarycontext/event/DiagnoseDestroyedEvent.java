@@ -39,6 +39,6 @@ import lombok.experimental.SuperBuilder;
 public class DiagnoseDestroyedEvent extends AbsDomainEvent {
     private Long diagnoseId;        // 疾病诊断ID
 
-    private String icdName;    // 疾病诊断名称
+    private String icdName;         // 疾病诊断名称
 
 }

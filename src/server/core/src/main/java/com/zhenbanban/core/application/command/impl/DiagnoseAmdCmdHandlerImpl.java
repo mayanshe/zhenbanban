@@ -34,7 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * 命令实现 : 疾病诊断
  *
- * @author zhangxihai 2025/8/03
+ * @author zhangxihai 2025/8/27
  */
 @Service
 @RequiredArgsConstructor
@@ -83,4 +83,5 @@ public class DiagnoseAmdCmdHandlerImpl implements DiagnoseAmdCmdHandler {
         diagnoseRepository.save(diagnose, false);
         domainEventPublisher.publish(diagnose.getEvents());
     }
+
 }
