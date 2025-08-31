@@ -76,7 +76,7 @@ public class PermissionRepositoryImpl implements PermissionRepository {
         if (aggregate.isDeleted()) {
             if (permissionMapper.delete(aggregate.getId()) <= 0) {
                 rolePermissionMapper.deleteByPermissionId(aggregate.getId());
-                throw new ServiceUnavailableException("删除权限失败");
+                throw new InternalServerException("删除权限失败");
             }
 
             return aggregate.getId();
@@ -89,7 +89,7 @@ public class PermissionRepositoryImpl implements PermissionRepository {
         // 添加
         if (isNew) {
             if (permissionMapper.insert(po) <= 0) {
-                throw new ServiceUnavailableException("添加权限失败");
+                throw new InternalServerException("添加权限失败");
             }
 
             return po.getId();
