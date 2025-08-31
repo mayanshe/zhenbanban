@@ -47,6 +47,7 @@ public class MediaPo {
 
     private String mimeType;               // 文件MIME类型（如：image/jpeg、image/png等）
 
+    @Builder.Default
     private String url = "";               // 文件访问URL
 
     @Builder.Default

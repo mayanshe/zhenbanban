@@ -20,54 +20,58 @@
  */
 package com.zhenbanban.bossapi.vo;
 
-import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 /**
- * Request : Cos对象存储服务配置请求
+ * Vo : 疾病诊断
  *
- * @author zhangxihai 2025/8/24
+ * @author zhangxihai 2025/8/27
  */
-@Data
+@Getter
+@Setter
 @Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class CosSettingRequest {
-    @NotBlank(message = "用户ID不能为空")
-    private String uid;                            // 用户ID
+public class DiagnoseSaveRequest {
+    @Min(value = 1, message = "诊断类型不能为空")
+    private Integer icdType;
+
+    @NotBlank(message = "诊断编码不能为空")
+    @Size(max = 20, message = "ICD编码长度不能超过20个字符")
+    private String icdCode;
+
+    @NotBlank(message = "诊断名称不能为空")
+    @Size(max = 255, message = "诊断名称长度不能超过200个字符")
+    private String icdName;
+
+    @Size(max = 255, message = "诊断可选用名长度不能超过200个字符")
+    @Builder.Default
+    private String icdOptionalName = "";
+
+    @Size(max = 512, message = "诊断别名长度不能超过512个字符")
+    @Builder.Default
+    private String icdAliasName = "";
 
     @Builder.Default
-    private String cdnDomain = "";                 // CDN域名
+    private String description = "";
 
     @Builder.Default
-    @NotBlank(message = "SecretId不能为空")
-    private String secretId = "";                 // SecretId
+    @Size(max = 5, message = "章节编码长度不能超过5个字符")
+    private String chapterCode = "";
 
     @Builder.Default
-    @NotBlank(message = "SecretKey不能为空")
-    private String secretKey = "";                 // SecretKey
+    @Size(max = 255, message = "章节名称长度不能超过255个字符")
+    private String chapterName = "";
 
     @Builder.Default
-    @NotBlank(message = "区域不能为空")
-    private String region = "";                    // 区域
+    @Size(max = 10, message = "大类编码长度不能超过10个字符")
+    private String blockCode = "";
 
     @Builder.Default
-    @NotBlank(message = "公读存储桶名称不能为空")
-    private String bucket = "";                    // 存储桶名称
-
-    @Builder.Default
-    @NotBlank(message = "私读读存储桶名称不能为空")
-    private String privateBucket = "";              // 私读私写存储桶名称
-
-    @Builder.Default
-    @Min(value = 900, message = "临时密钥有效期不能小于900秒")
-    @Max(value = 7200, message = "临时密钥有效期不能大于7200秒")
-    private Integer durationSeconds = 3600;        // 临时密钥有效期，单位：秒，默认1800秒
+    @Size(max = 255, message = "大类名称长度不能超过255个字符")
+    private String blockName = "";
 
 }

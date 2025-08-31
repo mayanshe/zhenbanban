@@ -15,11 +15,11 @@ const Dictionary: AppRouteRecordRaw = {
     {
       path: 'diagnoses',
       name: 'DiagnoseManage',
-      component: () => import('@/views/account/index.vue'),
+      component: () => import('@/views/diagnose/index.vue'),
       meta: {
-        locale: 'ICD10诊断',
+        locale: '疾病诊断',
         requiresAuth: false,
-        buttons: ['account:add', 'account:modify', 'account:delete', 'account:activate']
+        buttons: ['diagnose:add', 'diagnose:modify', 'diagnose:delete', 'diagnose:activate']
       },
     },
     {

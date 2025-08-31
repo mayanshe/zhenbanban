@@ -18,31 +18,16 @@
  * distribution of this code must also be licensed under the GPL. Failure
  * to comply with the terms of the GPL may result in legal action.
  */
-package com.zhenbanban.core.domain.systemcontext.event;
+package com.zhenbanban.core.domain.dictionarycontext.repository;
 
-import com.zhenbanban.core.domain.common.AbsDomainEvent;
-import lombok.*;
-import lombok.experimental.SuperBuilder;
+import com.zhenbanban.core.domain.common.IDomainRepository;
+import com.zhenbanban.core.domain.dictionarycontext.entity.Diagnose;
 
 /**
- * Event : 系统配置创建成功感
+ * 领域仓储接口 : 疾病诊断
  *
- * @author zhangxihai 2025/8/23
+ * @author zhangxihai 2025/8/27
  */
-@Getter
-@Setter
-@SuperBuilder(toBuilder = true)
-@ToString(callSuper = false)
-@EqualsAndHashCode(callSuper = true)
-@NoArgsConstructor
-@AllArgsConstructor
-public class OptionCreatedEvent extends AbsDomainEvent {
-    private Long optionId; // 配置ID
-
-    private String optionName; // 配置名称
-
-    private String displayName; // 显示名称
-
-    private String optionValue; // 配置值
+public interface DiagnoseRepository extends IDomainRepository<Diagnose, Long> {
 
 }
