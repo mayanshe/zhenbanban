@@ -105,4 +105,5 @@ public class ChineseMedicinePieceRepositoryImpl implements ChineseMedicinePieceR
 
         return chineseMedicinePieceMapper.findById(id);
     }
+
 }

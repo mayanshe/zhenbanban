@@ -54,7 +54,7 @@
     <select id="count" parameterType="java.util.Map" resultType="int">
         SELECT COUNT(id) FROM chinese_medicine_pieces
         <where>
-            <if test="id != null and id > 0">
+            <if test="id != null and id.length > 0">
                 AND id = #{id}
             </if>
             <if test="deleted != null and deleted">
@@ -82,6 +82,15 @@
     <select id="search" parameterType="java.util.Map" resultType="com.zhenbanban.core.infrastructure.persistence.po.ChineseMedicinePiecePo">
         SELECT * FROM chinese_medicine_pieces
         <where>
+            <if test="id != null and id.length > 0">
+                AND id = #{id}
+            </if>
+            <if test="deleted != null and deleted">
+                AND deleted_at > 0
+            </if>
+            <if test="deleted != null and !deleted">
+                AND deleted_at = 0
+            </if>
             <if test="keywords != null and keywords.size() > 0">
                 AND (
                 <foreach item="w" collection="keywords" separator="OR">
@@ -102,7 +111,7 @@
                 #{orderBy}
             </when>
             <otherwise>
-                id ASC
+                id DESC
             </otherwise>
         </choose>
         <if test="offset != null and limit != null">

@@ -40,4 +40,5 @@ public class ChineseMedicinePieceDestroyedEvent extends AbsDomainEvent {
     private Long pieceId;
 
     private String pieceName;
+
 }

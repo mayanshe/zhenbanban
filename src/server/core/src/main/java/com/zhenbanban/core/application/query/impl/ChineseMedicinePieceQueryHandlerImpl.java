@@ -64,4 +64,5 @@ public class ChineseMedicinePieceQueryHandlerImpl implements ChineseMedicinePiec
         return Pager.paginate(mapper, query.getPage(), query.getPageSize(), query.toMap(),
                 source -> (new ModelMapper()).map(source, ChineseMedicinePieceDto.class));
     }
+
 }

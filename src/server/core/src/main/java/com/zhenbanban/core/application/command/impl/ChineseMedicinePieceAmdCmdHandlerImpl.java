@@ -81,4 +81,5 @@ public class ChineseMedicinePieceAmdCmdHandlerImpl implements ChineseMedicinePie
         chineseMedicinePieceRepository.save(piece, false);
         domainEventPublisher.publish(piece.getEvents());
     }
+
 }

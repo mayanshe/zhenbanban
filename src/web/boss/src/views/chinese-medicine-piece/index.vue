@@ -52,7 +52,7 @@
               <template #icon>
                 <icon-plus />
               </template>
-              添加
+              添加中药饮片
             </a-button>
           </a-space>
         </a-col>
@@ -114,17 +114,18 @@ const handleSuccess = async () => {
 
 const columns = [
   { title: '编码', dataIndex: 'pieceCode' },
-  { title: '名称', dataIndex: 'pieceName' },
-  { title: '别名', dataIndex: 'pieceAlias' },
-  { title: '性味', dataIndex: 'nature' },
-  { title: '归经', dataIndex: 'meridian' },
-  { title: '创建时间', dataIndex: 'createdAt' },
+  { title: '名称', dataIndex: 'pieceName', width: 220},
+  { title: '别名', dataIndex: 'pieceAlias', width: 320},
+  { title: '性味', dataIndex: 'nature', width: 140},
+  { title: '归经', dataIndex: 'meridian', width: 140},
+  { title: '创建时间', dataIndex: 'createdAt'},
+  { title: '修改时间', dataIndex: 'updatedAt' },
   { title: '操作', slotName: 'optional' },
 ]
 
 const pager = ref<Pager>({
   page: 1,
-  pageSize: 10,
+  pageSize: 15,
 })
 
 const generateSearchModel = () => {
@@ -141,12 +142,12 @@ const reset = () => {
 const generateDatalist = () => {
   pager.value = {
     page: 1,
-    pageSize: 10,
+    pageSize: 15,
   }
 
   return {
     page: 1,
-    pageSize: 10,
+    pageSize: 15,
     count: 0,
     total: 0,
     totalPage: 0,
@@ -161,7 +162,7 @@ const pieces = ref<Pagination<ChineseMedicinePieceView>>(generateDatalist())
 
 const load = async () => {
   const result = await getChineseMedicinePiecePagination(searchData.value, pager.value)
-  pieces.value = result.data || generateDatalist()
+  pieces.value = result || generateDatalist()
 }
 
 const search = async () => {

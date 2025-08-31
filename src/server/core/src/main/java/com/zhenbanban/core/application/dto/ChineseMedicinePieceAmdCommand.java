@@ -81,4 +81,5 @@ public class ChineseMedicinePieceAmdCommand extends BaseCommand<Long> {
     public String getPieceAliasPinyinAbbr() {
         return PinyinUtils.getPinyinInitial(this.pieceAlias);
     }
+
 }

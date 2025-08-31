@@ -96,4 +96,6 @@ public class ChineseMedicinePiece extends AbsAggregate {
 
         this.addEvent(event);
     }
+
+
 }

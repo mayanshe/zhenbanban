@@ -67,4 +67,5 @@ public class ChineseMedicinePieceQuery {
 
         return map;
     }
+
 }

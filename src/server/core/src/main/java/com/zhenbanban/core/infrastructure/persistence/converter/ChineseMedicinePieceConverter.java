@@ -55,4 +55,5 @@ public interface ChineseMedicinePieceConverter extends IConverter {
             @Mapping(target = "deleted", ignore = true)
     })
     ChineseMedicinePiece toAggregate(ChineseMedicinePiecePo po);
+
 }

@@ -44,4 +44,5 @@ public interface ChineseMedicinePiecePoMapper extends PaginateMapper<ChineseMedi
     Long findIdByCodeAndName(@Param("pieceCode") String pieceCode, @Param("pieceName") String pieceName);
 
     List<ChineseMedicinePiecePo> findAll();
+
 }

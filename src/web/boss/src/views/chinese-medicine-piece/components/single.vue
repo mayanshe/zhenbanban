@@ -1,5 +1,5 @@
 <template>
-  <a-drawer :width="420" :visible="dialog.open" @before-ok="handleValidate" @ok="handleSubmit" @cancel="handleClose" unmountOnClose>
+  <a-drawer :width="520" :visible="dialog.open" @before-ok="handleValidate" @ok="handleSubmit" @cancel="handleClose" unmountOnClose>
     <template #title>
       {{ dialog.title }}
     </template>
@@ -64,7 +64,7 @@ watch(
 )
 
 const load = async () => {
-  formData.value = props.action === 'add' ? generate() : (await getChineseMedicinePiece(props.singleId))?.data || generate()
+  formData.value = props.action === 'add' ? generate() : (await getChineseMedicinePiece(props.singleId)) || generate()
 }
 
 const generate = () => {

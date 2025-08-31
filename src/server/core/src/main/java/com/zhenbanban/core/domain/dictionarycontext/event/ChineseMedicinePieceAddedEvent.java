@@ -40,4 +40,5 @@ public class ChineseMedicinePieceAddedEvent extends AbsDomainEvent {
     private Long pieceId;
 
     private String pieceName;
+
 }

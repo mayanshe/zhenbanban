@@ -62,4 +62,5 @@ public class ChineseMedicinePieceSaveRequest {
     @Size(max = 125, message = "用法用量长度不能超过125个字符")
     @Builder.Default
     private String dosage = "";
+
 }

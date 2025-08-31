@@ -66,4 +66,5 @@ public class ChineseMedicinePiecePo {
 
     @Builder.Default
     private long deletedAt = 0L;
+
 }

@@ -25,11 +25,11 @@ const Dictionary: AppRouteRecordRaw = {
     {
       path: 'chinese-medicine-pieces',
       name: 'ChineseMedicinePieces',
-      component: () => import('@/views/account/index.vue'),
+      component: () => import('@/views/chinese-medicine-piece/index.vue'),
       meta: {
         locale: '中药饮片',
         requiresAuth: false,
-        buttons: ['account:add', 'account:modify', 'account:delete', 'account:activate']
+        buttons: ['chinese-medicine-piece:add', 'chinese-medicine-piece:modify', 'chinese-medicine-piece:delete', 'chinese-medicine-piece:activate']
       },
     },
     {
