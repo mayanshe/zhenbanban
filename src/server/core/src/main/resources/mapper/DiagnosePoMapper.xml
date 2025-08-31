@@ -62,7 +62,7 @@
     <select id="count" parameterType="java.util.Map" resultType="int">
         SELECT COUNT(id) FROM diagnoses
         <where>
-            <if test="id != null and id > 0">
+            <if test="id != null and id.length > 0">
                 AND id = #{id}
             </if>
             <if test="deleted != null and deleted">
@@ -99,6 +99,18 @@
     <select id="search" parameterType="java.util.Map" resultType="DiagnosePo">
         SELECT * FROM diagnoses
         <where>
+            <if test="id != null and id.length > 0">
+                AND id = #{id}
+            </if>
+            <if test="deleted != null and deleted">
+                AND deleted_at > 0
+            </if>
+            <if test="deleted != null and !deleted">
+                AND deleted_at = 0
+            </if>
+            <if test="icdCode != null and icdCode.length > 0">
+                AND icd_code = #{icdCode}
+            </if>
             <if test="icdType != null and icdType > 0">
                 AND icd_type = #{icdType}
             </if>
@@ -125,7 +137,7 @@
                 #{orderBy}
             </when>
             <otherwise>
-                id ASC
+                id DESC
             </otherwise>
         </choose>
         <if test="offset != null and limit != null">
