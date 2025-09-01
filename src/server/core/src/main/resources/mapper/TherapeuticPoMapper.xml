@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//dtd/Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhenbanban.core.infrastructure.persistence.mapper.TherapeuticPoMapper">
+    <!-- 中医治法(therapeutics)表映射 -->
+
+    <insert id="insert" parameterType="com.zhenbanban.core.infrastructure.persistence.po.TherapeuticPo" useGeneratedKeys="false">
+        INSERT INTO therapeutics (id, therapeutics_code, therapeutics_name, therapeutics_name_pinyin, therapeutics_name_pinyin_abbr, description, created_at)
+        VALUES (#{id}, #{therapeuticsCode}, #{therapeuticsName}, #{therapeuticsNamePinyin}, #{therapeuticsNamePinyinAbbr}, #{description}, #{createdAt})
+    </insert>
+
+    <update id="update" parameterType="com.zhenbanban.core.infrastructure.persistence.po.TherapeuticPo">
+        UPDATE therapeutics
+        SET
+            therapeutics_code = #{therapeuticsCode},
+            therapeutics_name = #{therapeuticsName},
+            therapeutics_name_pinyin = #{therapeuticsNamePinyin},
+            therapeutics_name_pinyin_abbr = #{therapeuticsNamePinyinAbbr},
+            description = #{description},
+            updated_at = #{updatedAt}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="Long">
+        UPDATE therapeutics
+        SET deleted_at = UNIX_TIMESTAMP(NOW(3)) * 1000
+        WHERE id = #{id}
+    </delete>
+
+    <select id="findById" parameterType="Long" resultType="com.zhenbanban.core.infrastructure.persistence.po.TherapeuticPo">
+        SELECT *
+        FROM therapeutics
+        WHERE id = #{id} AND deleted_at = 0
+    </select>
+
+    <select id="findIdByCode" resultType="Long">
+        SELECT id
+        FROM therapeutics
+        WHERE therapeutics_code = #{therapeuticsCode} AND deleted_at = 0
+    </select>
+
+    <select id="findAll" resultType="com.zhenbanban.core.infrastructure.persistence.po.TherapeuticPo">
+        SELECT *
+        FROM therapeutics WHERE deleted_at = 0
+    </select>
+
+    <select id="count" parameterType="java.util.Map" resultType="int">
+        SELECT COUNT(id) FROM therapeutics
+        <where>
+            <if test="id != null and id.length > 0">
+                AND id = #{id}
+            </if>
+            <if test="deleted != null and deleted">
+                AND deleted_at > 0
+            </if>
+            <if test="deleted != null and !deleted">
+                AND deleted_at = 0
+            </if>
+            <if test="therapeuticsCode != null and therapeuticsCode.length > 0">
+                AND therapeutics_code = #{therapeuticsCode}
+            </if>
+            <if test="keywords != null and keywords.size() > 0">
+                AND (
+                <foreach item="w" collection="keywords" separator="OR">
+                    therapeutics_code LIKE CONCAT('%', #{w}, '%')
+                    OR therapeutics_name LIKE CONCAT('%', #{w}, '%')
+                    OR therapeutics_name_pinyin LIKE CONCAT('%', #{w}, '%')
+                    OR therapeutics_name_pinyin_abbr LIKE CONCAT('%', #{w}, '%')
+                </foreach>
+                )
+            </if>
+        </where>
+    </select>
+
+    <select id="search" parameterType="java.util.Map" resultType="com.zhenbanban.core.infrastructure.persistence.po.TherapeuticPo">
+        SELECT * FROM therapeutics
+        <where>
+            <if test="id != null and id.length > 0">
+                AND id = #{id}
+            </if>
+            <if test="deleted != null and deleted">
+                AND deleted_at > 0
+            </if>
+            <if test="deleted != null and !deleted">
+                AND deleted_at = 0
+            </if>
+            <if test="therapeuticsCode != null and therapeuticsCode.length > 0">
+                AND therapeutics_code = #{therapeuticsCode}
+            </if>
+            <if test="keywords != null and keywords.size() > 0">
+                AND (
+                <foreach item="w" collection="keywords" separator="OR">
+                    therapeutics_code LIKE CONCAT('%', #{w}, '%')
+                    OR therapeutics_name LIKE CONCAT('%', #{w}, '%')
+                    OR therapeutics_name_pinyin LIKE CONCAT('%', #{w}, '%')
+                    OR therapeutics_name_pinyin_abbr LIKE CONCAT('%', #{w}, '%')
+                </foreach>
+                )
+            </if>
+        </where>
+        ORDER BY
+        <choose>
+            <when test="orderBy != null and orderBy != ''">
+                #{orderBy}
+            </when>
+            <otherwise>
+                id DESC
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            LIMIT #{offset}, #{limit}
+        </if>
+        <if test="offset == null and limit != null">
+            LIMIT #{limit}
+        </if>
+        <if test="offset != null and limit == null">
+            LIMIT #{offset}, 18446744073709551615
+        </if>
+    </select>
+
+</mapper>
