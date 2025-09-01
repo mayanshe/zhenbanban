@@ -19,7 +19,7 @@ const User: AppRouteRecordRaw = {
       meta: {
         locale: '账号',
         requiresAuth: false,
-        buttons: ['account:add', 'account:modify', 'account:delete', 'account:activate']
+        buttons: ['account:add', 'account:modify', 'account:delete', 'account:activate'],
       },
     },
     {
@@ -29,7 +29,7 @@ const User: AppRouteRecordRaw = {
       meta: {
         locale: '医生',
         requiresAuth: false,
-        buttons: ['account:add', 'account:modify', 'account:delete', 'account:activate']
+        buttons: ['account:add', 'account:modify', 'account:delete', 'account:activate'],
       },
     },
     {
@@ -39,7 +39,7 @@ const User: AppRouteRecordRaw = {
       meta: {
         locale: '医师',
         requiresAuth: false,
-        buttons: ['account:add', 'account:modify', 'account:delete', 'account:activate']
+        buttons: ['account:add', 'account:modify', 'account:delete', 'account:activate'],
       },
     },
     {
@@ -49,7 +49,7 @@ const User: AppRouteRecordRaw = {
       meta: {
         locale: '药师',
         requiresAuth: false,
-        buttons: ['account:add', 'account:modify', 'account:delete', 'account:activate']
+        buttons: ['account:add', 'account:modify', 'account:delete', 'account:activate'],
       },
     },
     {
@@ -59,7 +59,7 @@ const User: AppRouteRecordRaw = {
       meta: {
         locale: '伴诊员',
         requiresAuth: false,
-        buttons: ['account:add', 'account:modify', 'account:delete', 'account:activate']
+        buttons: ['account:add', 'account:modify', 'account:delete', 'account:activate'],
       },
     },
     {
@@ -69,8 +69,8 @@ const User: AppRouteRecordRaw = {
       meta: {
         locale: '检验师',
         requiresAuth: false,
-        buttons: ['account:add', 'account:modify', 'account:delete', 'account:activate']
-      }
+        buttons: ['account:add', 'account:modify', 'account:delete', 'account:activate'],
+      },
     },
     {
       path: 'drivers',
@@ -79,8 +79,8 @@ const User: AppRouteRecordRaw = {
       meta: {
         locale: '司机',
         requiresAuth: false,
-        buttons: ['account:add', 'account:modify', 'account:delete', 'account:activate']
-      }
+        buttons: ['account:add', 'account:modify', 'account:delete', 'account:activate'],
+      },
     },
   ],
 }

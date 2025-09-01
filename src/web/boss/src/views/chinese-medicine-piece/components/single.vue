@@ -35,7 +35,12 @@
 import { ref, watch } from 'vue'
 import { FormInstance } from '@arco-design/web-vue/es/form'
 import { Message } from '@arco-design/web-vue'
-import { ChineseMedicinePiece, getChineseMedicinePiece, createChineseMedicinePiece, updateChineseMedicinePiece } from '@/api/chinese-medicine-piece'
+import {
+  ChineseMedicinePiece,
+  getChineseMedicinePiece,
+  createChineseMedicinePiece,
+  updateChineseMedicinePiece,
+} from '@/api/chinese-medicine-piece'
 
 const props = defineProps<{
   open: boolean

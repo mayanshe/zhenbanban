@@ -7,28 +7,28 @@ import { Pager, Pagination, ValueObject } from '@/api/common'
  * 媒体
  */
 export interface Media {
-    id: string
-    fileName: string
-    description: string
+  id: string
+  fileName: string
+  description: string
 }
 
 /**
  * 媒体视图
  */
 export interface MediaView {
-    id: string
-    mediaType: ValueObject
-    fileMd5: string
-    fileName: string
-    filePath: string
-    fileSize: string
-    fileExtension: string
-    mimeType: string
-    url: string
-    thumbnailUrl: string
-    description: string
-    createdAt: string
-    updatedAt: string
+  id: string
+  mediaType: ValueObject
+  fileMd5: string
+  fileName: string
+  filePath: string
+  fileSize: string
+  fileExtension: string
+  mimeType: string
+  url: string
+  thumbnailUrl: string
+  description: string
+  createdAt: string
+  updatedAt: string
 }
 
 /**
@@ -39,30 +39,30 @@ export interface MediaView {
  * @param url
  */
 export const upload = (file: File, isPublicRead: boolean, url: string = '/medias') => {
-    return new Promise((resolve, reject) => {
-        const xhr = new XMLHttpRequest()
-        const formData = new FormData()
-        formData.append('file', file)
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest()
+    const formData = new FormData()
+    formData.append('file', file)
 
-        xhr.upload.onprogress = (event) => {
-            if (event.total > 0) {
-                const percent = event.loaded / event.total
-            }
-        }
+    xhr.upload.onprogress = (event) => {
+      if (event.total > 0) {
+        const percent = event.loaded / event.total
+      }
+    }
 
-        xhr.onload = () => {
-            if (xhr.status >= 200 && xhr.status < 300) {
-                resolve(xhr.response)
-            } else {
-                reject(new Error(xhr.responseText))
-            }
-        };
+    xhr.onload = () => {
+      if (xhr.status >= 200 && xhr.status < 300) {
+        resolve(xhr.response)
+      } else {
+        reject(new Error(xhr.responseText))
+      }
+    }
 
-        xhr.onerror = (e) => reject(e)
+    xhr.onerror = (e) => reject(e)
 
-        xhr.open('POST', url, true)
-        xhr.send(formData)
-    })
+    xhr.open('POST', url, true)
+    xhr.send(formData)
+  })
 }
 
 /**
@@ -73,7 +73,7 @@ export const upload = (file: File, isPublicRead: boolean, url: string = '/medias
  * @param url
  */
 export const uploadImage = (file: File, isPublicRead: boolean, url: string = '/medias/images') => {
-    return upload(file, isPublicRead, url)
+  return upload(file, isPublicRead, url)
 }
 
 /**
@@ -84,7 +84,7 @@ export const uploadImage = (file: File, isPublicRead: boolean, url: string = '/m
  * @param url
  */
 export const uploadVideo = (file: File, isPublicRead: boolean, url: string = '/medias/videos') => {
-    return upload(file, isPublicRead, url)
+  return upload(file, isPublicRead, url)
 }
 
 /**
@@ -95,7 +95,7 @@ export const uploadVideo = (file: File, isPublicRead: boolean, url: string = '/m
  * @param url
  */
 export const uploadAudio = (file: File, isPublicRead: boolean, url: string = '/medias/audios') => {
-    return upload(file, isPublicRead, url)
+  return upload(file, isPublicRead, url)
 }
 
 /**
@@ -106,7 +106,7 @@ export const uploadAudio = (file: File, isPublicRead: boolean, url: string = '/m
  * @param url
  */
 export const uploadDocument = (file: File, isPublicRead: boolean, url: string = '/medias/audios') => {
-    return upload(file, isPublicRead, url)
+  return upload(file, isPublicRead, url)
 }
 
 /**
@@ -117,7 +117,7 @@ export const uploadDocument = (file: File, isPublicRead: boolean, url: string = 
  * @param url
  */
 export const uploadArchive = (file: File, isPublicRead: boolean, url: string = '/medias/audios') => {
-    return upload(file, isPublicRead, url)
+  return upload(file, isPublicRead, url)
 }
 
 /**
@@ -126,7 +126,7 @@ export const uploadArchive = (file: File, isPublicRead: boolean, url: string = '
  * @param data
  */
 export function modifyMedia(data: Media) {
-    return axios.patch(`/medias/${data.id}`, data)
+  return axios.patch(`/medias/${data.id}`, data)
 }
 
 /**
@@ -135,5 +135,5 @@ export function modifyMedia(data: Media) {
  * @param id
  */
 export function deleteMedia(id: string) {
-    return axios.delete(`/medias/${id}`)
+  return axios.delete(`/medias/${id}`)
 }
