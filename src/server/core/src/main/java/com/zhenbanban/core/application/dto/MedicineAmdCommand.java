@@ -57,8 +57,8 @@ public class MedicineAmdCommand extends BaseCommand<Long> {
     private String standardCode;
     private String indication;
     private String description;
-    private Integer otc;
-    private Integer poisonous;
+    private boolean otc;
+    private boolean poisonous;
 
     private void setMedicineNamePinyin(String value) {
     }

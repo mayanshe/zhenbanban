@@ -32,20 +32,16 @@ const dialog = ref({
 })
 
 watch(
-    () => props.open,
-    (val) => {
-      dialog.value.open = val
-    }
+  () => props.open,
+  (val) => {
+    dialog.value.open = val
+  }
 )
 
 // region 响应
-const handleValidate = async () => {
+const handleValidate = async () => {}
 
-}
-
-const handleSubmit = async () => {
-
-}
+const handleSubmit = async () => {}
 
 const handleClose = async () => {
   emit('update:open', false)

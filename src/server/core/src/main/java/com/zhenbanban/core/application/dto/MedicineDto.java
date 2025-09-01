@@ -56,8 +56,8 @@ public class MedicineDto {
     private String standardCode;
     private String indication;
     private String description;
-    private Integer otc;
-    private Integer poisonous;
+    private boolean otc;
+    private boolean poisonous;
     private String createdAt;
     private String updatedAt;
     private String deletedAt;

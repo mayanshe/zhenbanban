@@ -1,20 +1,36 @@
 <template>
   <div class="container">
-    <Breadcrumb :items="['字典', '西药及中成药']" />
-    <a-card class="general-card" title="西药及中成药管理">
+    <Breadcrumb :items="['字典', '西药/中成药']" />
+    <a-card class="general-card" title="西药/中成药管理">
       <a-divider style="margin-top: 0" />
       <a-row>
         <a-col :flex="1">
           <a-form :model="searchData" :label-col-props="{ span: 6 }" :wrapper-col-props="{ span: 18 }" label-align="left">
             <a-row :gutter="16">
-              <a-col :span="8">
+              <a-col :span="6">
                 <a-form-item field="keywords" label="关键词:">
                   <a-input v-model="searchData.keywords" placeholder="商品名, 注册名, 拼音..." />
                 </a-form-item>
               </a-col>
-              <a-col :span="8">
-                <a-form-item field="medicineCode" label="药品编码:">
+              <a-col :span="6">
+                <a-form-item field="medicineCode" label="编码:">
                   <a-input v-model="searchData.medicineCode" placeholder="请输入药品编码" />
+                </a-form-item>
+              </a-col>
+              <a-col :span="6">
+                <a-form-item field="icd" label="OTC类?:">
+                  <a-select v-model="searchData.icd" placeholder="请选择">
+                    <a-option :value="true">是</a-option>
+                    <a-option :value="false">否</a-option>
+                  </a-select>
+                </a-form-item>
+              </a-col>
+              <a-col :span="6">
+                <a-form-item field="poisonous" label="毒麻类?:">
+                  <a-select v-model="searchData.poisonous" placeholder="请选择">
+                    <a-option :value="true">是</a-option>
+                    <a-option :value="false">否</a-option>
+                  </a-select>
                 </a-form-item>
               </a-col>
             </a-row>
@@ -46,7 +62,7 @@
               <template #icon>
                 <icon-plus />
               </template>
-              添加药品
+              添加西药/中成药
             </a-button>
           </a-space>
         </a-col>
@@ -95,14 +111,14 @@ const buttons = route.meta.buttons || []
 const single = ref({
   open: false,
   action: '',
-  id: '0'
+  id: '0',
 })
 
 const handleOpenSingle = async (actionValue: string, idValue: string) => {
   single.value = {
     open: true,
     action: actionValue,
-    id: idValue
+    id: idValue,
   }
 }
 
@@ -113,25 +129,28 @@ const handleSuccess = async () => {
 
 // region 列表
 const columns = [
-  { title: '药品编码', dataIndex: 'medicineCode' },
+  { title: '药品编码', dataIndex: 'medicineCode', width: 200},
+  { title: '注册名称', dataIndex: 'registeredName', width: 200},
+  { title: '实际剂型', dataIndex: 'realityMedicineModel', width: 120},
+  { title: '生产企业', dataIndex: 'companyName', width: 220},
   { title: '商品名称', dataIndex: 'medicineName' },
-  { title: '注册名称', dataIndex: 'registeredName' },
-  { title: '实际剂型', dataIndex: 'realityMedicineModel' },
-  { title: '生产企业', dataIndex: 'companyName' },
   { title: '创建时间', dataIndex: 'createdAt' },
-  { title: '操作', slotName: 'optional' }
+  { title: '修改时间', dataIndex: 'updatedAt' },
+  { title: '操作', slotName: 'optional' },
 ]
 
 const pager = ref<Pager>({
   page: 1,
-  pageSize: 15
+  pageSize: 15,
 })
 
 const generateSearchModel = (): MedicineSearchModel => {
   return {
     keywords: '',
     medicineCode: '',
-    deleted: false
+    deleted: false,
+    icd: undefined,
+    poisonous: undefined
   }
 }
 
@@ -142,7 +161,7 @@ const reset = () => {
 const generateDatalist = (): Pagination<MedicineView> => {
   pager.value = {
     page: 1,
-    pageSize: 15
+    pageSize: 15,
   }
 
   return {
@@ -153,7 +172,7 @@ const generateDatalist = (): Pagination<MedicineView> => {
     totalPage: 0,
     prevPage: 1,
     nextPage: 1,
-    items: [] as MedicineView[]
+    items: [] as MedicineView[],
   }
 }
 
@@ -177,7 +196,7 @@ const pagination = computed(() => {
     pageSize: medicines.value.pageSize,
     current: medicines.value.page,
     showPageSizeChanger: true,
-    showTotal: true
+    showTotal: true,
   }
 })
 
@@ -197,7 +216,7 @@ const handleDelete = async (id: string) => {
 
 <script lang="ts">
 export default {
-  name: 'MedicineManage'
+  name: 'MedicineManage',
 }
 </script>
 

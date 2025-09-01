@@ -23,11 +23,11 @@
               <a-input v-model="formData.registeredName" placeholder="请输入药品注册名称" />
             </a-form-item>
           </a-col>
-           <a-col :span="12">
-             <a-form-item field="companyName" label="生产企业 : ">
-               <a-input v-model="formData.companyName" placeholder="请输入生产企业" />
-             </a-form-item>
-           </a-col>
+          <a-col :span="12">
+            <a-form-item field="companyName" label="生产企业 : ">
+              <a-input v-model="formData.companyName" placeholder="请输入生产企业" />
+            </a-form-item>
+          </a-col>
         </a-row>
         <a-row :gutter="16">
           <a-col :span="12">
@@ -65,7 +65,7 @@
             </a-form-item>
           </a-col>
         </a-row>
-         <a-row :gutter="16">
+        <a-row :gutter="16">
           <a-col :span="12">
             <a-form-item field="unit" label="最小包装单位 : ">
               <a-input v-model="formData.unit" placeholder="请输入最小包装单位" />
@@ -84,28 +84,28 @@
             </a-form-item>
           </a-col>
           <a-col :span="12">
-             <a-form-item field="factor" label="最小包装数量 : ">
-               <a-input-number v-model="formData.factor" placeholder="请输入最小包装数量" />
-             </a-form-item>
+            <a-form-item field="factor" label="最小包装数量 : ">
+              <a-input-number v-model="formData.factor" placeholder="请输入最小包装数量" />
+            </a-form-item>
           </a-col>
         </a-row>
         <a-row :gutter="16">
-            <a-col :span="12">
-                <a-form-item field="otc" label="OTC?">
-                  <a-radio-group v-model="formData.otc" type="button">
-                    <a-radio :value="0">否</a-radio>
-                    <a-radio :value="1">是</a-radio>
-                  </a-radio-group>
-                </a-form-item>
-            </a-col>
-            <a-col :span="12">
-                <a-form-item field="poisonous" label="毒麻?">
-                  <a-radio-group v-model="formData.poisonous" type="button">
-                    <a-radio :value="0">否</a-radio>
-                    <a-radio :value="1">是</a-radio>
-                  </a-radio-group>
-                </a-form-item>
-            </a-col>
+          <a-col :span="12">
+            <a-form-item field="otc" label="OTC?">
+              <a-radio-group v-model="formData.otc" type="button">
+                <a-radio :value="0">否</a-radio>
+                <a-radio :value="1">是</a-radio>
+              </a-radio-group>
+            </a-form-item>
+          </a-col>
+          <a-col :span="12">
+            <a-form-item field="poisonous" label="毒麻?">
+              <a-radio-group v-model="formData.poisonous" type="button">
+                <a-radio :value="0">否</a-radio>
+                <a-radio :value="1">是</a-radio>
+              </a-radio-group>
+            </a-form-item>
+          </a-col>
         </a-row>
         <a-form-item field="indication" label="适应症 : ">
           <a-textarea v-model="formData.indication" :rows="3" placeholder="请输入适应症" />
@@ -139,7 +139,7 @@ const emit = defineEmits<{
 
 const dialog = ref({
   open: false,
-  title: '添加药品'
+  title: '添加药品',
 })
 
 watch(
@@ -185,7 +185,7 @@ const generate = (): Medicine => {
     indication: '',
     description: '',
     otc: 0,
-    poisonous: 0
+    poisonous: 0,
   }
 }
 
@@ -195,7 +195,7 @@ const formRef = ref<FormInstance | null>(null)
 const rules = {
   medicineCode: [{ required: true, message: '请输入药品编码' }],
   medicineName: [{ required: true, message: '请输入药品商品名称' }],
-  registeredName: [{ required: true, message: '请输入药品注册名称' }]
+  registeredName: [{ required: true, message: '请输入药品注册名称' }],
 }
 // endregion
 
@@ -245,6 +245,6 @@ const handleClose = async () => {
 
 <script lang="ts">
 export default {
-  name: 'MedicineSingle'
+  name: 'MedicineSingle',
 }
 </script>

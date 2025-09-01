@@ -74,12 +74,33 @@
             <if test="id != null and id.length > 0">
                 AND id = #{id}
             </if>
-            <if test="deleted != null and deleted">
-                AND deleted_at > 0
+            <choose>
+                <when test="deleted != null and deleted">
+                    AND deleted_at > 0
+                </when>
+                <when test="deleted != null and !deleted">
+                    AND deleted_at = 0
+                </when>
+            </choose>
+            <if test="medicineCode != null and medicineCode.length > 0">
+                AND medicine_code = #{medicineCode}
             </if>
-            <if test="deleted != null and !deleted">
-                AND deleted_at = 0
-            </if>
+            <choose>
+                <when test="otc != null and otc">
+                    AND otc = 1
+                </when>
+                <when test="otc != null and !otc">
+                    AND otc = 0
+                </when>
+            </choose>
+            <choose>
+                <when test="poisonous != null and poisonous">
+                    AND poisonous = 1
+                </when>
+                <when test="poisonous != null and !poisonous">
+                    AND poisonous = 0
+                </when>
+            </choose>
             <if test="keywords != null and keywords.size() > 0">
                 AND (
                 <foreach item="w" collection="keywords" separator="OR">
@@ -102,12 +123,33 @@
             <if test="id != null and id.length > 0">
                 AND id = #{id}
             </if>
-            <if test="deleted != null and deleted">
-                AND deleted_at > 0
+            <choose>
+                <when test="deleted != null and deleted">
+                    AND deleted_at > 0
+                </when>
+                <when test="deleted != null and !deleted">
+                    AND deleted_at = 0
+                </when>
+            </choose>
+            <if test="medicineCode != null and medicineCode.length > 0">
+                AND medicine_code = #{medicineCode}
             </if>
-            <if test="deleted != null and !deleted">
-                AND deleted_at = 0
-            </if>
+            <choose>
+                <when test="otc != null and otc">
+                    AND otc = 1
+                </when>
+                <when test="otc != null and !otc">
+                    AND otc = 0
+                </when>
+            </choose>
+            <choose>
+                <when test="poisonous != null and poisonous">
+                    AND poisonous = 1
+                </when>
+                <when test="poisonous != null and !poisonous">
+                    AND poisonous = 0
+                </when>
+            </choose>
             <if test="keywords != null and keywords.size() > 0">
                 AND (
                 <foreach item="w" collection="keywords" separator="OR">

@@ -20,7 +20,9 @@
  */
 package com.zhenbanban.bossapi.vo;
 
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
@@ -48,43 +50,60 @@ public class MedicineSaveRequest {
     @Size(max = 75, message = "药品注册名称长度不能超过75个字符")
     private String registeredName;
 
+    @Builder.Default
     @Size(max = 25, message = "药品注册剂型长度不能超过25个字符")
-    private String registeredMedicineModel;
+    private String registeredMedicineModel = "";
 
+    @Builder.Default
     @Size(max = 25, message = "药品实际剂型长度不能超过25个字符")
-    private String realityMedicineModel;
+    private String realityMedicineModel = "";
 
+    @Builder.Default
     @Size(max = 500, message = "药品注册规格长度不能超过500个字符")
-    private String registeredOutlook;
+    private String registeredOutlook = "";
 
+    @Builder.Default
     @Size(max = 500, message = "药品实际规格长度不能超过500个字符")
-    private String realityOutlook;
+    private String realityOutlook = "";
 
+    @Builder.Default
     @Size(max = 255, message = "药品包装材质长度不能超过255个字符")
-    private String materialName;
+    private String materialName = "";
 
-    private Integer factor;
+    @Builder.Default
+    @Min(value = 0, message = "药品最小包装数量不能小于0")
+    private Integer factor = 0;
 
+    @Builder.Default
     @Size(max = 15, message = "药品最小包装单位长度不能超过15个字符")
-    private String unit;
+    private String unit = "";
 
+    @Builder.Default
     @Size(max = 15, message = "药品最小制剂单位长度不能超过15个字符")
-    private String minUnit;
+    private String minUnit = "";
 
+    @Builder.Default
     @Size(max = 125, message = "药品生产企业名称长度不能超过125个字符")
-    private String companyName;
+    private String companyName = "";
 
+    @NotBlank(message = "药品批准文号不能为空")
     @Size(max = 100, message = "药品批准文号长度不能超过100个字符")
     private String approvalCode;
 
+    @Builder.Default
     @Size(max = 100, message = "药品本位码长度不能超过100个字符")
-    private String standardCode;
+    private String standardCode = "";
 
-    private String indication;
+    @Builder.Default
+    private String indication = "";
 
-    private String description;
+    @Builder.Default
+    private String description = "";
 
-    private Integer otc;
+    @Builder.Default
+    private boolean otc = false;
 
-    private Integer poisonous;
+    @Builder.Default
+    private boolean poisonous = false;
+
 }

@@ -51,7 +51,12 @@ public class MedicineQuery {
 
     private String medicineCode;
 
-    private boolean deleted;
+    @Builder.Default
+    private Boolean deleted = false;
+
+    private Boolean otc;
+
+    private Boolean poisonous;
 
     public Map<String, Object> toMap() {
         Map<String, Object> map = new HashMap<>();
@@ -65,10 +70,9 @@ public class MedicineQuery {
             map.put("keywords", keywordList);
         }
 
-        if (medicineCode != null && !medicineCode.isBlank()) {
-            map.put("medicineCode", medicineCode);
-        }
-
+        map.put("medicineCode", medicineCode);
+        map.put("otc", otc);
+        map.put("poisonous", poisonous);
         map.put("deleted", deleted);
 
         return map;

@@ -58,8 +58,8 @@ public class Medicine extends AbsAggregate {
     private String standardCode;
     private String indication;
     private String description;
-    private Integer otc;
-    private Integer poisonous;
+    private Boolean otc;
+    private Boolean poisonous;
     @Builder.Default
     private boolean deleted = false;      // 是否已删除
 

@@ -62,7 +62,7 @@ public class MedicineController {
      * @return 药品ID
      */
     @PostMapping
-    @AdminPermit(permissions = {"medicine:add"}, message = "您未被授权执行此操作：添加药品")
+    @AdminPermit(permissions = {"medicine:add"}, message = "您未被授权执行此操作：添加西药/中成药")
     public IdResponse addMedicine(@Valid @RequestBody MedicineSaveRequest request) {
         MedicineAmdCommand command = (new ModelMapper()).map(request, MedicineAmdCommand.class);
         Long medicineId = medicineAmdCmdHandler.handleAdd(command);
@@ -75,7 +75,7 @@ public class MedicineController {
      * @param request 药品信息
      */
     @PutMapping("/{id}")
-    @AdminPermit(permissions = {"medicine:modify"}, message = "您未被授权执行此操作：修改药品信息")
+    @AdminPermit(permissions = {"medicine:modify"}, message = "您未被授权执行此操作：修改西药/中成药信息")
     public void modifyMedicine(@PathVariable("id") Long id, @Valid @RequestBody MedicineSaveRequest request) {
         MedicineAmdCommand command = (new ModelMapper()).map(request, MedicineAmdCommand.class);
         command.setId(id);
@@ -88,7 +88,7 @@ public class MedicineController {
      * @param id 药品ID
      */
     @DeleteMapping("/{id}")
-    @AdminPermit(permissions = {"medicine:delete"}, message = "您未被授权执行此操作：删除药品")
+    @AdminPermit(permissions = {"medicine:delete"}, message = "您未被授权执行此操作：删除西药/中成药")
     public void deleteMedicine(@PathVariable("id") Long id) {
         medicineAmdCmdHandler.handleDestroy(id);
     }
@@ -100,7 +100,7 @@ public class MedicineController {
      * @return 药品信息
      */
     @GetMapping("/{id}")
-    @AdminPermit(permissions = {"medicine:add", "medicine:modify", "medicine:delete"}, message = "您未被授权执行此操作：查询药品")
+    @AdminPermit(permissions = {"medicine:add", "medicine:modify", "medicine:delete"}, message = "您未被授权执行此操作：查询西药/中成药信息")
     public MedicineDto getMedicine(@PathVariable("id") Long id) {
         return medicineQueryHandler.handleQuerySingle(id);
     }
@@ -114,13 +114,15 @@ public class MedicineController {
      * @return 药品分页信息
      */
     @GetMapping
-    @AdminPermit(permissions = {"medicine:add", "medicine:modify", "medicine:delete"}, message = "您未被授权执行此操作：查询药品")
+    @AdminPermit(permissions = {"medicine:add", "medicine:modify", "medicine:delete"}, message = "您未被授权执行此操作：查询西药/中成药分页")
     public Pagination<MedicineDto> getMedicinePagination(
             @RequestParam(value = "page", defaultValue = "1", required = false) Integer page,
             @RequestParam(value = "pageSize", defaultValue = "15", required = false) Integer pageSize,
             @RequestParam(value = "keywords", defaultValue = "", required = false) String keywords,
             @RequestParam(value = "medicineCode", defaultValue = "", required = false) String medicineCode,
-            @RequestParam(value = "deleted", defaultValue = "false", required = false) boolean deleted
+            @RequestParam(value = "deleted", defaultValue = "false", required = false) boolean deleted,
+            @RequestParam(value = "icd",  required = false) boolean icd,
+            @RequestParam(value = "poisonous",  required = false) boolean poisonous
     ) {
         MedicineQuery query = MedicineQuery.builder()
                 .page(page)
@@ -128,6 +130,8 @@ public class MedicineController {
                 .keywords(keywords)
                 .medicineCode(medicineCode)
                 .deleted(deleted)
+                .otc(icd)
+                .poisonous(poisonous)
                 .build();
 
         return medicineQueryHandler.handleQueryPage(query);

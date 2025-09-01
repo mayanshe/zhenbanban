@@ -77,9 +77,9 @@ public class MedicinePo {
 
     private String description;                 // 药品描述
 
-    private Integer otc;                        // 是否为非处方药 0:否 1:是
+    private Short otc;                          // 是否为非处方药 0:否 1:是
 
-    private Integer poisonous;                  // 是否为毒麻类药品 0:否 1:是
+    private Short poisonous;                    // 是否为毒麻类药品 0:否 1:是
 
     @Builder.Default
     private long createdAt = 0L;                // 创建时间
@@ -89,4 +89,6 @@ public class MedicinePo {
 
     @Builder.Default
     private long deletedAt = 0L;                // 删除时间
+
+
 }

@@ -63,18 +63,10 @@
         </a-col>
       </a-row>
 
-      <a-table
-        style="margin-bottom: 16px"
-        :columns="columns"
-        :data="pieces.items"
-        :pagination="pagination"
-        @page-change="handlePageChange"
-      >
+      <a-table style="margin-bottom: 16px" :columns="columns" :data="pieces.items" :pagination="pagination" @page-change="handlePageChange">
         <template #optional="{ record }">
           <a-space>
-            <a-button type="text" size="mimi" @click="handleOpenSingle('modify', record.id)">
-              编辑
-            </a-button>
+            <a-button type="text" size="mimi" @click="handleOpenSingle('modify', record.id)">编辑</a-button>
             <a-popconfirm content="确定删除此条目?" @ok="handleDelete(record.id)">
               <a-button type="text" size="mimi" status="danger">删除</a-button>
             </a-popconfirm>
@@ -91,7 +83,12 @@
 import { computed, ref } from 'vue'
 import { Message } from '@arco-design/web-vue'
 import { Pager, Pagination } from '@/api/common'
-import { ChineseMedicinePieceView, ChineseMedicinePieceSearchModel, getChineseMedicinePiecePagination, deleteChineseMedicinePiece } from '@/api/chinese-medicine-piece'
+import {
+  ChineseMedicinePieceView,
+  ChineseMedicinePieceSearchModel,
+  getChineseMedicinePiecePagination,
+  deleteChineseMedicinePiece,
+} from '@/api/chinese-medicine-piece'
 import Single from './components/single.vue'
 
 const single = ref({
@@ -114,11 +111,11 @@ const handleSuccess = async () => {
 
 const columns = [
   { title: '编码', dataIndex: 'pieceCode' },
-  { title: '名称', dataIndex: 'pieceName', width: 220},
-  { title: '别名', dataIndex: 'pieceAlias', width: 320},
-  { title: '性味', dataIndex: 'nature', width: 140},
-  { title: '归经', dataIndex: 'meridian', width: 140},
-  { title: '创建时间', dataIndex: 'createdAt'},
+  { title: '名称', dataIndex: 'pieceName', width: 220 },
+  { title: '别名', dataIndex: 'pieceAlias', width: 320 },
+  { title: '性味', dataIndex: 'nature', width: 140 },
+  { title: '归经', dataIndex: 'meridian', width: 140 },
+  { title: '创建时间', dataIndex: 'createdAt' },
   { title: '修改时间', dataIndex: 'updatedAt' },
   { title: '操作', slotName: 'optional' },
 ]

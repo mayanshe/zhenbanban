@@ -73,7 +73,14 @@
       >
         <template #optional="{ record }">
           <a-space>
-            <a-button type="text" size="mimi" @click="console.log(JSON.stringify(record));handleOpenSingle('modify', record.id)">
+            <a-button
+              type="text"
+              size="mimi"
+              @click="
+                console.log(JSON.stringify(record))
+                handleOpenSingle('modify', record.id)
+              "
+            >
               编辑
             </a-button>
             <a-popconfirm content="确定删除此诊断?" @ok="handleDelete(record.id)">
@@ -119,21 +126,23 @@ const handleSuccess = async () => {
 const columns = [
   { title: '诊断编码', dataIndex: 'icdCode' },
   { title: '诊断名称', dataIndex: 'icdName' },
-  { title: '诊断类型', dataIndex: 'icdType',
+  {
+    title: '诊断类型',
+    dataIndex: 'icdType',
     render: (data: any) => {
-        const record = data.record as DiagnoseView;
-        switch (record.icdType) {
-            case 1:
-                return 'ICD国临2.0';
-            case 2:
-                return '中医GB/T15657-2021';
-            case 3:
-                return '医保2.0';
-            default:
-                return '未知';
-        }
-    }
-   },
+      const record = data.record as DiagnoseView
+      switch (record.icdType) {
+        case 1:
+          return 'ICD国临2.0'
+        case 2:
+          return '中医GB/T15657-2021'
+        case 3:
+          return '医保2.0'
+        default:
+          return '未知'
+      }
+    },
+  },
   { title: '创建时间', dataIndex: 'createdAt' },
   { title: '更新时间', dataIndex: 'updatedAt' },
   { title: '操作', slotName: 'optional' },
@@ -148,7 +157,7 @@ const generateSearchModel = (): DiagnoseSearchModel => {
   return {
     keywords: '',
     icdType: null,
-    deleted: false
+    deleted: false,
   }
 }
 

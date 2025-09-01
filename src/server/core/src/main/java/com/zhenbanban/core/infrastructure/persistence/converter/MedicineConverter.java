@@ -38,6 +38,8 @@ public interface MedicineConverter extends IConverter {
     MedicineConverter INSTANCE = Mappers.getMapper(MedicineConverter.class);
 
     @Mappings({
+            @Mapping(target = "otc", source = "otc", qualifiedByName = "booleanToShort"),
+            @Mapping(target = "poisonous", source = "poisonous", qualifiedByName = "booleanToShort"),
             @Mapping(target = "createdAt", ignore = true),
             @Mapping(target = "updatedAt", ignore = true),
             @Mapping(target = "deletedAt", source = "deleted", qualifiedByName = "isDeletedToDeletedAt")
@@ -47,12 +49,16 @@ public interface MedicineConverter extends IConverter {
     @Mappings({
             @Mapping(target = "createdAt", ignore = true),
             @Mapping(target = "updatedAt", ignore = true),
+            @Mapping(target = "otc", source = "otc", qualifiedByName = "booleanToShort"),
+            @Mapping(target = "poisonous", source = "poisonous", qualifiedByName = "booleanToShort"),
             @Mapping(target = "deletedAt", source = "deleted", qualifiedByName = "isDeletedToDeletedAt")
     })
     MedicinePo updatePo(Medicine medicine, @MappingTarget MedicinePo po);
 
     @Mappings({
-            @Mapping(target = "deleted", ignore = true)
+            @Mapping(target = "deleted", ignore = true),
+            @Mapping(target = "otc", source = "otc", qualifiedByName = "shortToBoolean"),
+            @Mapping(target = "poisonous", source = "poisonous", qualifiedByName = "shortToBoolean"),
     })
     Medicine toAggregate(MedicinePo po);
 

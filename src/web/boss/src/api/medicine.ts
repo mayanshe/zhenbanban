@@ -48,6 +48,8 @@ export interface MedicineSearchModel {
   keywords: string
   medicineCode: string
   deleted: boolean
+  icd?: boolean
+  poisonous?: boolean
 }
 
 /**
