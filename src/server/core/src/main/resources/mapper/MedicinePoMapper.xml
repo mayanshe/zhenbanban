@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//dtd/Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhenbanban.core.infrastructure.persistence.mapper.MedicinePoMapper">
+    <!-- 西药及中成药(medicines)表映射 -->
+
+    <insert id="insert" parameterType="MedicinePo" useGeneratedKeys="false">
+        INSERT INTO medicines (id, medicine_code, medicine_name, medicine_name_pinyin, medicine_name_pinyin_abbr,
+                               registered_name, registered_name_pinyin, registered_name_pinyin_abbr,
+                               registered_medicine_model, reality_medicine_model, registered_outlook, reality_outlook,
+                               material_name, factor, unit, min_unit, company_name, approval_code, standard_code,
+                               indication, description, otc, poisonous, created_at)
+        VALUES (#{id}, #{medicineCode}, #{medicineName}, #{medicineNamePinyin}, #{medicineNamePinyinAbbr},
+                #{registeredName}, #{registeredNamePinyin}, #{registeredNamePinyinAbbr}, #{registeredMedicineModel},
+                #{realityMedicineModel}, #{registeredOutlook}, #{realityOutlook}, #{materialName}, #{factor}, #{unit},
+                #{minUnit}, #{companyName}, #{approvalCode}, #{standardCode}, #{indication}, #{description}, #{otc},
+                #{poisonous}, #{createdAt})
+    </insert>
+
+    <update id="update" parameterType="MedicinePo">
+        UPDATE medicines
+        SET medicine_code=#{medicineCode},
+            medicine_name=#{medicineName},
+            medicine_name_pinyin=#{medicineNamePinyin},
+            medicine_name_pinyin_abbr=#{medicineNamePinyinAbbr},
+            registered_name=#{registeredName},
+            registered_name_pinyin=#{registeredNamePinyin},
+            registered_name_pinyin_abbr=#{registeredNamePinyinAbbr},
+            registered_medicine_model=#{registeredMedicineModel},
+            reality_medicine_model=#{realityMedicineModel},
+            registered_outlook=#{registeredOutlook},
+            reality_outlook=#{realityOutlook},
+            material_name=#{materialName},
+            factor=#{factor},
+            unit=#{unit},
+            min_unit=#{minUnit},
+            company_name=#{companyName},
+            approval_code=#{approvalCode},
+            standard_code=#{standardCode},
+            indication=#{indication},
+            description=#{description},
+            otc=#{otc},
+            poisonous=#{poisonous},
+            updated_at=#{updatedAt}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="Long">
+        UPDATE medicines
+        SET deleted_at = UNIX_TIMESTAMP(NOW(3)) * 1000
+        WHERE id = #{id}
+    </delete>
+
+    <select id="findById" parameterType="Long" resultType="MedicinePo">
+        SELECT *
+        FROM medicines
+        WHERE id = #{id} AND deleted_at = 0
+    </select>
+
+    <select id="findIdByCodeAndName" resultType="Long">
+        SELECT id
+        FROM medicines
+        WHERE medicine_code = #{medicineCode} AND medicine_name = #{medicineName} AND deleted_at = 0
+    </select>
+
+    <select id="findAll" resultType="MedicinePo">
+        SELECT *
+        FROM medicines
+        WHERE deleted_at = 0
+    </select>
+
+    <select id="count" parameterType="java.util.Map" resultType="int">
+        SELECT COUNT(id) FROM medicines
+        <where>
+            <if test="id != null and id.length > 0">
+                AND id = #{id}
+            </if>
+            <choose>
+                <when test="deleted != null and deleted">
+                    AND deleted_at > 0
+                </when>
+                <when test="deleted != null and !deleted">
+                    AND deleted_at = 0
+                </when>
+            </choose>
+            <if test="medicineCode != null and medicineCode.length > 0">
+                AND medicine_code = #{medicineCode}
+            </if>
+            <choose>
+                <when test="otc != null and otc">
+                    AND otc = 1
+                </when>
+                <when test="otc != null and !otc">
+                    AND otc = 0
+                </when>
+            </choose>
+            <choose>
+                <when test="poisonous != null and poisonous">
+                    AND poisonous = 1
+                </when>
+                <when test="poisonous != null and !poisonous">
+                    AND poisonous = 0
+                </when>
+            </choose>
+            <if test="keywords != null and keywords.size() > 0">
+                AND (
+                <foreach item="w" collection="keywords" separator="OR">
+                    medicine_code LIKE CONCAT('%', #{w}, '%')
+                    OR medicine_name LIKE CONCAT('%', #{w}, '%')
+                    OR medicine_name_pinyin LIKE CONCAT('%', #{w}, '%')
+                    OR medicine_name_pinyin_abbr LIKE CONCAT('%', #{w}, '%')
+                    OR registered_name LIKE CONCAT('%', #{w}, '%')
+                    OR registered_name_pinyin LIKE CONCAT('%', #{w}, '%')
+                    OR registered_name_pinyin_abbr LIKE CONCAT('%', #{w}, '%')
+                </foreach>
+                )
+            </if>
+        </where>
+    </select>
+
+    <select id="search" parameterType="java.util.Map" resultType="MedicinePo">
+        SELECT * FROM medicines
+        <where>
+            <if test="id != null and id.length > 0">
+                AND id = #{id}
+            </if>
+            <choose>
+                <when test="deleted != null and deleted">
+                    AND deleted_at > 0
+                </when>
+                <when test="deleted != null and !deleted">
+                    AND deleted_at = 0
+                </when>
+            </choose>
+            <if test="medicineCode != null and medicineCode.length > 0">
+                AND medicine_code = #{medicineCode}
+            </if>
+            <choose>
+                <when test="otc != null and otc">
+                    AND otc = 1
+                </when>
+                <when test="otc != null and !otc">
+                    AND otc = 0
+                </when>
+            </choose>
+            <choose>
+                <when test="poisonous != null and poisonous">
+                    AND poisonous = 1
+                </when>
+                <when test="poisonous != null and !poisonous">
+                    AND poisonous = 0
+                </when>
+            </choose>
+            <if test="keywords != null and keywords.size() > 0">
+                AND (
+                <foreach item="w" collection="keywords" separator="OR">
+                    medicine_code LIKE CONCAT('%', #{w}, '%')
+                    OR medicine_name LIKE CONCAT('%', #{w}, '%')
+                    OR medicine_name_pinyin LIKE CONCAT('%', #{w}, '%')
+                    OR medicine_name_pinyin_abbr LIKE CONCAT('%', #{w}, '%')
+                    OR registered_name LIKE CONCAT('%', #{w}, '%')
+                    OR registered_name_pinyin LIKE CONCAT('%', #{w}, '%')
+                    OR registered_name_pinyin_abbr LIKE CONCAT('%', #{w}, '%')
+                </foreach>
+                )
+            </if>
+        </where>
+        ORDER BY
+        <choose>
+            <when test="orderBy != null and orderBy != ''">
+                #{orderBy}
+            </when>
+            <otherwise>
+                id DESC
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            LIMIT #{offset}, #{limit}
+        </if>
+        <if test="offset == null and limit != null">
+            LIMIT #{limit}
+        </if>
+        <if test="offset != null and limit == null">
+            LIMIT #{offset}, 18446744073709551615
+        </if>
+    </select>
+
+</mapper>
