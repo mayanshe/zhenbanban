@@ -1,24 +1,35 @@
 <template>
   <div class="container">
-    <Breadcrumb :items="['数据字典', '疾病诊断']" />
-    <a-card class="general-card" title="疾病诊断管理">
+    <Breadcrumb :items="['字典', '西药/中成药']" />
+    <a-card class="general-card" title="西药/中成药管理">
       <a-divider style="margin-top: 0" />
-
       <a-row>
         <a-col :flex="1">
           <a-form :model="searchData" :label-col-props="{ span: 6 }" :wrapper-col-props="{ span: 18 }" label-align="left">
             <a-row :gutter="16">
-              <a-col :span="8">
+              <a-col :span="6">
                 <a-form-item field="keywords" label="关键词:">
-                  <a-input v-model="searchData.keywords" placeholder="编码、名称、拼音、别名等" />
+                  <a-input v-model="searchData.keywords" placeholder="商品名, 注册名, 拼音..." />
                 </a-form-item>
               </a-col>
-              <a-col :span="8">
-                <a-form-item field="icdType" label="诊断类型:">
-                  <a-select v-model="searchData.icdType" placeholder="请选择" allow-clear>
-                    <a-option :value="1">ICD国临2.0</a-option>
-                    <a-option :value="2">中医GB/T15657-2021</a-option>
-                    <a-option :value="3">医保2.0</a-option>
+              <a-col :span="6">
+                <a-form-item field="medicineCode" label="编码:">
+                  <a-input v-model="searchData.medicineCode" placeholder="请输入药品编码" />
+                </a-form-item>
+              </a-col>
+              <a-col :span="6">
+                <a-form-item field="icd" label="OTC类?:">
+                  <a-select v-model="searchData.icd" placeholder="请选择">
+                    <a-option :value="true">是</a-option>
+                    <a-option :value="false">否</a-option>
+                  </a-select>
+                </a-form-item>
+              </a-col>
+              <a-col :span="6">
+                <a-form-item field="poisonous" label="毒麻类?:">
+                  <a-select v-model="searchData.poisonous" placeholder="请选择">
+                    <a-option :value="true">是</a-option>
+                    <a-option :value="false">否</a-option>
                   </a-select>
                 </a-form-item>
               </a-col>
@@ -43,17 +54,15 @@
           </a-space>
         </a-col>
       </a-row>
-
       <a-divider style="margin-top: 0" />
-
       <a-row style="margin-bottom: 24px">
         <a-col :span="12">
           <a-space>
-            <a-button type="primary" @click="handleOpenSingle('add', '0')">
+            <a-button v-if="buttons.includes('medicine:add')" type="primary" @click="handleOpenSingle('add', '0')">
               <template #icon>
                 <icon-plus />
               </template>
-              添加疾病诊断
+              添加西药/中成药
             </a-button>
           </a-space>
         </a-col>
@@ -63,27 +72,19 @@
           </a-tooltip>
         </a-col>
       </a-row>
-
       <a-table
         style="margin-bottom: 16px"
         :columns="columns"
-        :data="diagnoses.items"
+        :data="medicines.items"
         :pagination="pagination"
         @page-change="handlePageChange"
       >
         <template #optional="{ record }">
           <a-space>
-            <a-button
-              type="text"
-              size="mimi"
-              @click="
-                console.log(JSON.stringify(record))
-                handleOpenSingle('modify', record.id)
-              "
-            >
+            <a-button v-if="buttons.includes('medicine:modify')" type="text" size="mimi" @click="handleOpenSingle('modify', record.id)">
               编辑
             </a-button>
-            <a-popconfirm content="确定删除此诊断?" @ok="handleDelete(record.id)">
+            <a-popconfirm content="确定删除此药品?" @ok="handleDelete(record.id)" v-if="buttons.includes('medicine:delete')">
               <a-button type="text" size="mimi" status="danger">删除</a-button>
             </a-popconfirm>
           </a-space>
@@ -91,16 +92,20 @@
       </a-table>
     </a-card>
 
-    <DiagnoseSingle v-model:open="single.open" :action="single.action" :single-id="single.id" @on-success="handleSuccess" />
+    <MedicineSingle v-model:open="single.open" :action="single.action" :single-id="single.id" @on-success="handleSuccess" />
   </div>
 </template>
 
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
+import { useRoute } from 'vue-router'
 import { Message } from '@arco-design/web-vue'
 import { Pager, Pagination } from '@/api/common'
-import { DiagnoseView, DiagnoseSearchModel, getDiagnosePagination, deleteDiagnose } from '@/api/diagnose'
-import DiagnoseSingle from './components/single.vue'
+import { MedicineView, MedicineSearchModel, getMedicinePagination, deleteMedicine } from '@/api/medicine'
+import MedicineSingle from './components/single.vue'
+
+const route = useRoute()
+const buttons = route.meta.buttons || []
 
 // region 添加与编辑的交互
 const single = ref({
@@ -113,7 +118,7 @@ const handleOpenSingle = async (actionValue: string, idValue: string) => {
   single.value = {
     open: true,
     action: actionValue,
-    id: idValue.toString(),
+    id: idValue,
   }
 }
 
@@ -124,27 +129,13 @@ const handleSuccess = async () => {
 
 // region 列表
 const columns = [
-  { title: '诊断编码', dataIndex: 'icdCode' },
-  { title: '诊断名称', dataIndex: 'icdName' },
-  {
-    title: '诊断类型',
-    dataIndex: 'icdType',
-    render: (data: any) => {
-      const record = data.record as DiagnoseView
-      switch (record.icdType) {
-        case 1:
-          return 'ICD国临2.0'
-        case 2:
-          return '中医GB/T15657-2021'
-        case 3:
-          return '医保2.0'
-        default:
-          return '未知'
-      }
-    },
-  },
+  { title: '药品编码', dataIndex: 'medicineCode', width: 200},
+  { title: '注册名称', dataIndex: 'registeredName', width: 200},
+  { title: '实际剂型', dataIndex: 'realityMedicineModel', width: 120},
+  { title: '生产企业', dataIndex: 'companyName', width: 220},
+  { title: '商品名称', dataIndex: 'medicineName' },
   { title: '创建时间', dataIndex: 'createdAt' },
-  { title: '更新时间', dataIndex: 'updatedAt' },
+  { title: '修改时间', dataIndex: 'updatedAt' },
   { title: '操作', slotName: 'optional' },
 ]
 
@@ -153,11 +144,13 @@ const pager = ref<Pager>({
   pageSize: 15,
 })
 
-const generateSearchModel = (): DiagnoseSearchModel => {
+const generateSearchModel = (): MedicineSearchModel => {
   return {
     keywords: '',
-    icdType: null,
+    medicineCode: '',
     deleted: false,
+    icd: undefined,
+    poisonous: undefined
   }
 }
 
@@ -165,7 +158,12 @@ const reset = () => {
   searchData.value = generateSearchModel()
 }
 
-const generateDatalist = (): Pagination<DiagnoseView> => {
+const generateDatalist = (): Pagination<MedicineView> => {
+  pager.value = {
+    page: 1,
+    pageSize: 15,
+  }
+
   return {
     page: 1,
     pageSize: 15,
@@ -174,15 +172,15 @@ const generateDatalist = (): Pagination<DiagnoseView> => {
     totalPage: 0,
     prevPage: 1,
     nextPage: 1,
-    items: [],
+    items: [] as MedicineView[],
   }
 }
 
-const searchData = ref<DiagnoseSearchModel>(generateSearchModel())
-const diagnoses = ref<Pagination<DiagnoseView>>(generateDatalist())
+const searchData = ref<MedicineSearchModel>(generateSearchModel())
+const medicines = ref<Pagination<MedicineView>>(generateDatalist())
 
 const load = async () => {
-  diagnoses.value = (await getDiagnosePagination(searchData.value, pager.value)) || generateDatalist()
+  medicines.value = (await getMedicinePagination(searchData.value, pager.value)) || generateDatalist()
 }
 
 const search = async () => {
@@ -194,9 +192,9 @@ load()
 
 const pagination = computed(() => {
   return {
-    total: diagnoses.value.total,
-    pageSize: diagnoses.value.pageSize,
-    current: diagnoses.value.page,
+    total: medicines.value.total,
+    pageSize: medicines.value.pageSize,
+    current: medicines.value.page,
     showPageSizeChanger: true,
     showTotal: true,
   }
@@ -209,7 +207,7 @@ const handlePageChange = (page: number) => {
 // endregion
 
 const handleDelete = async (id: string) => {
-  deleteDiagnose(id).then(() => {
+  deleteMedicine(id).then(() => {
     Message.success('删除成功')
     search()
   })
@@ -218,7 +216,7 @@ const handleDelete = async (id: string) => {
 
 <script lang="ts">
 export default {
-  name: 'DiagnoseManage',
+  name: 'MedicineManage',
 }
 </script>
 

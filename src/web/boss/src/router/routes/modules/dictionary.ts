@@ -19,7 +19,7 @@ const Dictionary: AppRouteRecordRaw = {
       meta: {
         locale: '疾病诊断',
         requiresAuth: false,
-        buttons: ['diagnose:add', 'diagnose:modify', 'diagnose:delete', 'diagnose:activate']
+        buttons: ['diagnose:add', 'diagnose:modify', 'diagnose:delete', 'diagnose:activate'],
       },
     },
     {
@@ -29,17 +29,22 @@ const Dictionary: AppRouteRecordRaw = {
       meta: {
         locale: '中药饮片',
         requiresAuth: false,
-        buttons: ['chinese-medicine-piece:add', 'chinese-medicine-piece:modify', 'chinese-medicine-piece:delete', 'chinese-medicine-piece:activate']
+        buttons: [
+          'chinese-medicine-piece:add',
+          'chinese-medicine-piece:modify',
+          'chinese-medicine-piece:delete',
+          'chinese-medicine-piece:activate',
+        ],
       },
     },
     {
       path: 'medicines',
       name: 'MedicineManage',
-      component: () => import('@/views/account/index.vue'),
+      component: () => import('@/views/medicine/index.vue'),
       meta: {
-        locale: '西药及中成药',
+        locale: '西药/中成药',
         requiresAuth: false,
-        buttons: ['account:add', 'account:modify', 'account:delete', 'account:activate']
+        buttons: ['medicine:add', 'medicine:modify', 'medicine:delete', 'medicine:activate'],
       },
     },
     {
@@ -49,7 +54,7 @@ const Dictionary: AppRouteRecordRaw = {
       meta: {
         locale: '中医证侯',
         requiresAuth: false,
-        buttons: ['account:add', 'account:modify', 'account:delete', 'account:activate']
+        buttons: ['account:add', 'account:modify', 'account:delete', 'account:activate'],
       },
     },
     {
@@ -59,7 +64,7 @@ const Dictionary: AppRouteRecordRaw = {
       meta: {
         locale: '中医治法',
         requiresAuth: false,
-        buttons: ['account:add', 'account:modify', 'account:delete', 'account:activate']
+        buttons: ['account:add', 'account:modify', 'account:delete', 'account:activate'],
       },
     },
     {
@@ -69,9 +74,9 @@ const Dictionary: AppRouteRecordRaw = {
       meta: {
         locale: '中医禁忌',
         requiresAuth: false,
-        buttons: ['account:add', 'account:modify', 'account:delete', 'account:activate']
+        buttons: ['account:add', 'account:modify', 'account:delete', 'account:activate'],
       },
-    }
+    },
   ],
 }
 
