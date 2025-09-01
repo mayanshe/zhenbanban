@@ -60,11 +60,11 @@ const Dictionary: AppRouteRecordRaw = {
     {
       path: 'therapeutics',
       name: 'TherapeuticManage',
-      component: () => import('@/views/account/index.vue'),
+      component: () => import('@/views/therapeutic/index.vue'),
       meta: {
         locale: '中医治法',
         requiresAuth: false,
-        buttons: ['account:add', 'account:modify', 'account:delete', 'account:activate'],
+        buttons: ['therapeutic:add', 'therapeutic:modify', 'therapeutic:delete'],
       },
     },
     {
