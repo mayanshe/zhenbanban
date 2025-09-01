@@ -58,4 +58,5 @@ public class TherapeuticAmdCommand extends BaseCommand<Long> {
     public String getTherapeuticsNamePinyinAbbr() {
         return PinyinUtils.getPinyinInitial(this.therapeuticsName);
     }
+
 }

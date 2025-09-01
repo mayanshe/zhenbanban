@@ -55,4 +55,5 @@ public interface TherapeuticConverter extends IConverter {
             @Mapping(target = "deleted", ignore = true)
     })
     Therapeutic toAggregate(TherapeuticPo po);
+
 }

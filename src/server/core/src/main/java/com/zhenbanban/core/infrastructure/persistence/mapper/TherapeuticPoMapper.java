@@ -44,4 +44,5 @@ public interface TherapeuticPoMapper extends PaginateMapper<TherapeuticPo> {
     Long findIdByCode(@Param("therapeuticsCode") String therapeuticsCode);
 
     List<TherapeuticPo> findAll();
+
 }

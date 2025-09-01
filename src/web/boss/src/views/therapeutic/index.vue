@@ -49,7 +49,7 @@
               <template #icon>
                 <icon-plus />
               </template>
-              添加治法
+              添加中医治法
             </a-button>
           </a-space>
         </a-col>

@@ -33,4 +33,5 @@ public class TherapeuticSaveRequest {
     private String therapeuticsName;
 
     private String description;
+
 }

@@ -76,10 +76,7 @@
             <a-button
               type="text"
               size="mimi"
-              @click="
-                console.log(JSON.stringify(record))
-                handleOpenSingle('modify', record.id)
-              "
+              @click="handleOpenSingle('modify', record.id)"
             >
               编辑
             </a-button>

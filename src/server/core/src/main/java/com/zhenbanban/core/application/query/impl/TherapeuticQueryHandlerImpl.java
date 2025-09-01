@@ -64,4 +64,5 @@ public class TherapeuticQueryHandlerImpl implements TherapeuticQueryHandler {
         return Pager.paginate(mapper, query.getPage(), query.getPageSize(), query.toMap(),
                 source -> (new ModelMapper()).map(source, TherapeuticDto.class));
     }
+
 }

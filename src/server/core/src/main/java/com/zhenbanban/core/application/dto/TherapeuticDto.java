@@ -20,6 +20,7 @@
  */
 package com.zhenbanban.core.application.dto;
 
+import com.zhenbanban.core.infrastructure.util.DateUtils;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -34,12 +35,26 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TherapeuticDto {
-    private Long id;
+    private String id;
     private String therapeuticsCode;
     private String therapeuticsName;
     private String therapeuticsNamePinyin;
     private String therapeuticsNamePinyinAbbr;
     private String description;
-    private long createdAt;
-    private long updatedAt;
+    private String createdAt;
+    private String updatedAt;
+    private String deletedAt;
+
+    public String getCreatedAt() {
+        return createdAt == null || createdAt.isBlank() ? "" : DateUtils.timestampToFormattedDate(createdAt);
+    }
+
+    public String getUpdatedAt() {
+        return updatedAt == null || updatedAt.isBlank() ? "" : DateUtils.timestampToFormattedDate(updatedAt);
+    }
+
+    public String getDeletedAt() {
+        return deletedAt == null || deletedAt.isBlank() || "0".equals(deletedAt) ? "" : DateUtils.timestampToFormattedDate(deletedAt);
+    }
+
 }

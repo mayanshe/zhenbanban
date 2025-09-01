@@ -132,4 +132,5 @@ public class TherapeuticController {
 
         return therapeuticQueryHandler.handleQueryPage(query);
     }
+
 }

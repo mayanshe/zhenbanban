@@ -101,4 +101,5 @@ public class TherapeuticRepositoryImpl implements TherapeuticRepository {
         }
         return therapeuticMapper.findById(id);
     }
+
 }

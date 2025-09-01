@@ -20,7 +20,6 @@
  */
 package com.zhenbanban.core.infrastructure.persistence.po;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -34,7 +33,6 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@TableName("therapeutics")
 public class TherapeuticPo {
     private Long id;                              // 治法ID
 
@@ -56,4 +54,5 @@ public class TherapeuticPo {
 
     @Builder.Default
     private long deletedAt = 0L;                  // 删除时间
+
 }

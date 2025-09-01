@@ -73,4 +73,5 @@ public class TherapeuticQuery {
 
         return map;
     }
+
 }

@@ -37,7 +37,6 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Therapeutic extends AbsAggregate {
-
     private Long id;
     private String therapeuticsCode;
     private String therapeuticsName;
@@ -91,4 +90,5 @@ public class Therapeutic extends AbsAggregate {
 
         this.addEvent(event);
     }
+
 }

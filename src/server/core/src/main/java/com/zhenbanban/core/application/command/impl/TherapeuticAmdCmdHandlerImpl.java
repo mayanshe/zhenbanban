@@ -82,4 +82,5 @@ public class TherapeuticAmdCmdHandlerImpl implements TherapeuticAmdCmdHandler {
         therapeuticRepository.save(therapeutic, false);
         domainEventPublisher.publish(therapeutic.getEvents());
     }
+
 }
