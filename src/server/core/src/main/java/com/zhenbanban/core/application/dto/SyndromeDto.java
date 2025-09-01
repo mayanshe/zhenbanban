@@ -64,4 +64,5 @@ public class SyndromeDto {
     public String getDeletedAt() {
         return deletedAt == null || deletedAt.isBlank() || "0".equals(deletedAt) ? "" : DateUtils.timestampToFormattedDate(deletedAt);
     }
+
 }

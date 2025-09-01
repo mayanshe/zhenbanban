@@ -64,4 +64,5 @@ public class SyndromeQueryHandlerImpl implements SyndromeQueryHandler {
         return Pager.paginate(mapper, query.getPage(), query.getPageSize(), query.toMap(),
                 source -> (new ModelMapper()).map(source, SyndromeDto.class));
     }
+
 }

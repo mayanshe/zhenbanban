@@ -114,7 +114,7 @@ public class SyndromeController {
      * @return 中医证候分页信息
      */
     @GetMapping
-    @AdminPermit(permissions = {"syndrome:add", "syndrome:modify", "syndrome:delete"}, message = "您未被授权执行此操作：查询中医证候")
+    @AdminPermit(permissions = {"syndrome:add", "syndrome:modify", "syndrome:delete"}, message = "您未被授权执行此操作：查询中医证候列表")
     public Pagination<SyndromeDto> getSyndromePagination(
             @RequestParam(value = "page", defaultValue = "1", required = false) Integer page,
             @RequestParam(value = "pageSize", defaultValue = "15", required = false) Integer pageSize,
@@ -132,4 +132,5 @@ public class SyndromeController {
 
         return syndromeQueryHandler.handleQueryPage(query);
     }
+
 }

@@ -50,11 +50,11 @@ const Dictionary: AppRouteRecordRaw = {
     {
       path: 'syndromes',
       name: 'SyndromeManage',
-      component: () => import('@/views/account/index.vue'),
+      component: () => import('@/views/syndrome/index.vue'),
       meta: {
         locale: '中医证侯',
         requiresAuth: false,
-        buttons: ['account:add', 'account:modify', 'account:delete', 'account:activate'],
+        buttons: ['syndrome:add', 'syndrome:modify', 'syndrome:delete'],
       },
     },
     {

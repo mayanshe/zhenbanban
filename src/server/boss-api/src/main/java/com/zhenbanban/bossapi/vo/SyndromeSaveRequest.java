@@ -35,7 +35,6 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SyndromeSaveRequest {
-
     @NotBlank(message = "证候编码不能为空")
     @Size(max = 20, message = "证候编码长度不能超过20个字符")
     private String syndromeCode;
@@ -47,4 +46,5 @@ public class SyndromeSaveRequest {
     @Size(max = 512, message = "证候描述长度不能超过512个字符")
     @Builder.Default
     private String description = "";
+
 }

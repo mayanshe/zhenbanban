@@ -3,14 +3,14 @@
 <mapper namespace="com.zhenbanban.core.infrastructure.persistence.mapper.SyndromePoMapper">
     <!-- 中医证候(syndromes)表映射 -->
 
-    <insert id="insert" parameterType="com.zhenbanban.core.infrastructure.persistence.po.SyndromePo" useGeneratedKeys="false">
+    <insert id="insert" parameterType="SyndromePo" useGeneratedKeys="false">
         INSERT INTO syndromes (id, syndrome_code, syndrome_name, syndrome_name_pinyin, syndrome_name_pinyin_abbr,
         description, created_at)
         VALUES (#{id}, #{syndromeCode}, #{syndromeName}, #{syndromeNamePinyin}, #{syndromeNamePinyinAbbr},
         #{description}, #{createdAt})
     </insert>
 
-    <update id="update" parameterType="com.zhenbanban.core.infrastructure.persistence.po.SyndromePo">
+    <update id="update" parameterType="SyndromePo">
         UPDATE syndromes
         SET syndrome_code = #{syndromeCode},
         syndrome_name = #{syndromeName},
@@ -27,17 +27,8 @@
         WHERE id = #{id}
     </update>
 
-    <select id="findById" parameterType="Long" resultType="com.zhenbanban.core.infrastructure.persistence.po.SyndromePo">
-        SELECT id,
-               syndrome_code                as syndromeCode,
-               syndrome_name                as syndromeName,
-               syndrome_name_pinyin         as syndromeNamePinyin,
-               syndrome_name_pinyin_abbr    as syndromeNamePinyinAbbr,
-               description,
-               created_at                   as createdAt,
-               updated_at                   as updatedAt,
-               deleted_at                   as deletedAt
-        FROM syndromes
+    <select id="findById" parameterType="Long" resultType="SyndromePo">
+        SELECT * FROM syndromes
         WHERE id = #{id} AND deleted_at = 0
     </select>
 
@@ -47,16 +38,8 @@
         WHERE syndrome_code = #{syndromeCode} AND syndrome_name = #{syndromeName}
     </select>
 
-    <select id="findAll" resultType="com.zhenbanban.core.infrastructure.persistence.po.SyndromePo">
-        SELECT id,
-               syndrome_code                as syndromeCode,
-               syndrome_name                as syndromeName,
-               syndrome_name_pinyin         as syndromeNamePinyin,
-               syndrome_name_pinyin_abbr    as syndromeNamePinyinAbbr,
-               description,
-               created_at                   as createdAt,
-               updated_at                   as updatedAt,
-               deleted_at                   as deletedAt
+    <select id="findAll" resultType="SyndromePo">
+        SELECT *
         FROM syndromes
         WHERE deleted_at = 0
     </select>

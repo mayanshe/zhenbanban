@@ -49,7 +49,7 @@
               <template #icon>
                 <icon-plus />
               </template>
-              添加证候
+              添加中医证候
             </a-button>
           </a-space>
         </a-col>

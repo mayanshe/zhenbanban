@@ -129,10 +129,10 @@ const handleSuccess = async () => {
 
 // region 列表
 const columns = [
-  { title: '药品编码', dataIndex: 'medicineCode', width: 200},
-  { title: '注册名称', dataIndex: 'registeredName', width: 200},
-  { title: '实际剂型', dataIndex: 'realityMedicineModel', width: 120},
-  { title: '生产企业', dataIndex: 'companyName', width: 220},
+  { title: '药品编码', dataIndex: 'medicineCode', width: 200 },
+  { title: '注册名称', dataIndex: 'registeredName', width: 200 },
+  { title: '实际剂型', dataIndex: 'realityMedicineModel', width: 120 },
+  { title: '生产企业', dataIndex: 'companyName', width: 220 },
   { title: '商品名称', dataIndex: 'medicineName' },
   { title: '创建时间', dataIndex: 'createdAt' },
   { title: '修改时间', dataIndex: 'updatedAt' },
@@ -150,7 +150,7 @@ const generateSearchModel = (): MedicineSearchModel => {
     medicineCode: '',
     deleted: false,
     icd: undefined,
-    poisonous: undefined
+    poisonous: undefined,
   }
 }
 

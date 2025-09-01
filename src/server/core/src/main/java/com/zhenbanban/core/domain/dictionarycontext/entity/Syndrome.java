@@ -90,4 +90,5 @@ public class Syndrome extends AbsAggregate {
 
         this.addEvent(event);
     }
+
 }

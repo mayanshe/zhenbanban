@@ -55,4 +55,5 @@ public interface SyndromeConverter extends IConverter {
             @Mapping(target = "deleted", ignore = true)
     })
     Syndrome toAggregate(SyndromePo po);
+
 }

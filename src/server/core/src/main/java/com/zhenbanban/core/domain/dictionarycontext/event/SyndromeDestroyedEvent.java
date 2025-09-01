@@ -40,4 +40,5 @@ public class SyndromeDestroyedEvent extends AbsDomainEvent {
     private Long syndromeId;        // 中医证候ID
 
     private String syndromeName;    // 中医证候名称
+
 }

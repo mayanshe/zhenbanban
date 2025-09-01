@@ -83,4 +83,5 @@ public class SyndromeAmdCmdHandlerImpl implements SyndromeAmdCmdHandler {
         syndromeRepository.save(syndrome, false);
         domainEventPublisher.publish(syndrome.getEvents());
     }
+
 }

@@ -105,4 +105,5 @@ public class SyndromeRepositoryImpl implements SyndromeRepository {
 
         return syndromeMapper.findById(id);
     }
+
 }

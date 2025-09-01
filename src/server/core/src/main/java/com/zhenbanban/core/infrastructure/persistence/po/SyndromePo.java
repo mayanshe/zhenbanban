@@ -54,4 +54,5 @@ public class SyndromePo {
 
     @Builder.Default
     private long deletedAt = 0L;              // 删除时间
+
 }

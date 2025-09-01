@@ -57,4 +57,5 @@ public class SyndromeAmdCommand extends BaseCommand<Long> {
     public String getSyndromeNamePinyinAbbr() {
         return PinyinUtils.getPinyinInitial(this.syndromeName);
     }
+
 }

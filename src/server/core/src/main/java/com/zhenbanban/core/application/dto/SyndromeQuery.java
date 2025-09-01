@@ -73,4 +73,5 @@ public class SyndromeQuery {
 
         return map;
     }
+    
 }

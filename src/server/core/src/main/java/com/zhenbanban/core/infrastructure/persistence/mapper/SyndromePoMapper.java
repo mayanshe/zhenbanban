@@ -44,4 +44,5 @@ public interface SyndromePoMapper extends PaginateMapper<SyndromePo> {
     Long findIdByCodeAndName(@Param("syndromeCode") String syndromeCode, @Param("syndromeName") String syndromeName);
 
     List<SyndromePo> findAll();
+
 }
