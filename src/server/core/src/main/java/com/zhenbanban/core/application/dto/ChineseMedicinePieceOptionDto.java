@@ -18,28 +18,32 @@
  * distribution of this code must also be licensed under the GPL. Failure
  * to comply with the terms of the GPL may result in legal action.
  */
-package com.zhenbanban.bossapi.vo;
+package com.zhenbanban.core.application.dto;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
-@Data
-@Builder(toBuilder = true)
+/**
+ * Dto : 中药饮片选项
+ *
+ * @author zhangxihai 2025/9/6
+ */
+@Getter
+@Setter
+@SuperBuilder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class TherapeuticSaveRequest {
+public class ChineseMedicinePieceOptionDto {
+    private String id;
 
-    @NotBlank(message = "治法编码不能为空")
-    @Size(max = 20, message = "治法编码长度不能超过20个字符")
-    private String therapeuticsCode;
+    private String code;
 
-    @NotBlank(message = "治法名称不能为空")
-    @Size(max = 255, message = "治法名称长度不能超过255个字符")
-    private String therapeuticsName;
+    private String name;
 
-    @Builder.Default
-    @Size(max = 512, message = "治法描述长度不能超过512个字符")
-    private String description = "";
+
+    private String alias;
 
 }

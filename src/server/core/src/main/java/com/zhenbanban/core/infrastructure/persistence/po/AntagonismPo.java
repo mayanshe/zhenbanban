@@ -20,8 +20,6 @@
  */
 package com.zhenbanban.core.infrastructure.persistence.po;
 
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -35,27 +33,25 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@TableName("antagonisms")
 public class AntagonismPo {
+    private Long id;                         // ID
 
-    @TableId
-    private Long id;                      // 主键ID
+    private Short kind;                      // 种类(18-十八反,19-十九畏)
 
-    private String pieceCode;             // 饮片编码
+    private Long pieceId;                    // 饮片ID
 
-    private String pieceName;             // 饮片名称
+    private String pieceCode;                // 饮片编码
 
-    private String antagonismPieceCodes;  // 相恶/相反的饮片编码(多个逗号分隔)
+    private String pieceAlias;              // 饮片别名
 
-    private String antagonismPieceNames;  // 相恶/相反的饮片名称(多个逗号分隔)
+    private String pieceName;                // 饮片名称
 
-    private Integer type;                 // 类型 1:十八反 2:十九畏
+    private Long conflictPieceId;            // 冲突饮片ID
 
-    private String remark;                // 备注
+    private String conflictPieceCode;        // 冲突饮片编码
 
-    @Builder.Default
-    private long gmtCreated = 0L;         // 创建时间
+    private String conflictPieceAlias;       // 冲突饮片别名
 
-    @Builder.Default
-    private long gmtModified = 0L;        // 最后修改时间
+    private String conflictPieceName;       // 冲突饮片名称
+
 }

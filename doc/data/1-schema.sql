@@ -225,6 +225,28 @@ CREATE TABLE IF NOT EXISTS `medicines`
 ) ENGINE = InnoDB COMMENT '西药中成药字典';
 
 -- ---------------------------------------------------------------------------------------------------------------------
+-- Table Name:   十八反十九畏表
+-- Description:
+-- ---------------------------------------------------------------------------------------------------------------------
+DROP TABLE IF EXISTS `antagonisms`;
+CREATE TABLE IF NOT EXISTS `antagonisms`
+(
+    `id`                   BIGINT UNSIGNED       NOT NULL PRIMARY KEY  COMMENT 'ID',
+    `kind`                 TINYINT(4) UNSIGNED   NOT NULL DEFAULT 18 COMMENT '冲突类型 18:十八反 19:十九畏',
+    `piece_id`             BIGINT UNSIGNED       NOT NULL COMMENT '饮片ID',
+    `piece_code`           CHAR(10)              NOT NULL COMMENT '饮片编码',
+    `piece_name`           VARCHAR(255)          NOT NULL COMMENT '饮片名称',
+    `piece_alias`          VARCHAR(512)          NOT NULL DEFAULT '' COMMENT '饮片别名(多个以逗号分隔)',
+    `conflict_piece_id`    BIGINT UNSIGNED       NOT NULL COMMENT '冲突饮片ID',
+    `conflict_piece_code`  CHAR(10)              NOT NULL COMMENT '冲突饮片编码',
+    `conflict_piece_name`  VARCHAR(255)          NOT NULL COMMENT '冲突饮片名称',
+    `conflict_piece_alias` VARCHAR(512)          NOT NULL DEFAULT '' COMMENT '冲突饮片别名(多个以逗号分隔)',
+    UNIQUE INDEX `uk_piece_conflict` (`piece_id`, `conflict_piece_id`)
+) ENGINE = InnoDB
+    AUTO_INCREMENT = 1 COMMENT '十八反十九畏表';
+
+-- ---------------------------------------------------------------------------------------------------------------------
+
 -- Table Name:  区域表
 -- Description: 五级行政区划表，包含省、市、县、镇、村等信息。
 -- ---------------------------------------------------------------------------------------------------------------------

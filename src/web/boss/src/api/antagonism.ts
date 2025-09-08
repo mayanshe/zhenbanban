@@ -1,33 +1,35 @@
-import axios from 'axios';
-import { Pager } from '@/api/common';
+import axios from 'axios'
+import { Pager } from '@/api/common'
 
 /**
  * 十八反十九畏交互模型
  */
 export interface Antagonism {
-  id: string;
-  pieceCode: string;
-  pieceName: string;
-  antagonismPieceCodes: string;
-  antagonismPieceNames: string;
-  type: number;
-  remark: string;
+  id: string
+  kind: number
+  pieceId: string
+  conflictPieceId: string
 }
 
 /**
  * 十八反十九畏视图模型
  */
 export interface AntagonismView extends Antagonism {
-  gmtCreated: string;
-  gmtModified: string;
+  kindName: string
+  pieceCode: string
+  pieceName: string
+  pieceAlias: string
+  conflictPieceCode: string
+  conflictPieceName: string
+  conflictPieceAlias: string
 }
 
 /**
  * 十八反十九畏搜索模型
  */
 export interface AntagonismSearchModel {
-  keywords: string;
-  type?: number;
+  keywords?: string
+  kind?: number
 }
 
 /**
@@ -35,7 +37,7 @@ export interface AntagonismSearchModel {
  * @param id
  */
 export function getAntagonism(id: string) {
-  return axios.get(`/antagonisms/${id}`);
+  return axios.get(`/antagonisms/${id}`)
 }
 
 /**
@@ -44,7 +46,7 @@ export function getAntagonism(id: string) {
  * @param page
  */
 export function getAntagonismPagination(data: AntagonismSearchModel, page: Pager) {
-  return axios.get('/antagonisms', { params: { ...data, ...page } });
+  return axios.get('/antagonisms', { params: { ...data, ...page } })
 }
 
 /**
@@ -52,7 +54,7 @@ export function getAntagonismPagination(data: AntagonismSearchModel, page: Pager
  * @param data
  */
 export function createAntagonism(data: Antagonism) {
-  return axios.post('/antagonisms', data);
+  return axios.post('/antagonisms', data)
 }
 
 /**
@@ -60,7 +62,7 @@ export function createAntagonism(data: Antagonism) {
  * @param data
  */
 export function updateAntagonism(data: Antagonism) {
-  return axios.put(`/antagonisms/${data.id}`, data);
+  return axios.put(`/antagonisms/${data.id}`, data)
 }
 
 /**
@@ -68,5 +70,5 @@ export function updateAntagonism(data: Antagonism) {
  * @param id
  */
 export function deleteAntagonism(id: string) {
-  return axios.delete(`/antagonisms/${id}`);
+  return axios.delete(`/antagonisms/${id}`)
 }

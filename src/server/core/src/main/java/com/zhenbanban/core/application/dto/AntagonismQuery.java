@@ -45,28 +45,23 @@ public class AntagonismQuery {
     @Builder.Default
     private int pageSize = 15;
 
-    private Long id;
-
     private String keywords;
 
-    private Integer type;
+    private Short kind;
 
     public Map<String, Object> toMap() {
         Map<String, Object> map = new HashMap<>();
-
-        if (id != null && id > 0) {
-            map.put("id", id);
-        }
 
         if (keywords != null && !keywords.isBlank()) {
             List<String> keywordList = Arrays.asList(keywords.split(" "));
             map.put("keywords", keywordList);
         }
 
-        if (type != null && type > 0) {
-            map.put("type", type);
+        if (kind != null) {
+            map.put("kind", kind);
         }
 
         return map;
     }
+
 }

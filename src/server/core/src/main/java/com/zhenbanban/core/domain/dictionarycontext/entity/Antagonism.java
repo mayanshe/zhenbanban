@@ -33,19 +33,32 @@ import lombok.*;
  */
 @Data
 @Builder(toBuilder = true)
-@EqualsAndHashCode(callSuper=false)
+@EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
 @AllArgsConstructor
 public class Antagonism extends AbsAggregate {
     private Long id;
-    private String pieceCode;
-    private String pieceName;
-    private String antagonismPieceCodes;
-    private String antagonismPieceNames;
-    private Integer type;
-    private String remark;
+
+    private Short Kind;                      // 种类(18-十八反,19-十九畏)
+
+    private Long pieceId;                    // 饮片ID
+
+    private String pieceCode;                // 饮片编码
+
+    private String pieceName;                // 饮片名称
+
+    private String pieceAlias;               // 饮片别名
+
+    private Long conflictPieceId;            // 冲突饮片ID
+
+    private String conflictPieceCode;        // 冲突饮片编码
+
+    private String conflictPieceName;        // 冲突饮片名称
+
+    private String conflictPieceAlias;       // 冲突饮片别名
+
     @Builder.Default
-    private boolean deleted = false;      // 是否已删除
+    private boolean deleted = false;         // 是否已删除
 
     /**
      * 添加
@@ -56,7 +69,12 @@ public class Antagonism extends AbsAggregate {
         AntagonismAddedEvent event = AntagonismAddedEvent.builder()
                 .refId(this.getId())
                 .antagonismId(this.getId())
+                .pieceId(this.getPieceId())
+                .pieceCode(this.getPieceCode())
                 .pieceName(this.getPieceName())
+                .conflictPieceId(this.getConflictPieceId())
+                .conflictPieceCode(this.getConflictPieceCode())
+                .conflictPieceName(this.getConflictPieceName())
                 .build();
 
         this.addEvent(event);
@@ -71,7 +89,12 @@ public class Antagonism extends AbsAggregate {
         AntagonismModifiedEvent event = AntagonismModifiedEvent.builder()
                 .refId(this.getId())
                 .antagonismId(this.getId())
+                .pieceId(this.getPieceId())
+                .pieceCode(this.getPieceCode())
                 .pieceName(this.getPieceName())
+                .conflictPieceId(this.getConflictPieceId())
+                .conflictPieceCode(this.getConflictPieceCode())
+                .conflictPieceName(this.getConflictPieceName())
                 .build();
 
         this.addEvent(event);
@@ -86,9 +109,15 @@ public class Antagonism extends AbsAggregate {
         AntagonismDestroyedEvent event = AntagonismDestroyedEvent.builder()
                 .refId(this.getId())
                 .antagonismId(this.getId())
+                .pieceId(this.getPieceId())
+                .pieceCode(this.getPieceCode())
                 .pieceName(this.getPieceName())
+                .conflictPieceId(this.getConflictPieceId())
+                .conflictPieceCode(this.getConflictPieceCode())
+                .conflictPieceName(this.getConflictPieceName())
                 .build();
 
         this.addEvent(event);
     }
+
 }

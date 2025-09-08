@@ -20,9 +20,7 @@
  */
 package com.zhenbanban.bossapi.vo;
 
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
-import lombok.Data;
+import lombok.*;
 
 /**
  * VO: 十八反十九畏保存请求
@@ -30,22 +28,14 @@ import lombok.Data;
  * @author zhangxihai 2025/09/03
  */
 @Data
+@Builder(toBuilder = true)
+@NoArgsConstructor
+@AllArgsConstructor
 public class AntagonismSaveRequest {
+    private String pieceId;                // 饮片编码
 
-    @NotEmpty(message = "饮片编码不能为空")
-    private String pieceCode;
+    private String conflictPieceId;        // 冲突饮片编码
 
-    @NotEmpty(message = "饮片名称不能为空")
-    private String pieceName;
+    private Short kind;                    // 种类(18-十八反,19-十九畏)
 
-    @NotEmpty(message = "配伍编码不能为空")
-    private String antagonismPieceCodes;
-
-    @NotEmpty(message = "配伍名称不能为空")
-    private String antagonismPieceNames;
-
-    @NotNull(message = "类型不能为空")
-    private Integer type;
-
-    private String remark;
 }

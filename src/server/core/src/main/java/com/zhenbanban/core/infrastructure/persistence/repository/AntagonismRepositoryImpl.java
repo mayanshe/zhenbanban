@@ -59,6 +59,7 @@ public class AntagonismRepositoryImpl implements AntagonismRepository {
     @StoreDomainEventsExecution
     @Transactional
     public Long save(Antagonism aggregate, boolean isNew) {
+        // 删除
         if (aggregate.isDeleted()) {
             if (antagonismMapper.delete(aggregate.getId()) <= 0) {
                 throw new InternalServerException("删除十八反十九畏信息失败");
@@ -69,19 +70,19 @@ public class AntagonismRepositoryImpl implements AntagonismRepository {
         verify(aggregate);
         AntagonismPo po = AntagonismConverter.INSTANCE.toPo(aggregate);
         po.setId(aggregate.getId());
+        po.setKind(aggregate.getKind());
+        po.setPieceAlias(aggregate.getPieceAlias());
+        po.setConflictPieceAlias(aggregate.getConflictPieceAlias());
 
-        long timestamp = System.currentTimeMillis();
-
+        // 添加
         if (isNew) {
-            po.setGmtCreated(timestamp);
-            po.setGmtModified(timestamp);
             if (antagonismMapper.insert(po) <= 0) {
                 throw new InternalServerException("添加十八反十九畏信息失败");
             }
             return po.getId();
         }
 
-        po.setGmtModified(timestamp);
+        // 修改
         if (antagonismMapper.update(po) <= 0) {
             throw new InternalServerException("更新十八反十九畏信息失败");
         }
@@ -90,9 +91,9 @@ public class AntagonismRepositoryImpl implements AntagonismRepository {
     }
 
     private void verify(Antagonism aggregate) {
-        Long id = antagonismMapper.findIdByCode(aggregate.getPieceCode());
+        Long id = antagonismMapper.findIdByPieceIdAndConflictPieceId(aggregate.getPieceId(), aggregate.getConflictPieceId());
         if (id != null && !id.equals(aggregate.getId())) {
-            throw new RequestConflictException(String.format("饮片 '%s' 的十八反十九畏信息已存在", aggregate.getPieceName()));
+            throw new RequestConflictException(String.format("饮片 '%s' 与 '%s'冲突信息已存在", aggregate.getPieceName(), aggregate.getConflictPieceName()));
         }
     }
 
@@ -102,4 +103,5 @@ public class AntagonismRepositoryImpl implements AntagonismRepository {
         }
         return antagonismMapper.findById(id);
     }
+
 }

@@ -13,7 +13,7 @@
                   <a-input v-model="searchData.keywords" placeholder="治法编码或名称" />
                 </a-form-item>
               </a-col>
-               <a-col :span="8">
+              <a-col :span="8">
                 <a-form-item field="therapeuticsCode" label="治法编码:">
                   <a-input v-model="searchData.therapeuticsCode" placeholder="精确查找" />
                 </a-form-item>

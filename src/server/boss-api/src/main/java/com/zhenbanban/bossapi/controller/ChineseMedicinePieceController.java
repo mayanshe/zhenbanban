@@ -23,17 +23,18 @@ package com.zhenbanban.bossapi.controller;
 import com.zhenbanban.bossapi.vo.ChineseMedicinePieceSaveRequest;
 import com.zhenbanban.bossapi.vo.IdResponse;
 import com.zhenbanban.core.application.command.ChineseMedicinePieceAmdCmdHandler;
-import com.zhenbanban.core.application.dto.ChineseMedicinePieceAmdCommand;
-import com.zhenbanban.core.application.dto.ChineseMedicinePieceDto;
-import com.zhenbanban.core.application.dto.ChineseMedicinePieceQuery;
+import com.zhenbanban.core.application.dto.*;
 import com.zhenbanban.core.application.query.ChineseMedicinePieceQueryHandler;
 import com.zhenbanban.core.infrastructure.support.annotation.AdminPermit;
+import com.zhenbanban.core.infrastructure.support.annotation.InList;
 import com.zhenbanban.core.infrastructure.support.paging.Pagination;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 控制器 : 中药饮片
@@ -99,7 +100,7 @@ public class ChineseMedicinePieceController {
      * @param id 中药饮片ID
      * @return 中药饮片信息
      */
-    @GetMapping("/{id}")
+    @GetMapping("/{id:\\d+}")
     @AdminPermit(permissions = {"chinese-medicine-piece:add", "chinese-medicine-piece:modify", "chinese-medicine-piece:delete"}, message = "您未被授权执行此操作：查询中药饮片")
     public ChineseMedicinePieceDto getChineseMedicinePiece(@PathVariable("id") Long id) {
         return chineseMedicinePieceQueryHandler.handleQuerySingle(id);
@@ -129,6 +130,18 @@ public class ChineseMedicinePieceController {
                 .build();
 
         return chineseMedicinePieceQueryHandler.handleQueryPage(query);
+    }
+
+    @GetMapping("/options")
+    @AdminPermit
+    public List<ChineseMedicinePieceOptionDto> getChineseMedicinePieceOptions(
+            @RequestParam(value = "keywords", defaultValue = "", required = false) String keywords
+    ) {
+        ChineseMedicinePieceoOptionQuery query = ChineseMedicinePieceoOptionQuery.builder()
+                .keywords(keywords)
+                .build();
+
+        return chineseMedicinePieceQueryHandler.handleQueryOption(query);
     }
 
 }

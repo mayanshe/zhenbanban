@@ -37,20 +37,13 @@ import org.mapstruct.factory.Mappers;
 public interface AntagonismConverter extends IConverter {
     AntagonismConverter INSTANCE = Mappers.getMapper(AntagonismConverter.class);
 
-    @Mappings({
-            @Mapping(target = "gmtCreated", ignore = true),
-            @Mapping(target = "gmtModified", ignore = true)
-    })
     AntagonismPo toPo(Antagonism antagonism);
 
-    @Mappings({
-            @Mapping(target = "gmtCreated", ignore = true),
-            @Mapping(target = "gmtModified", ignore = true)
-    })
     AntagonismPo updatePo(Antagonism antagonism, @MappingTarget AntagonismPo po);
 
     @Mappings({
             @Mapping(target = "deleted", ignore = true)
     })
     Antagonism toAggregate(AntagonismPo po);
+
 }

@@ -63,4 +63,5 @@ public class AntagonismQueryHandlerImpl implements AntagonismQueryHandler {
         return Pager.paginate(mapper, query.getPage(), query.getPageSize(), query.toMap(),
                 source -> (new ModelMapper()).map(source, AntagonismDto.class));
     }
+
 }

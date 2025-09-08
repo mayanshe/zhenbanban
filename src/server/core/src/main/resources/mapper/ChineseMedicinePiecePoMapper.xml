@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//dtd/Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zhenbanban.core.infrastructure.persistence.mapper.ChineseMedicinePiecePoMapper">
 
-    <insert id="insert" parameterType="com.zhenbanban.core.infrastructure.persistence.po.ChineseMedicinePiecePo" useGeneratedKeys="false">
+    <insert id="insert" parameterType="ChineseMedicinePiecePo" useGeneratedKeys="false">
         INSERT INTO chinese_medicine_pieces (id, piece_code, piece_name, piece_name_pinyin, piece_name_pinyin_abbr,
         piece_alias, piece_alias_pinyin, piece_alias_pinyin_abbr, nature, meridian,
         indications, dosage, created_at)
@@ -11,7 +11,7 @@
         #{indications}, #{dosage}, #{createdAt})
     </insert>
 
-    <update id="update" parameterType="com.zhenbanban.core.infrastructure.persistence.po.ChineseMedicinePiecePo">
+    <update id="update" parameterType="ChineseMedicinePiecePo">
         UPDATE chinese_medicine_pieces
         SET piece_code = #{pieceCode},
         piece_name = #{pieceName},
@@ -34,7 +34,7 @@
         WHERE id = #{id}
     </delete>
 
-    <select id="findById" parameterType="Long" resultType="com.zhenbanban.core.infrastructure.persistence.po.ChineseMedicinePiecePo">
+    <select id="findById" parameterType="Long" resultType="ChineseMedicinePiecePo">
         SELECT *
         FROM chinese_medicine_pieces
         WHERE id = #{id}
@@ -46,7 +46,7 @@
         WHERE piece_code = #{pieceCode} AND piece_name = #{pieceName}
     </select>
 
-    <select id="findAll" resultType="com.zhenbanban.core.infrastructure.persistence.po.ChineseMedicinePiecePo">
+    <select id="findAll" resultType="ChineseMedicinePiecePo">
         SELECT *
         FROM chinese_medicine_pieces
     </select>
@@ -79,7 +79,7 @@
         </where>
     </select>
 
-    <select id="search" parameterType="java.util.Map" resultType="com.zhenbanban.core.infrastructure.persistence.po.ChineseMedicinePiecePo">
+    <select id="search" parameterType="java.util.Map" resultType="ChineseMedicinePiecePo">
         SELECT * FROM chinese_medicine_pieces
         <where>
             <if test="id != null and id.length > 0">

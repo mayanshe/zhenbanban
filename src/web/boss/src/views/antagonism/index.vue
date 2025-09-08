@@ -14,9 +14,9 @@
               </a-col>
               <a-col :span="8">
                 <a-form-item field="type" label="类型:">
-                  <a-select v-model="searchData.type" placeholder="请选择类型" allow-clear>
-                    <a-option :value="1">十八反</a-option>
-                    <a-option :value="2">十九畏</a-option>
+                  <a-select v-model="searchData.kind" placeholder="请选择类型" allow-clear>
+                    <a-option :value="18">十八反</a-option>
+                    <a-option :value="19">十九畏</a-option>
                   </a-select>
                 </a-form-item>
               </a-col>
@@ -53,23 +53,22 @@
             </a-button>
           </a-space>
         </a-col>
+        <a-col :span="12" style="display: flex; align-items: center; justify-content: end; padding-top: 12px">
+          <a-tooltip content="刷新">
+            <div class="action-icon" @click="search"><icon-refresh size="18" /></div>
+          </a-tooltip>
+        </a-col>
       </a-row>
-      <a-table
-        :columns="columns"
-        :data="antagonisms.items"
-        :pagination="pagination"
-        @page-change="handlePageChange"
-      >
-        <template #type="{ record }">
-          <a-tag :color="record.type === 1 ? 'red' : 'orange'">
-            {{ record.type === 1 ? '十八反' : '十九畏' }}
-          </a-tag>
+      <a-table :columns="columns" :data="antagonisms.items" :pagination="pagination" @page-change="handlePageChange">
+        <template #pieceName="{record}">
+          {{record.pieceName}}({{record.pieceCode}}, {{record.pieceAlias}})
+        </template>
+        <template #conflictPieceName="{record}">
+          {{record.conflictPieceName}}({{record.conflictPieceCode}}, {{record.conflictPieceAlias}})
         </template>
         <template #optional="{ record }">
           <a-space>
-            <a-button type="text" size="mini" @click="handleOpenSingle('modify', record.id)">
-              编辑
-            </a-button>
+            <a-button type="text" size="mini" @click="handleOpenSingle('modify', record.id)">编辑</a-button>
             <a-popconfirm content="确定删除此记录?" @ok="handleDelete(record.id)">
               <a-button type="text" size="mini" status="danger">删除</a-button>
             </a-popconfirm>
@@ -82,57 +81,53 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref } from 'vue';
-import { Message } from '@arco-design/web-vue';
-import { Pager, Pagination } from '@/api/common';
-import { AntagonismView, AntagonismSearchModel, getAntagonismPagination, deleteAntagonism } from '@/api/antagonism';
-import AntagonismSingle from './components/single.vue';
+import { computed, ref } from 'vue'
+import { Message } from '@arco-design/web-vue'
+import { Pager, Pagination } from '@/api/common'
+import { AntagonismView, AntagonismSearchModel, getAntagonismPagination, deleteAntagonism } from '@/api/antagonism'
+import AntagonismSingle from './components/single.vue'
 
 const single = ref({
   open: false,
   action: 'add',
   id: '0',
-});
+})
 
 const handleOpenSingle = (action: string, id: string) => {
   single.value = {
     open: true,
     action,
     id,
-  };
-};
+  }
+}
 
 const handleSuccess = () => {
-  load();
-};
+  load()
+}
 
 const columns = [
-  { title: 'ID', dataIndex: 'id' },
-  { title: '饮片编码', dataIndex: 'pieceCode' },
-  { title: '饮片名称', dataIndex: 'pieceName' },
-  { title: '类型', slotName: 'type' },
-  { title: '配伍名称', dataIndex: 'antagonismPieceNames' },
-  { title: '创建时间', dataIndex: 'gmtCreated' },
-  { title: '更新时间', dataIndex: 'gmtModified' },
+  { title: '类型', dataIndex: 'kindName' },
+  { title: '中药名称', slotName: 'pieceName' },
+  { title: '禁忌配伍名称', slotName: 'conflictPieceName' },
   { title: '操作', slotName: 'optional' },
-];
+]
 
 const pager = ref<Pager>({
   page: 1,
   pageSize: 15,
-});
+})
 
 const generateSearchModel = (): AntagonismSearchModel => ({
   keywords: '',
-  type: undefined,
-});
+  kind: undefined,
+})
 
-const searchData = ref<AntagonismSearchModel>(generateSearchModel());
+const searchData = ref<AntagonismSearchModel>(generateSearchModel())
 
 const reset = () => {
-  searchData.value = generateSearchModel();
-  search();
-};
+  searchData.value = generateSearchModel()
+  search()
+}
 
 const generateDataList = (): Pagination<AntagonismView> => ({
   page: 1,
@@ -143,48 +138,48 @@ const generateDataList = (): Pagination<AntagonismView> => ({
   prevPage: 1,
   nextPage: 1,
   items: [],
-});
+})
 
-const antagonisms = ref<Pagination<AntagonismView>>(generateDataList());
+const antagonisms = ref<Pagination<AntagonismView>>(generateDataList())
 
 const load = async () => {
-  const res = await getAntagonismPagination(searchData.value, pager.value);
-  antagonisms.value = res.data || generateDataList();
-};
+  const res = await getAntagonismPagination(searchData.value, pager.value)
+  antagonisms.value = res || generateDataList()
+}
 
 const search = () => {
-  pager.value.page = 1;
-  load();
-};
+  pager.value.page = 1
+  load()
+}
 
-load();
+load()
 
 const pagination = computed(() => ({
   total: antagonisms.value.total,
   pageSize: antagonisms.value.pageSize,
   current: antagonisms.value.page,
-}));
+}))
 
 const handlePageChange = (page: number) => {
-  pager.value.page = page;
-  load();
-};
+  pager.value.page = page
+  load()
+}
 
 const handleDelete = async (id: string) => {
   try {
-    await deleteAntagonism(id);
-    Message.success('删除成功');
-    search();
+    await deleteAntagonism(id)
+    Message.success('删除成功')
+    search()
   } catch (error) {
     // Error handling
   }
-};
+}
 </script>
 
 <script lang="ts">
 export default {
-  name: 'AntagonismList',
-};
+  name: 'AntagonismManage',
+}
 </script>
 
 <style scoped lang="less">

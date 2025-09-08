@@ -45,6 +45,7 @@ import org.springframework.web.bind.annotation.*;
 public class AntagonismController {
 
     private final AntagonismAmdCmdHandler antagonismAmdCmdHandler;
+
     private final AntagonismQueryHandler antagonismQueryHandler;
 
     @Autowired
@@ -120,15 +121,16 @@ public class AntagonismController {
     public Pagination<AntagonismDto> getAntagonismPagination(
             @RequestParam(value = "page", defaultValue = "1", required = false) Integer page,
             @RequestParam(value = "pageSize", defaultValue = "15", required = false) Integer pageSize,
-            @RequestParam(value = "type", required = false) Integer type,
+            @RequestParam(value = "kind", required = false) Short kind,
             @RequestParam(value = "keywords", defaultValue = "", required = false) String keywords
     ) {
         AntagonismQuery query = AntagonismQuery.builder()
                 .page(page)
                 .pageSize(pageSize)
-                .type(type)
                 .keywords(keywords)
+                .kind(kind)
                 .build();
         return antagonismQueryHandler.handleQueryPage(query);
     }
+
 }

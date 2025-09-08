@@ -29,13 +29,37 @@ import lombok.Data;
  */
 @Data
 public class AntagonismDto {
-    private Long id;
-    private String pieceCode;
-    private String pieceName;
-    private String antagonismPieceCodes;
-    private String antagonismPieceNames;
-    private Integer type;
-    private String remark;
-    private long gmtCreated;
-    private long gmtModified;
+    private String id;
+
+    private Short kind;                 // 种类(18-十八反,19-十九畏)
+
+    private String kindName;            // 种类名称
+
+    private String pieceId;               // 药材编号
+
+    private String pieceCode;              // 药材编码
+
+    private String pieceName;              // 药材名称
+
+    private String pieceAlias;            // 药材别名
+
+    private String conflictPieceId;       // 相克编号
+
+    private String conflictPieceCode;     // 相克编码
+
+    private String conflictPieceName;     // 相克名称
+
+    private String conflictPieceAlias;    // 相克别名
+
+    public String getKindName() {
+        if (this.kind != null) {
+            if (this.kind == 18) {
+                return "十八反";
+            } else if (this.kind == 19) {
+                return "十九畏";
+            }
+        }
+        return "";
+    }
+
 }

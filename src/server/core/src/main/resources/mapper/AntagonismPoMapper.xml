@@ -3,20 +3,23 @@
 <mapper namespace="com.zhenbanban.core.infrastructure.persistence.mapper.AntagonismPoMapper">
     <!-- 十八反十九畏(antagonisms)表映射 -->
 
-    <insert id="insert" parameterType="com.zhenbanban.core.infrastructure.persistence.po.AntagonismPo" useGeneratedKeys="false">
-        INSERT INTO antagonisms (id, piece_code, piece_name, antagonism_piece_codes, antagonism_piece_names, type, remark, gmt_created, gmt_modified)
-        VALUES (#{id}, #{pieceCode}, #{pieceName}, #{antagonismPieceCodes}, #{antagonismPieceNames}, #{type}, #{remark}, #{gmtCreated}, #{gmtModified})
+    <insert id="insert" parameterType="AntagonismPo" useGeneratedKeys="false">
+        INSERT INTO antagonisms (id, kind, piece_id, piece_code, piece_name, piece_alias, conflict_piece_id, conflict_piece_code, conflict_piece_name, conflict_piece_alias)
+        VALUES (#{id}, #{kind}, #{pieceId}, #{pieceCode}, #{pieceName}, #{pieceAlias}, #{conflictPieceId}, #{conflictPieceCode}, #{conflictPieceName}, #{conflictPieceAlias})
     </insert>
 
-    <update id="update" parameterType="com.zhenbanban.core.infrastructure.persistence.po.AntagonismPo">
+    <update id="update" parameterType="AntagonismPo">
         UPDATE antagonisms
-        SET piece_code = #{pieceCode},
+        SET
+            kind = #{kind},
+            piece_id = #{pieceId},
+            piece_code = #{pieceCode},
             piece_name = #{pieceName},
-            antagonism_piece_codes = #{antagonismPieceCodes},
-            antagonism_piece_names = #{antagonismPieceNames},
-            type = #{type},
-            remark = #{remark},
-            gmt_modified = #{gmtModified}
+            piece_alias = #{pieceAlias},
+            conflict_piece_id = #{conflictPieceId},
+            conflict_piece_code = #{conflictPieceCode},
+            conflict_piece_name = #{conflictPieceName}
+            conflict_piece_alias = #{conflictPieceAlias}
         WHERE id = #{id}
     </update>
 
@@ -24,57 +27,56 @@
         DELETE FROM antagonisms WHERE id = #{id}
     </delete>
 
-    <select id="findById" parameterType="Long" resultType="com.zhenbanban.core.infrastructure.persistence.po.AntagonismPo">
+    <select id="findById" parameterType="Long" resultType="AntagonismPo">
         SELECT *
         FROM antagonisms
         WHERE id = #{id}
     </select>
 
-    <select id="findIdByCode" resultType="Long">
-        SELECT id
-        FROM antagonisms
-        WHERE piece_code = #{pieceCode}
-    </select>
-
-    <select id="findAll" resultType="com.zhenbanban.core.infrastructure.persistence.po.AntagonismPo">
+    <select id="findAll" resultType="AntagonismPo">
         SELECT *
         FROM antagonisms
+    </select>
+
+    <select id="findIdByPieceIdAndConflictPieceId" resultType="Long">
+        SELECT id
+        FROM antagonisms
+        WHERE (piece_id = #{pieceId} AND conflict_piece_id = #{conflictPieceId})
+           OR (piece_id = #{conflictPieceId} AND conflict_piece_id = #{pieceId})
     </select>
 
     <select id="count" parameterType="java.util.Map" resultType="int">
         SELECT COUNT(id) FROM antagonisms
         <where>
-            <if test="id != null and id.length > 0">
-                AND id = #{id}
-            </if>
-            <if test="type != null and type > 0">
-                AND type = #{type}
+            <if test="kind != null">
+                AND kind = #{kind}
             </if>
             <if test="keywords != null and keywords.size() > 0">
                 AND (
                 <foreach item="w" collection="keywords" separator="OR">
                     piece_code LIKE CONCAT('%', #{w}, '%')
                     OR piece_name LIKE CONCAT('%', #{w}, '%')
+                    OR conflict_piece_code LIKE CONCAT('%', #{w}, '%')
+                    OR conflict_piece_name LIKE CONCAT('%', #{w}, '%')
                 </foreach>
                 )
             </if>
         </where>
     </select>
 
-    <select id="search" parameterType="java.util.Map" resultType="com.zhenbanban.core.infrastructure.persistence.po.AntagonismPo">
+    <select id="search" parameterType="java.util.Map" resultType="AntagonismPo">
         SELECT * FROM antagonisms
         <where>
-            <if test="id != null and id.length > 0">
-                AND id = #{id}
-            </if>
-            <if test="type != null and type > 0">
-                AND type = #{type}
+            <if test="kind != null">
+                AND kind = #{kind}
             </if>
             <if test="keywords != null and keywords.size() > 0">
                 AND (
                 <foreach item="w" collection="keywords" separator="OR">
                     piece_code LIKE CONCAT('%', #{w}, '%')
                     OR piece_name LIKE CONCAT('%', #{w}, '%')
+                    OR conflict_piece_code LIKE CONCAT('%', #{w}, '%')
+                    OR conflict_piece_name LIKE CONCAT('%', #{w}, '%')
                 </foreach>
                 )
             </if>

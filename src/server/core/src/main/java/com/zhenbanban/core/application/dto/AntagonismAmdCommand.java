@@ -35,15 +35,10 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AntagonismAmdCommand extends BaseCommand<Long> {
-    private String pieceCode;             // 饮片编码
+    private Long pieceId;          // 药材编号
 
-    private String pieceName;             // 饮片名称
+    private Long conflictPieceId;  // 相克编号
 
-    private String antagonismPieceCodes;  // 相恶/相反的饮片编码(多个逗号分隔)
+    private Short kind;            // 种类(18-十八反,19-十九畏)
 
-    private String antagonismPieceNames;  // 相恶/相反的饮in片名称(多个逗号分隔)
-
-    private Integer type;                 // 类型 1:十八反 2:十九畏
-
-    private String remark;                // 备注
 }

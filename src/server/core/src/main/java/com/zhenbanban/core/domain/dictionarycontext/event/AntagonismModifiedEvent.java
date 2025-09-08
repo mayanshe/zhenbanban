@@ -37,7 +37,18 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AntagonismModifiedEvent extends AbsDomainEvent {
-    private Long antagonismId;        // 十八反十九畏ID
+    private Long antagonismId;               // ID
 
-    private String pieceName;        // 饮片名称
+    private Long pieceId;                    // 饮片ID
+
+    private String pieceCode;                // 饮片编码
+
+    private String pieceName;                // 饮片名称
+
+    private Long conflictPieceId;            // 冲突饮片ID
+
+    private String conflictPieceCode;        // 冲突饮片编码
+
+    private String conflictPieceName;       // 冲突饮片名称
+
 }

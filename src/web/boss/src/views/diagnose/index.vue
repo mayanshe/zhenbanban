@@ -73,13 +73,7 @@
       >
         <template #optional="{ record }">
           <a-space>
-            <a-button
-              type="text"
-              size="mimi"
-              @click="handleOpenSingle('modify', record.id)"
-            >
-              编辑
-            </a-button>
+            <a-button type="text" size="mimi" @click="handleOpenSingle('modify', record.id)">编辑</a-button>
             <a-popconfirm content="确定删除此诊断?" @ok="handleDelete(record.id)">
               <a-button type="text" size="mimi" status="danger">删除</a-button>
             </a-popconfirm>

@@ -23,8 +23,10 @@ package com.zhenbanban.core.application.command.impl;
 import com.zhenbanban.core.application.command.AntagonismAmdCmdHandler;
 import com.zhenbanban.core.application.dto.AntagonismAmdCommand;
 import com.zhenbanban.core.domain.dictionarycontext.entity.Antagonism;
+import com.zhenbanban.core.domain.dictionarycontext.entity.ChineseMedicinePiece;
 import com.zhenbanban.core.domain.dictionarycontext.repository.AntagonismRepository;
 import com.zhenbanban.core.domain.common.DomainEventPublisher;
+import com.zhenbanban.core.domain.dictionarycontext.repository.ChineseMedicinePieceRepository;
 import com.zhenbanban.core.shared.contract.IdGenerator;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -40,7 +42,11 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class AntagonismAmdCmdHandlerImpl implements AntagonismAmdCmdHandler {
     private final AntagonismRepository antagonismRepository;
+
+    private final ChineseMedicinePieceRepository pieceRepository;
+
     private final DomainEventPublisher domainEventPublisher;
+
     private final IdGenerator idGenerator;
 
     @Override
@@ -48,9 +54,18 @@ public class AntagonismAmdCmdHandlerImpl implements AntagonismAmdCmdHandler {
     public Long handleAdd(AntagonismAmdCommand command) {
         Long id = idGenerator.nextId();
 
+        ChineseMedicinePiece piece = pieceRepository.load(command.getPieceId());
+        ChineseMedicinePiece conflictPiece = pieceRepository.load(command.getConflictPieceId());
+
         ModelMapper modelMapper = new ModelMapper();
         Antagonism antagonism = modelMapper.map(command, Antagonism.class);
         antagonism.setId(id);
+        antagonism.setPieceCode(piece.getPieceCode());
+        antagonism.setPieceName(piece.getPieceName());
+        antagonism.setPieceAlias(piece.getPieceAlias());
+        antagonism.setConflictPieceCode(conflictPiece.getPieceCode());
+        antagonism.setConflictPieceName(conflictPiece.getPieceName());
+        antagonism.setConflictPieceAlias(conflictPiece.getPieceAlias());
         antagonism.add();
 
         antagonismRepository.save(antagonism, true);
@@ -63,6 +78,20 @@ public class AntagonismAmdCmdHandlerImpl implements AntagonismAmdCmdHandler {
     @Transactional
     public void handleModify(AntagonismAmdCommand command) {
         Antagonism antagonism = antagonismRepository.load(command.getId());
+
+        if (!command.getPieceId().equals(antagonism.getPieceId())) {
+            ChineseMedicinePiece piece = pieceRepository.load(command.getPieceId());
+            antagonism.setPieceId(piece.getId());
+            antagonism.setPieceCode(piece.getPieceCode());
+            antagonism.setPieceName(piece.getPieceName());
+        }
+
+        if (!command.getConflictPieceId().equals(antagonism.getConflictPieceId())) {
+            ChineseMedicinePiece conflictPiece = pieceRepository.load(command.getConflictPieceId());
+            antagonism.setConflictPieceId(conflictPiece.getId());
+            antagonism.setConflictPieceCode(conflictPiece.getPieceCode());
+            antagonism.setConflictPieceName(conflictPiece.getPieceName());
+        }
 
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.map(command, antagonism);
@@ -81,4 +110,5 @@ public class AntagonismAmdCmdHandlerImpl implements AntagonismAmdCmdHandler {
         antagonismRepository.save(antagonism, false);
         domainEventPublisher.publish(antagonism.getEvents());
     }
+
 }

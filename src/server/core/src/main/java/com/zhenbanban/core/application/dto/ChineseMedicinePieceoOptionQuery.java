@@ -18,28 +18,42 @@
  * distribution of this code must also be licensed under the GPL. Failure
  * to comply with the terms of the GPL may result in legal action.
  */
-package com.zhenbanban.bossapi.vo;
+package com.zhenbanban.core.application.dto;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
-@Data
-@Builder(toBuilder = true)
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * 类型 : ChineseMedicinePieceDtoQuery
+ *
+ * @author zhangxihai 2025/9/6
+ */
+@Getter
+@Setter
+@SuperBuilder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class TherapeuticSaveRequest {
-
-    @NotBlank(message = "治法编码不能为空")
-    @Size(max = 20, message = "治法编码长度不能超过20个字符")
-    private String therapeuticsCode;
-
-    @NotBlank(message = "治法名称不能为空")
-    @Size(max = 255, message = "治法名称长度不能超过255个字符")
-    private String therapeuticsName;
-
+public class ChineseMedicinePieceoOptionQuery {
     @Builder.Default
-    @Size(max = 512, message = "治法描述长度不能超过512个字符")
-    private String description = "";
+    private int limit = 100;
 
+    private String keywords;
+
+    public Map<String, Object> toMap() {
+        Map<String, Object> map = new HashMap<>();
+
+        if (keywords != null && !keywords.isBlank()) {
+            List<String> keywordList = Arrays.asList(keywords.split(" "));
+            map.put("keywords", keywordList);
+        }
+
+        map.put("limit", limit);
+
+        return map;
+    }
 }

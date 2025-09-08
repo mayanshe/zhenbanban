@@ -42,7 +42,8 @@ public interface AntagonismPoMapper extends PaginateMapper<AntagonismPo> {
 
     AntagonismPo findById(Long id);
 
-    Long findIdByCode(@Param("pieceCode") String pieceCode);
-
     List<AntagonismPo> findAll();
+
+    Long findIdByPieceIdAndConflictPieceId(@Param("pieceId") Long pieceId, @Param("conflictPieceId") Long conflictPieceId);
+
 }
