@@ -21,7 +21,9 @@
 package com.zhenbanban.core.application.query.impl;
 
 import com.zhenbanban.core.application.dto.ChineseMedicinePieceDto;
+import com.zhenbanban.core.application.dto.ChineseMedicinePieceOptionDto;
 import com.zhenbanban.core.application.dto.ChineseMedicinePieceQuery;
+import com.zhenbanban.core.application.dto.ChineseMedicinePieceoOptionQuery;
 import com.zhenbanban.core.application.query.ChineseMedicinePieceQueryHandler;
 import com.zhenbanban.core.infrastructure.persistence.mapper.ChineseMedicinePiecePoMapper;
 import com.zhenbanban.core.infrastructure.persistence.po.ChineseMedicinePiecePo;
@@ -30,6 +32,7 @@ import com.zhenbanban.core.infrastructure.support.paging.Pagination;
 import com.zhenbanban.core.shared.exception.BadRequestException;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -63,6 +66,29 @@ public class ChineseMedicinePieceQueryHandlerImpl implements ChineseMedicinePiec
     public Pagination<ChineseMedicinePieceDto> handleQueryPage(ChineseMedicinePieceQuery query) {
         return Pager.paginate(mapper, query.getPage(), query.getPageSize(), query.toMap(),
                 source -> (new ModelMapper()).map(source, ChineseMedicinePieceDto.class));
+    }
+
+    @Override
+    public List<ChineseMedicinePieceOptionDto> handleQueryOption(ChineseMedicinePieceoOptionQuery query) {
+        List<ChineseMedicinePiecePo> poList = mapper.search(query.toMap());
+
+        ModelMapper modelMapper = new ModelMapper();
+        modelMapper.getConfiguration().setPropertyCondition(context ->
+                !(context.getSource() instanceof org.springframework.cglib.proxy.Proxy) &&
+                        !(context.getSource() instanceof java.lang.reflect.Proxy));
+        modelMapper.addMappings(new PropertyMap<ChineseMedicinePiecePo, ChineseMedicinePieceOptionDto>() {
+            @Override
+            protected void configure() {
+                map().setId(source.getId().toString());
+                map().setCode(source.getPieceCode());
+                map().setName(source.getPieceName());
+                map().setAlias(source.getPieceAlias());
+            }
+        });
+
+        return poList.stream()
+                .map(po -> modelMapper.map((ChineseMedicinePiecePo)po, ChineseMedicinePieceOptionDto.class))
+                .toList();
     }
 
 }

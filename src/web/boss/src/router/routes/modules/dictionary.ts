@@ -24,7 +24,7 @@ const Dictionary: AppRouteRecordRaw = {
     },
     {
       path: 'chinese-medicine-pieces',
-      name: 'ChineseMedicinePieces',
+      name: 'ChineseMedicinePieceManage',
       component: () => import('@/views/chinese-medicine-piece/index.vue'),
       meta: {
         locale: '中药饮片',
@@ -68,13 +68,13 @@ const Dictionary: AppRouteRecordRaw = {
       },
     },
     {
-      path: 'contraindications',
-      name: 'ContraindicationManage',
-      component: () => import('@/views/account/index.vue'),
+      path: 'antagonisms',
+      name: 'AntagonismManage',
+      component: () => import('@/views/antagonism/index.vue'),
       meta: {
-        locale: '中医禁忌',
+        locale: '十八反十九畏',
         requiresAuth: false,
-        buttons: ['account:add', 'account:modify', 'account:delete', 'account:activate'],
+        buttons: ['antagonism:add', 'antagonism:modify', 'antagonism:delete'],
       },
     },
   ],

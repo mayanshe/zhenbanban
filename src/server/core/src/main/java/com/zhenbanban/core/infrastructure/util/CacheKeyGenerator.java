@@ -136,5 +136,15 @@ public final class CacheKeyGenerator {
         return generate("COS-CREDENTIALS");
     }
 
+    /**
+     * 获取管理员快捷菜单缓存键
+     *
+     * @param adminId 管理员ID
+     * @return 缓存键
+     */
+    public static String getAdminQuickMenuKey(long adminId) {
+        return generate("ADMIN-QUICK-MENU", adminId);
+    }
+
 }
 

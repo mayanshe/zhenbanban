@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//dtd/Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhenbanban.core.infrastructure.persistence.mapper.RegionPoMapper">
+    <!-- 中国行政区划(region)表映射 -->
+
+    <select id="findById" parameterType="Long" resultType="RegionPo">
+        SELECT *
+        FROM regions
+        WHERE id = #{id}
+    </select>
+
+    <select id="findByParentId" parameterType="Long" resultType="RegionPo">
+        SELECT *
+        FROM regions
+        WHERE parent_id = #{parentId}
+        ORDER BY id ASC
+    </select>
+
+</mapper>

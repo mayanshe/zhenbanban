@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <Breadcrumb :items="['系统', '角色管理']" />
+    <Breadcrumb :items="['系统', '角色管理']" page-name="角色" route-name="RoleManage" />
     <a-card class="general-card" title="角色管理">
       <a-divider style="margin-top: 0" />
 

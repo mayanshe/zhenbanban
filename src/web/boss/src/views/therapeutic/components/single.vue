@@ -101,11 +101,11 @@ const handleValidate = async () => {
       if (r === undefined) {
         resolve(true)
       } else {
-        const firstError = Object.values(r)[0];
+        const firstError = Object.values(r)[0]
         if (firstError && firstError.message) {
-          Message.error(firstError.message);
+          Message.error(firstError.message)
         }
-        resolve(false);
+        resolve(false)
       }
     })
   })
