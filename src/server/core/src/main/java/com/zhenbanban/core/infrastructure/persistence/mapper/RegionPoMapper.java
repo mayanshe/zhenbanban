@@ -18,16 +18,22 @@
  * distribution of this code must also be licensed under the GPL. Failure
  * to comply with the terms of the GPL may result in legal action.
  */
-package com.zhenbanban.core.application.common;
+package com.zhenbanban.core.infrastructure.persistence.mapper;
 
-import java.util.Set;
+import com.zhenbanban.core.infrastructure.persistence.po.RegionPo;
+import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 /**
- * 领域层通用接口 : ISetQuery
+ * Mapper : 中国行政区划
  *
- * @author zhangxihai 2025/8/11
+ * @author zhangxihai 2025/9/16
  */
-public interface ISetQuery<Model, Key> {
-    Set<Model> handle(Key key);
+@Mapper
+public interface RegionPoMapper {
+    RegionPo findById(Long id);
+
+    List<RegionPo> findByParentId(Long parentId);
 
 }

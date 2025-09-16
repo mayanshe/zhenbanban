@@ -250,21 +250,23 @@ CREATE TABLE IF NOT EXISTS `antagonisms`
 -- Table Name:  区域表
 -- Description: 五级行政区划表，包含省、市、县、镇、村等信息。
 -- ---------------------------------------------------------------------------------------------------------------------
-  DROP TABLE IF EXISTS `regions`;
-  CREATE TABLE IF NOT EXISTS `regions`
-  (
-      `id`            BIGINT UNSIGNED        NOT NULL PRIMARY KEY AUTO_INCREMENT COMMENT '区域ID',
-      `region_name`   VARCHAR(255)           NOT NULL DEFAULT '' COMMENT '区域名称',
-      `pinyin`        VARCHAR(255)           NOT NULL DEFAULT '' COMMENT '区域拼音',
-      `pinyin_prefix` VARCHAR(1)             NOT NULL DEFAULT '' COMMENT '区域拼音首字母',
-      `level`         TINYINT(2) UNSIGNED    NOT NULL DEFAULT 0 COMMENT '区域级别 1:省 2:市 3:区/县 4:村 5:组/街道',
-      INDEX `idx_parent_id` (`parent_id`),
-      INDEX `idx_region_name` (`region_name`),
-      INDEX `idx_pinyin` (`pinyin`),
-      INDEX `idx_pinyin_prefix` (`pinyin_prefix`)
-  ) ENGINE = InnoDB
-    AUTO_INCREMENT = 1 COMMENT '区域表';
-
+DROP TABLE IF EXISTS `regions`;
+CREATE TABLE IF NOT EXISTS `regions`
+(
+   `id`              BIGINT UNSIGNED    NOT NULL PRIMARY KEY COMMENT '行政编码',
+   `parent_id`       BIGINT UNSIGNED    NOT NULL DEFAULT 0 COMMENT '上级行政编码',
+   `region_level`    TINYINT(1)         UNSIGNED NOT NULL DEFAULT 1 COMMENT '行政区划级别 1:省 2:市 3:区/县 4:镇/街道 5:村/社区',
+   `postal_code`     CHAR(6)            NOT NULL DEFAULT '' COMMENT '邮政编码',
+   `area_code`       CHAR(6)            NOT NULL DEFAULT '' COMMENT '区号',
+   `region_name`     VARCHAR(50)        NOT NULL DEFAULT '' COMMENT '行政区划名称',
+   `name_pinyin`     VARCHAR(255)       NOT NULL DEFAULT '' COMMENT '行政区划名称拼音',
+   `short_name`      VARCHAR(50)        NOT NULL DEFAULT '' COMMENT '行政区划简称',
+   `merge_name`      VARCHAR(255)       NOT NULL DEFAULT '' COMMENT '行政区划组合名称',
+   `longitude`       decimal(10,6)      NOT NULL DEFAULT '0.000000' COMMENT '经度',
+   `latitude`        decimal(10,6)      NOT NULL DEFAULT '0.000000' COMMENT '纬度',
+   INDEX `idx_parent_id` (`parent_id`) USING BTREE COMMENT '上级行政编码索引'
+) ENGINE = InnoDB
+    AUTO_INCREMENT = 1 COMMENT '中国行政区划表';
 
 -- ---------------------------------------------------------------------------------------------------------------------
 -- Table Name:  账号表

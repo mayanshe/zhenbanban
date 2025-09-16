@@ -18,16 +18,32 @@
  * distribution of this code must also be licensed under the GPL. Failure
  * to comply with the terms of the GPL may result in legal action.
  */
-package com.zhenbanban.core.application.common;
-
-import java.util.Set;
+package com.zhenbanban.core.domain.systemcontext.valueobj;
 
 /**
- * 领域层通用接口 : ISetQuery
+ * Value Object : 快捷菜单
  *
- * @author zhangxihai 2025/8/11
+ * @author zhangxihai 2025/9/9
  */
-public interface ISetQuery<Model, Key> {
-    Set<Model> handle(Key key);
+public class QuickMenu {
+    private String pageName;        // 页面名称
+
+    private String routeName;       // 路由名称
+
+    public QuickMenu() {
+    }
+
+    public QuickMenu(String pageName, String routeName) {
+        this.pageName = pageName;
+        this.routeName = routeName;
+    }
+
+    public String getPageName() {
+        return pageName;
+    }
+
+    public String getRouteName() {
+        return routeName;
+    }
 
 }

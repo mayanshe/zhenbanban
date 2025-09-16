@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <Breadcrumb :items="['字典', '中医证候']" />
+    <Breadcrumb :items="['字典', '中医证候']" page-name="中医证候" route-name="SyndromeManage" />
     <a-card class="general-card" title="中医证候管理">
       <a-divider style="margin-top: 0" />
 

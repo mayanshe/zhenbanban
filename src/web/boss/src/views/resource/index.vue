@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <Breadcrumb :items="['系统', '资源管理']" />
+    <Breadcrumb :items="['系统', '资源管理']" page-name="资源" route-name="ResourceManage" />
     <a-card class="general-card" title="资源管理（菜单 / 链接 / 按钮）">
       <a-divider style="margin-top: 0" />
 

@@ -1,6 +1,5 @@
 import axios from 'axios'
 import { Pager } from '@/api/common'
-import faq from '@/router/routes/externalModules/faq'
 
 // 权限Permission
 

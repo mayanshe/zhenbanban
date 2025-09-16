@@ -1,5 +1,4 @@
 import axios from 'axios'
-import Resource from '@/views/resource/index.vue'
 
 // 资源Resource(菜单/按钮)
 

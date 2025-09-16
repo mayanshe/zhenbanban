@@ -18,16 +18,27 @@
  * distribution of this code must also be licensed under the GPL. Failure
  * to comply with the terms of the GPL may result in legal action.
  */
-package com.zhenbanban.core.application.common;
+package com.zhenbanban.core.application.dto;
 
-import java.util.Set;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
- * 领域层通用接口 : ISetQuery
+ * Command : 快捷菜单
  *
- * @author zhangxihai 2025/8/11
+ * @author zhangxihai 2025/9/8
  */
-public interface ISetQuery<Model, Key> {
-    Set<Model> handle(Key key);
+@Data
+@Builder(toBuilder = true)
+@NoArgsConstructor
+@AllArgsConstructor
+public class QuickMenuAddCommand {
+    private Long userId;            // 用户ID
+
+    private String pageName;        // 页面名称
+
+    private String routeName;       // 路由名称
 
 }

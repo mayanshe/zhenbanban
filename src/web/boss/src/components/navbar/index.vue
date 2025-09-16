@@ -8,6 +8,17 @@
           @click="toggleDrawerMenu"
         />
       </a-space>
+      <div
+        :style="{ marginLeft: appStore.menuCollapse ? '50px' : '200px' }"
+        v-if="!(!topMenu && appStore.device === 'mobile') && quickMenus.length > 0"
+      >
+        快捷 &nbsp;&nbsp;
+        <IconDoubleRight />
+        &nbsp;&nbsp;
+        <a-space size="small">
+          <a-link v-for="item in quickMenus" @click="handleOpenQuickMenu(item.routeName)">{{ item.pageName }}</a-link>
+        </a-space>
+      </div>
     </div>
     <ul class="right-side">
       <li>
@@ -93,8 +104,12 @@ import { LOCALE_OPTIONS } from '@/locale'
 import { useAppStore, useUserStore } from '@/store'
 import { Message } from '@arco-design/web-vue'
 import { useDark, useFullscreen, useToggle } from '@vueuse/core'
-import { computed, inject, ref } from 'vue'
+import { computed, inject, ref, watch } from 'vue'
+import { useRouter } from 'vue-router'
+import { QuickMenu, getQuickMenus } from '@/api/quick-menu'
 import MessageBox from '../message-box/index.vue'
+
+const router = useRouter()
 
 const appStore = useAppStore()
 const userStore = useUserStore()
@@ -159,6 +174,23 @@ const switchGit = () => {
 const open = (val: string) => {
   window.open(`https://vuejs-core.cn/${val}`)
 }
+
+const quickMenus = ref<QuickMenu[]>([])
+const loadQuickMenus = async () => {
+  quickMenus.value = (await getQuickMenus()) || []
+}
+loadQuickMenus()
+
+const handleOpenQuickMenu = async (routeName: string) => {
+  router.push({ name: routeName })
+}
+
+watch(
+  () => appStore.quickMenus,
+  (val) => {
+    loadQuickMenus()
+  }
+)
 </script>
 
 <style scoped lang="less">

@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <Breadcrumb :items="['字典', '十八反十九畏']" />
+    <Breadcrumb :items="['字典', '十八反十九畏']" page-name="十八反十九畏" route-name="AntagonismManage" />
     <a-card class="general-card" title="十八反十九畏管理">
       <a-divider style="margin-top: 0" />
       <a-row>
@@ -60,11 +60,9 @@
         </a-col>
       </a-row>
       <a-table :columns="columns" :data="antagonisms.items" :pagination="pagination" @page-change="handlePageChange">
-        <template #pieceName="{record}">
-          {{record.pieceName}}({{record.pieceCode}}, {{record.pieceAlias}})
-        </template>
-        <template #conflictPieceName="{record}">
-          {{record.conflictPieceName}}({{record.conflictPieceCode}}, {{record.conflictPieceAlias}})
+        <template #pieceName="{ record }">{{ record.pieceName }}({{ record.pieceCode }}, {{ record.pieceAlias }})</template>
+        <template #conflictPieceName="{ record }">
+          {{ record.conflictPieceName }}({{ record.conflictPieceCode }}, {{ record.conflictPieceAlias }})
         </template>
         <template #optional="{ record }">
           <a-space>

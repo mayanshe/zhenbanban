@@ -18,16 +18,37 @@
  * distribution of this code must also be licensed under the GPL. Failure
  * to comply with the terms of the GPL may result in legal action.
  */
-package com.zhenbanban.core.application.common;
+package com.zhenbanban.core.application.dto;
 
-import java.util.Set;
+import lombok.*;
 
 /**
- * 领域层通用接口 : ISetQuery
+ * 类型 : RegionDto
  *
- * @author zhangxihai 2025/8/11
+ * @author zhangxihai 2025/9/16
  */
-public interface ISetQuery<Model, Key> {
-    Set<Model> handle(Key key);
+@Getter
+@Setter
+@Builder(toBuilder = true)
+@NoArgsConstructor
+@AllArgsConstructor
+public class RegionDto {
+    private String id;                  // 行政区划ID
+
+    private String regionLevel;         // 行政区划级别
+
+    private String postalCode;          // 邮政编码
+
+    private String areaCode;            // 区号
+
+    private String regionName;          // 行政区划名称
+
+    private String shortName;           // 行政区划名称简称
+
+    private String mergeName;           // 行政区组合名称
+
+    private Double longitude;           // 经度
+
+    private Double latitude;            // 纬度
 
 }

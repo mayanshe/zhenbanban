@@ -18,16 +18,18 @@
  * distribution of this code must also be licensed under the GPL. Failure
  * to comply with the terms of the GPL may result in legal action.
  */
-package com.zhenbanban.core.application.common;
+package com.zhenbanban.core.application.query;
 
-import java.util.Set;
+import com.zhenbanban.core.application.common.IListQuery;
+import com.zhenbanban.core.application.dto.RegionDto;
+import com.zhenbanban.core.application.dto.RegionQuery;
 
 /**
- * 领域层通用接口 : ISetQuery
+ * Query Interface : 中国行政区划列表查询接口
  *
- * @author zhangxihai 2025/8/11
+ * @author zhangxihai 2025/9/16
  */
-public interface ISetQuery<Model, Key> {
-    Set<Model> handle(Key key);
+
+public interface RegionListQueryHandler extends IListQuery<RegionDto, RegionQuery> {
 
 }

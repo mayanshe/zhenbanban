@@ -83,8 +83,8 @@ const load = async () => {
         id: res.pieceId,
         code: res.pieceCode,
         name: res.pieceName,
-        alias: res.pieceAlias
-      }
+        alias: res.pieceAlias,
+      },
     ]
 
     conflictPieceOptions.value = [
@@ -92,14 +92,13 @@ const load = async () => {
         id: res.conflictPieceId,
         code: res.conflictPieceCode,
         name: res.conflictPieceName,
-        value: res.conflictPieceAlias
-      }
+        value: res.conflictPieceAlias,
+      },
     ]
 
     formData.value.pieceId = res.pieceId
     formData.value.conflictPieceId = res.conflictPieceId
     formData.value.kind = res.kind
-
   } else {
     formData.value = generate()
   }
@@ -119,8 +118,8 @@ const formRef = ref<FormInstance | null>(null)
 
 const rules = {
   pieceId: [{ required: true, message: '请选择中药饮片' }],
-  kind: [{ required: true, message: '请输入配伍禁忌类型'}],
-  conflictPieceId: [{required: true, message: '请选择禁忌配伍'}]
+  kind: [{ required: true, message: '请输入配伍禁忌类型' }],
+  conflictPieceId: [{ required: true, message: '请选择禁忌配伍' }],
 }
 
 const handleValidate = async () => {

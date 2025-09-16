@@ -18,16 +18,25 @@
  * distribution of this code must also be licensed under the GPL. Failure
  * to comply with the terms of the GPL may result in legal action.
  */
-package com.zhenbanban.core.application.common;
+package com.zhenbanban.core.application.dto;
 
-import java.util.Set;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 /**
- * 领域层通用接口 : ISetQuery
+ * Query : 中国行政区划
  *
- * @author zhangxihai 2025/8/11
+ * @author zhangxihai 2025/9/16
  */
-public interface ISetQuery<Model, Key> {
-    Set<Model> handle(Key key);
+@Getter
+@Setter
+@SuperBuilder(toBuilder = true)
+@NoArgsConstructor
+@AllArgsConstructor
+public class RegionQuery {
+    private Long parentId;            // 父级行政区划ID
 
 }

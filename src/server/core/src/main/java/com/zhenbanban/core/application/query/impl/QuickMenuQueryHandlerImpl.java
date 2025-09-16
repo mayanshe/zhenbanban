@@ -18,16 +18,36 @@
  * distribution of this code must also be licensed under the GPL. Failure
  * to comply with the terms of the GPL may result in legal action.
  */
-package com.zhenbanban.core.application.common;
+package com.zhenbanban.core.application.query.impl;
 
+import com.zhenbanban.core.application.query.QuickMenuQueryHandler;
+import com.zhenbanban.core.domain.systemcontext.valueobj.QuickMenu;
+import com.zhenbanban.core.infrastructure.util.CacheKeyGenerator;
+import com.zhenbanban.core.infrastructure.util.RedisUtils;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 import java.util.Set;
 
 /**
- * 领域层通用接口 : ISetQuery
+ * Query Handler Achieve : 快捷菜单
  *
- * @author zhangxihai 2025/8/11
+ * @author zhangxihai 2025/9/9
  */
-public interface ISetQuery<Model, Key> {
-    Set<Model> handle(Key key);
+@Service
+@RequiredArgsConstructor
+public class QuickMenuQueryHandlerImpl implements QuickMenuQueryHandler {
+    private final RedisUtils redisUtils;
+
+    public List<QuickMenu> handle(Long adminId) {
+        String cacheKey = CacheKeyGenerator.getAdminQuickMenuKey(adminId);
+
+        return redisUtils.lGet(cacheKey, 0, -1)
+                .stream()
+                .filter(obj -> obj instanceof QuickMenu)
+                .map(obj -> (QuickMenu) obj)
+                .toList();
+    }
 
 }
