@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <Breadcrumb :items="['系统', '权限管理']" />
+    <Breadcrumb :items="['系统', '权限管理']" page-name="权限" route-name="PermissionManage" />
     <a-card class="general-card" title="权限管理">
       <a-divider style="margin-top: 0" />
 

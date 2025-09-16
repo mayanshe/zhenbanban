@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <Breadcrumb :items="['字典', '治法管理']" />
+    <Breadcrumb :items="['字典', '治法管理']" page-name="中医治法" route-name="中医治法" />
     <a-card class="general-card" title="治法管理">
       <a-divider style="margin-top: 0" />
 
@@ -13,7 +13,7 @@
                   <a-input v-model="searchData.keywords" placeholder="治法编码或名称" />
                 </a-form-item>
               </a-col>
-               <a-col :span="8">
+              <a-col :span="8">
                 <a-form-item field="therapeuticsCode" label="治法编码:">
                   <a-input v-model="searchData.therapeuticsCode" placeholder="精确查找" />
                 </a-form-item>

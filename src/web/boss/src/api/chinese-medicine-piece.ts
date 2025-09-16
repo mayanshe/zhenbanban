@@ -23,8 +23,19 @@ export interface ChineseMedicinePieceSearchModel {
   deleted: boolean
 }
 
+export interface ChineseMedicinePieceOption {
+  id: string
+  code: string
+  name: string
+  alias: string
+}
+
 export function getChineseMedicinePiece(id: string) {
   return axios.get(`/chinese-medicine-pieces/${id}`)
+}
+
+export function getChineseMedicinePieceOptions(data: string) {
+  return axios.get<ChineseMedicinePieceOption>('/chinese-medicine-pieces/options', { params: { keywords: data } })
 }
 
 export function getChineseMedicinePiecePagination(data: ChineseMedicinePieceSearchModel, page: Pager) {

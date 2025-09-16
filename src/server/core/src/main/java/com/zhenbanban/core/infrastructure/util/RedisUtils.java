@@ -24,10 +24,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.*;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -657,6 +654,94 @@ public class RedisUtils {
     }
 
     /**
+     * 移除List中指定范围的元素
+     *
+     * @param key   键
+     * @param start 开始
+     * @param end   结束
+     * @return 移除结果
+     */
+    public long lRemoveRange(String key, long start, long end) {
+        try {
+            redisTemplate.opsForList().trim(key, start, end);
+            return 1;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    /**
+     * 向List头部添加元素
+     *
+     * @param key
+     * @param value
+     * @return
+     */
+    public boolean lLPush(String key, Object value, long time) {
+        try {
+            redisTemplate.opsForList().leftPush(key, value);
+            if (time > 0) {
+                expire(key, time);
+            }
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * 移除并获取List头部元素
+     *
+     * @param key
+     * @return
+     */
+    public Object lLPop(String key) {
+        try {
+            return redisTemplate.opsForList().leftPop(key);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * 向List尾部添加元素
+     *
+     * @param key
+     * @param value
+     * @return
+     */
+    public boolean lRPush(String key, Object value, long time) {
+        try {
+            redisTemplate.opsForList().rightPush(key, value);
+            if (time > 0) {
+                expire(key, time);
+            }
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * 移除并获取List尾部元素
+     *
+     * @param key
+     * @return
+     */
+    public Object lRPop(String key) {
+        try {
+            return redisTemplate.opsForList().rightPop(key);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
      * 向有序集合添加元素
      *
      * @param key   键
@@ -669,6 +754,18 @@ public class RedisUtils {
     }
 
     /**
+     * 获取有序集合指定范围的元素
+     *
+     * @param key   键
+     * @param start 开始
+     * @param end   结束 0到-1表示所有值
+     * @return 元素集合
+     */
+    public Set<Object> zRange(String key, long start, long end) {
+        return redisTemplate.opsForZSet().range(key, start, end);
+    }
+
+    /**
      * 获取有序集合成员数
      *
      * @param key 键
@@ -678,6 +775,9 @@ public class RedisUtils {
         return redisTemplate.opsForZSet().size(key);
     }
 
+    public Long zRemoveRange(String key, long start, long end) {
+        return redisTemplate.opsForZSet().removeRange(key, start, end);
+    }
 
     /**
      * 设置有序集合

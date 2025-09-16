@@ -20,20 +20,19 @@
  */
 package com.zhenbanban.bossapi.controller;
 
-import com.zhenbanban.bossapi.vo.CosSettingRequest;
-import com.zhenbanban.bossapi.vo.IdResponse;
-import com.zhenbanban.bossapi.vo.OptionSaveRequest;
-import com.zhenbanban.bossapi.vo.SiteInfoRequest;
+import com.zhenbanban.bossapi.vo.*;
 import com.zhenbanban.core.application.command.OptionAmdCmdHandler;
 import com.zhenbanban.core.application.dto.CustomizedOptionQuery;
 import com.zhenbanban.core.application.dto.OptionAmdCommand;
 import com.zhenbanban.core.application.dto.OptionDto;
 import com.zhenbanban.core.application.query.CustomizedOptionQueryHandler;
 import com.zhenbanban.core.application.query.FixedOptionQueryHandler;
+import com.zhenbanban.core.domain.systemcontext.valueobj.InternetHospitalSetting;
 import com.zhenbanban.core.infrastructure.external.cos.CosSetting;
 import com.zhenbanban.core.domain.systemcontext.valueobj.SiteInfo;
 import com.zhenbanban.core.infrastructure.support.annotation.AdminPermit;
 import com.zhenbanban.core.infrastructure.support.paging.Pagination;
+import com.zhenbanban.core.infrastructure.util.PrintUtils;
 import com.zhenbanban.core.shared.exception.BadRequestException;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
@@ -43,7 +42,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Base64;
+import java.util.List;
 
 /**
  * Controller : 系统配置选项
@@ -51,7 +53,7 @@ import java.util.Base64;
  * @author zhangxihai 2025/8/24
  */
 @RestController
-@RequestMapping("options")
+@RequestMapping("/options")
 public class OptionController {
     private final OptionAmdCmdHandler optionAmdCmdHandler;
 
@@ -235,6 +237,55 @@ public class OptionController {
     @AdminPermit(permissions = {"fixed-option:modify"}, message = "您未被授权执行此操作：查询COS对象存储配置")
     public CosSetting getCosConfig() {
         return fixedOptionQueryHandler.handle("cos-setting", "COS配置", CosSetting.class, CosSetting.defaults());
+    }
+
+    @PutMapping("/internet-hospital-setting")
+    @AdminPermit(permissions = {"internet-hospital-setting:modify"}, message = "您未被授权执行此操作：修改互联网医院配置")
+    public void modifyInternetHospitalSetting(@Valid @RequestBody InternetHospitalSettingModifyRequest request) {
+        InternetHospitalSetting setting = InternetHospitalSetting.builder()
+                .hospitalName(request.getHospitalName())
+                .licenseNumber(request.getLicenseNumber())
+                .provinceId(request.getProvinceId())
+                .province(request.getProvince())
+                .cityId(request.getCityId())
+                .city(request.getCity())
+                .countyId(request.getCountyId())
+                .county(request.getCounty())
+                .address(request.getAddress())
+                .contactNumbers(request.getContactNumbers() != null && !request.getContactNumbers().isBlank()
+                        ? new ArrayList<>(Arrays.asList(request.getContactNumbers().split(",")))
+                        : new ArrayList<>())
+                .serviceTimes(request.getServiceTimes() != null && !request.getServiceTimes().isBlank()
+                        ? new ArrayList<>(Arrays.asList(request.getServiceTimes().split(",")))
+                        : new ArrayList<>())
+                .website(request.getWebsite())
+                .email(request.getEmail())
+                .introduction(request.getIntroduction())
+                .build();
+        String optionValue;
+
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
+             ObjectOutputStream oos = new ObjectOutputStream(baos)) {
+            oos.writeObject(setting);
+            optionValue = Base64.getEncoder().encodeToString(baos.toByteArray());
+        } catch (Exception e) {
+            throw new BadRequestException("保存互联网医院配置失败");
+        }
+
+        OptionAmdCommand command = OptionAmdCommand.builder()
+                .optionName("internet-hospital-setting")
+                .displayName("互联网医院配置")
+                .optionValue(optionValue)
+                .description("互联网医院配置")
+                .customized(false)
+                .build();
+        optionAmdCmdHandler.handleModifyFixedOption(command);
+    }
+
+    @GetMapping("/internet-hospital-setting")
+    @AdminPermit(permissions = {"internet-hospital-setting:modify"}, message = "您未被授权执行此操作：获取互联网医院配置")
+    public InternetHospitalSetting getInternetHospitalSetting() {
+        return fixedOptionQueryHandler.handle("internet-hospital-setting", "互联网医院配置", InternetHospitalSetting.class, InternetHospitalSetting.builder().build());
     }
 
 }

@@ -27,7 +27,7 @@ import java.util.List;
  *
  * @author zhangxihai 2025/8/11
  */
-public interface IListQuery<Model, Key> {
-    List<Model> handle(Key key);
+public interface IListQuery<Model, Query> {
+    List<Model> handle(Query key);
 
 }

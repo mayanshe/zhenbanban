@@ -20,18 +20,26 @@
  */
 package com.zhenbanban.bossapi.vo;
 
-import lombok.Data;
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+import lombok.*;
 
 @Data
+@Builder(toBuilder = true)
+@NoArgsConstructor
+@AllArgsConstructor
 public class TherapeuticSaveRequest {
 
-    @NotEmpty(message = "治法编码不能为空")
+    @NotBlank(message = "治法编码不能为空")
+    @Size(max = 20, message = "治法编码长度不能超过20个字符")
     private String therapeuticsCode;
 
-    @NotEmpty(message = "治法名称不能为空")
+    @NotBlank(message = "治法名称不能为空")
+    @Size(max = 255, message = "治法名称长度不能超过255个字符")
     private String therapeuticsName;
 
-    private String description;
+    @Builder.Default
+    @Size(max = 512, message = "治法描述长度不能超过512个字符")
+    private String description = "";
 
 }

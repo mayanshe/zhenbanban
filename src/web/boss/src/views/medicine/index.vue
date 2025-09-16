@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <Breadcrumb :items="['字典', '西药/中成药']" />
+    <Breadcrumb :items="['字典', '西药/中成药']" page-name="西药/中成药" route-name="MedicineManage" />
     <a-card class="general-card" title="西药/中成药管理">
       <a-divider style="margin-top: 0" />
       <a-row>
