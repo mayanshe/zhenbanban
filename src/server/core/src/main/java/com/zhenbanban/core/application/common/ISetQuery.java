@@ -20,12 +20,14 @@
  */
 package com.zhenbanban.core.application.common;
 
+import java.util.Set;
+
 /**
  * 领域层通用接口 : ISetQuery
  *
  * @author zhangxihai 2025/8/11
  */
 public interface ISetQuery<Model, Key> {
-    Model handle(Key key);
+    Set<Model> handle(Key key);
 
 }

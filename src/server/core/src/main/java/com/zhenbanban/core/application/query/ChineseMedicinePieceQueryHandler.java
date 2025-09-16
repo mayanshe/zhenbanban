@@ -22,7 +22,11 @@ package com.zhenbanban.core.application.query;
 
 import com.zhenbanban.core.application.common.ISingleAndListQuery;
 import com.zhenbanban.core.application.dto.ChineseMedicinePieceDto;
+import com.zhenbanban.core.application.dto.ChineseMedicinePieceOptionDto;
 import com.zhenbanban.core.application.dto.ChineseMedicinePieceQuery;
+import com.zhenbanban.core.application.dto.ChineseMedicinePieceoOptionQuery;
+
+import java.util.List;
 
 /**
  * Query Interface : 中药饮片查询处理器
@@ -30,5 +34,6 @@ import com.zhenbanban.core.application.dto.ChineseMedicinePieceQuery;
  * @author zhangxihai 2025/08/31
  */
 public interface ChineseMedicinePieceQueryHandler extends ISingleAndListQuery<ChineseMedicinePieceDto, Long, ChineseMedicinePieceQuery> {
+    List<ChineseMedicinePieceOptionDto> handleQueryOption(ChineseMedicinePieceoOptionQuery query);
 
 }
