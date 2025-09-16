@@ -83,7 +83,7 @@ CREATE TABLE IF NOT EXISTS `departments`
     `department_type`    ENUM('clinical', 'technology', 'emergency', 'logistics')                 NOT NULL DEFAULT 'logistics' COMMENT '科室类型 clinical:临床科室 technology:医技科室 emergency:急诊与重症科室 logistics:行政及后勤科室',
     `department_name`    VARCHAR(75)                                                              NOT NULL DEFAULT '' COMMENT '科室名称',
     `summary`            VARCHAR(512)                                                             NOT NULL DEFAULT '' COMMENT '科室简介',
-    `description`        TEXT                                                                     NOT NULL COMMENT '科室岗位职责',
+    `description`        TEXT                                                                     NOT NULL COMMENT '科室介绍',
     `created_at`         BIGINT(11) UNSIGNED                                                      NOT NULL DEFAULT 0 COMMENT '创建时间',
     `updated_at`         BIGINT(11) UNSIGNED                                                      NOT NULL DEFAULT 0 COMMENT '更新时间'
 ) ENGINE = InnoDB COMMENT '互联网医院科室表';
