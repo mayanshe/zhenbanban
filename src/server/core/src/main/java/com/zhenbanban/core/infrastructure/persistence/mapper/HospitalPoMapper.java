@@ -22,22 +22,26 @@ package com.zhenbanban.core.infrastructure.persistence.mapper;
 
 import com.zhenbanban.core.infrastructure.persistence.po.HospitalPo;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 /**
- * Mybatis Mapper 接口：医院
+ * Mybatis Mapper 接口：业务医院表
  *
- * @author zhangxihai 2025/08/11
+ * @author zhangxihai 2025/09/17
  */
 @Mapper
-public interface HospitalPoMapper {
+public interface HospitalPoMapper extends PaginateMapper<HospitalPo> {
     int insert(HospitalPo hospitalPo);
 
     int update(HospitalPo hospitalPo);
 
     int delete(Long id);
 
-    HospitalPo findById(long id);
+    HospitalPo findById(Long id);
 
+    Long findIdByCode(@Param("hospitalCode") String hospitalCode);
+
+    List<HospitalPo> findAll();
 }

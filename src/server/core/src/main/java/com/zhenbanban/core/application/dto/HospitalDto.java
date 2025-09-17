@@ -20,15 +20,14 @@
  */
 package com.zhenbanban.core.application.dto;
 
-import com.zhenbanban.core.application.common.BaseCommand;
-import com.zhenbanban.core.infrastructure.util.PinyinUtils;
+import com.zhenbanban.core.infrastructure.util.DateUtils;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
 
 /**
- * 命令载体 : 业务医院表
+ * Dto : 业务医院表
  *
  * @author zhangxihai 2025/09/17
  */
@@ -37,7 +36,8 @@ import java.math.BigDecimal;
 @SuperBuilder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class HospitalAmdCommand extends BaseCommand<Long> {
+public class HospitalDto {
+    private String id;
 
     private String ownershipType;
 
@@ -59,11 +59,11 @@ public class HospitalAmdCommand extends BaseCommand<Long> {
 
     private String hospitalNamePinyinAbbr;
 
-    private Long provinceId;
+    private String provinceId;
 
-    private Long cityId;
+    private String cityId;
 
-    private Long countyId;
+    private String countyId;
 
     private String address;
 
@@ -87,17 +87,21 @@ public class HospitalAmdCommand extends BaseCommand<Long> {
 
     private Integer testingDeliveryEnabled;
 
-    private void setHospitalNamePinyin(String value) {
+    private String createdAt;
+
+    private String updatedAt;
+
+    private String deletedAt;
+
+    public String getCreatedAt() {
+        return createdAt == null || createdAt.isBlank() ? "" : DateUtils.timestampToFormattedDate(createdAt);
     }
 
-    public String getHospitalNamePinyin() {
-        return PinyinUtils.getPinyin(this.hospitalName);
+    public String getUpdatedAt() {
+        return updatedAt == null || updatedAt.isBlank() ? "" : DateUtils.timestampToFormattedDate(updatedAt);
     }
 
-    private void setHospitalNamePinyinAbbr(String value) {
-    }
-
-    public String getHospitalNamePinyinAbbr() {
-        return PinyinUtils.getPinyinInitial(this.hospitalName);
+    public String getDeletedAt() {
+        return deletedAt == null || deletedAt.isBlank() || "0".equals(deletedAt) ? "" : DateUtils.timestampToFormattedDate(deletedAt);
     }
 }

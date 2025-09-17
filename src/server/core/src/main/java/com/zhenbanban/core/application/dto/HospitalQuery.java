@@ -18,15 +18,18 @@
  * distribution of this code must also be licensed under the GPL. Failure
  * to comply with the terms of the GPL may result in legal action.
  */
-package com.zhenbanban.core.infrastructure.persistence.po;
+package com.zhenbanban.core.application.dto;
 
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
- * Po: 业务医院表
+ * Query : 业务医院表
  *
  * @author zhangxihai 2025/09/17
  */
@@ -35,64 +38,39 @@ import java.math.BigDecimal;
 @SuperBuilder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class HospitalPo {
+public class HospitalQuery {
+    @Builder.Default
+    private int page = 1;
+
+    @Builder.Default
+    private int pageSize = 15;
 
     private Long id;
 
-    private String ownershipType;
-
-    private String hospitalType;
-
-    private String hospitalLevel;
-
-    private String status;
-
-    private String insuranceCode;
-
-    private String usccCode;
+    private String keywords;
 
     private String hospitalCode;
 
-    private String hospitalName;
+    private boolean deleted;
 
-    private String hospitalNamePinyin;
+    public Map<String, Object> toMap() {
+        Map<String, Object> map = new HashMap<>();
 
-    private String hospitalNamePinyinAbbr;
+        if (id != null && id > 0) {
+            map.put("id", id);
+        }
 
-    private Long provinceId;
+        if (keywords != null && !keywords.isBlank()) {
+            List<String> keywordList = Arrays.asList(keywords.split(" "));
+            map.put("keywords", keywordList);
+        }
 
-    private Long cityId;
+        if (hospitalCode != null && !hospitalCode.isBlank()) {
+            map.put("hospitalCode", hospitalCode);
+        }
 
-    private Long countyId;
+        map.put("deleted", deleted);
 
-    private String address;
-
-    private String postalCode;
-
-    private BigDecimal longitude;
-
-    private BigDecimal latitude;
-
-    private String mapUrl;
-
-    private String contactPhone;
-
-    private String contactEmail;
-
-    private String website;
-
-    private Integer companionDiagnosisEnabled;
-
-    private Integer mealServiceEnabled;
-
-    private Integer testingDeliveryEnabled;
-
-    @Builder.Default
-    private long createdAt = 0L;
-
-    @Builder.Default
-    private long updatedAt = 0L;
-
-    @Builder.Default
-    private long deletedAt = 0L;
+        return map;
+    }
 }
