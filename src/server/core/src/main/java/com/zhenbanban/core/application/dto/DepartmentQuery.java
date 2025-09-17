@@ -45,7 +45,7 @@ public class DepartmentQuery {
     @Builder.Default
     private int pageSize = 15;
 
-    private Long id;
+    private Long parentId;
 
     private String keywords;
 
@@ -54,9 +54,7 @@ public class DepartmentQuery {
     public Map<String, Object> toMap() {
         Map<String, Object> map = new HashMap<>();
 
-        if (id != null && id > 0) {
-            map.put("id", id);
-        }
+        if (parentId != null && parentId >= 0) map.put("parentId", parentId);
 
         if (keywords != null && !keywords.isBlank()) {
             List<String> keywordList = Arrays.asList(keywords.split(" "));
@@ -69,4 +67,5 @@ public class DepartmentQuery {
 
         return map;
     }
+
 }

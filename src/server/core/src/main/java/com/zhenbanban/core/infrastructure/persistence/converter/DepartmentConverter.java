@@ -20,13 +20,15 @@
  */
 package com.zhenbanban.core.infrastructure.persistence.converter;
 
-import com.zhenbanban.core.domain.dictionarycontext.entity.Department;
+import com.zhenbanban.core.application.dto.DepartmentDto;
+import com.zhenbanban.core.domain.dictionarycontext.valueobj.DepartmentType;
+import com.zhenbanban.core.domain.internethospitalcontext.entity.Department;
 import com.zhenbanban.core.infrastructure.persistence.po.DepartmentPo;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.Mappings;
+import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 转换器: 互联网医院科室
@@ -39,19 +41,46 @@ public interface DepartmentConverter extends IConverter {
 
     @Mappings({
             @Mapping(target = "createdAt", ignore = true),
-            @Mapping(target = "updatedAt", ignore = true)
+            @Mapping(target = "updatedAt", ignore = true),
+            @Mapping(target = "deletedAt", source = "deleted", qualifiedByName = "isDeletedToDeletedAt"),
     })
     DepartmentPo toPo(Department department);
 
     @Mappings({
             @Mapping(target = "id", ignore = true),
             @Mapping(target = "createdAt", ignore = true),
-            @Mapping(target = "updatedAt", ignore = true)
+            @Mapping(target = "updatedAt", ignore = true),
+            @Mapping(target = "deletedAt", source = "deleted", qualifiedByName = "isDeletedToDeletedAt"),
     })
     DepartmentPo updatePo(Department department, @MappingTarget DepartmentPo po);
 
     @Mappings({
-            @Mapping(target = "deleted", ignore = true)
+            @Mapping(target = "deleted", source = "deletedAt", qualifiedByName = "deletedAtToIsDeleted"),
     })
     Department toAggregate(DepartmentPo po);
+
+    @Mappings({
+            @Mapping(target = "departmentType", source = "departmentType", qualifiedByName = "stringToDepartmentType"),
+            @Mapping(target = "children", source = "children", qualifiedByName = "poListToDtoList"),
+    })
+    DepartmentDto toDto(DepartmentPo po);
+
+    @Named("stringToDepartmentType")
+    default DepartmentType mapStringToDepartmentType(String departmentType) {
+        if (departmentType == null) {
+            return null;
+        }
+        return DepartmentType.of(departmentType);
+    }
+
+    @Named("poListToDtoList")
+    default java.util.List<DepartmentDto> mapPoListToDtoList(java.util.List<DepartmentPo> poList) {
+        if (poList == null || poList.isEmpty()) {
+            return List.of();
+        }
+        return poList.stream()
+                .map(this::toDto)
+                .collect(Collectors.toList());
+    }
+
 }

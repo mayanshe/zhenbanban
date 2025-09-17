@@ -22,8 +22,8 @@ package com.zhenbanban.core.application.command.impl;
 
 import com.zhenbanban.core.application.command.DepartmentAmdCmdHandler;
 import com.zhenbanban.core.application.dto.DepartmentAmdCommand;
-import com.zhenbanban.core.domain.dictionarycontext.entity.Department;
-import com.zhenbanban.core.domain.dictionarycontext.repository.DepartmentRepository;
+import com.zhenbanban.core.domain.internethospitalcontext.entity.Department;
+import com.zhenbanban.core.domain.internethospitalcontext.repository.DepartmentRepository;
 import com.zhenbanban.core.domain.common.DomainEventPublisher;
 import com.zhenbanban.core.infrastructure.util.PinyinUtils;
 import com.zhenbanban.core.shared.contract.IdGenerator;
@@ -53,11 +53,6 @@ public class DepartmentAmdCmdHandlerImpl implements DepartmentAmdCmdHandler {
         ModelMapper modelMapper = new ModelMapper();
         Department department = modelMapper.map(command, Department.class);
         department.setId(id);
-
-        // set pinyin fields
-        department.setDepartmentNamePinyin(PinyinUtils.getPinyin(department.getDepartmentName()));
-        department.setDepartmentNamePinyinAbbr(PinyinUtils.getPinyinInitial(department.getDepartmentName()));
-
         department.add();
 
         departmentRepository.save(department, true);
@@ -73,11 +68,6 @@ public class DepartmentAmdCmdHandlerImpl implements DepartmentAmdCmdHandler {
 
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.map(command, department);
-
-        // set pinyin fields
-        department.setDepartmentNamePinyin(PinyinUtils.getPinyin(department.getDepartmentName()));
-        department.setDepartmentNamePinyinAbbr(PinyinUtils.getPinyinInitial(department.getDepartmentName()));
-
         department.modify();
 
         departmentRepository.save(department, false);
@@ -93,4 +83,5 @@ public class DepartmentAmdCmdHandlerImpl implements DepartmentAmdCmdHandler {
         departmentRepository.save(department, false);
         domainEventPublisher.publish(department.getEvents());
     }
+
 }

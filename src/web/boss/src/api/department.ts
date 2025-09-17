@@ -1,5 +1,5 @@
 import axios from 'axios'
-import type { Pager } from '@/api/common'
+import type { Pager, ValueObject } from '@/api/common'
 
 /**
  * 科室交互模型
@@ -11,8 +11,19 @@ export interface Department {
   departmentName: string
   summary: string
   description: string
+}
+
+export interface DepartmentView {
+  id: string
+  parentId: string
+  departmentType: ValueObject
+  departmentName: string
+  summary: string
+  description: string
   createdAt: string
   updatedAt: string
+  delectedAt: string
+  children: DepartmentView[]
 }
 
 /**
@@ -28,23 +39,14 @@ export interface DepartmentSearchModel {
  * @param id
  */
 export function getDepartment(id: string) {
-  return axios.get<Department>(`/departments/${id}`)
+  return axios.get<DepartmentView>(`/internet-hospital/departments/${id}`)
 }
 
 /**
  * 获取所有科室
  */
-export function getAllDepartments() {
-  return axios.get<Department[]>('/departments/all')
-}
-
-/**
- * 搜索科室分页
- * @param data
- * @param page
- */
-export function getDepartmentPagination(data: DepartmentSearchModel, page: Pager) {
-  return axios.get<Pager<Department>>('/departments', { params: { ...data, ...page } })
+export function getDepartmentList(data: DepartmentSearchModel) {
+  return axios.get<Department[]>('/internet-hospital/departments', { params: { ...data } })
 }
 
 /**
@@ -52,7 +54,7 @@ export function getDepartmentPagination(data: DepartmentSearchModel, page: Pager
  * @param data
  */
 export function createDepartment(data: Department) {
-  return axios.post('/departments', data)
+  return axios.post('/internet-hospital/departments', data)
 }
 
 /**
@@ -60,7 +62,7 @@ export function createDepartment(data: Department) {
  * @param data
  */
 export function updateDepartment(data: Department) {
-  return axios.put(`/departments/${data.id}`, data)
+  return axios.put(`/internet-hospital/departments/${data.id}`, data)
 }
 
 /**
@@ -68,5 +70,12 @@ export function updateDepartment(data: Department) {
  * @param id
  */
 export function deleteDepartment(id: string) {
-  return axios.delete(`/departments/${id}`)
+  return axios.delete(`/internet-hospital/departments/${id}`)
+}
+
+/**
+ * 获取科室类型
+ */
+export function getDepartmentTypes() {
+  return axios.get<ValueObject[]>('/internet-hospital/departments/types')
 }

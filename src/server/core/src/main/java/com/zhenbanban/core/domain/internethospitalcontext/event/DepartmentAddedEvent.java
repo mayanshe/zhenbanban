@@ -18,7 +18,7 @@
  * distribution of this code must also be licensed under the GPL. Failure
  * to comply with the terms of the GPL may result in legal action.
  */
-package com.zhenbanban.core.domain.dictionarycontext.event;
+package com.zhenbanban.core.domain.internethospitalcontext.event;
 
 import com.zhenbanban.core.domain.common.AbsDomainEvent;
 import lombok.*;
@@ -39,4 +39,5 @@ import lombok.experimental.SuperBuilder;
 public class DepartmentAddedEvent extends AbsDomainEvent {
     private Long departmentId;      // 科室ID
     private String departmentName;  // 科室名称
+
 }

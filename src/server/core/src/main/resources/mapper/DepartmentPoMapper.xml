@@ -3,36 +3,47 @@
 <mapper namespace="com.zhenbanban.core.infrastructure.persistence.mapper.DepartmentPoMapper">
     <!-- 互联网医院科室(departments)表映射 -->
 
-    <insert id="insert" parameterType="com.zhenbanban.core.infrastructure.persistence.po.DepartmentPo" useGeneratedKeys="false">
-        INSERT INTO departments (id, parent_id, department_type, department_name, department_name_pinyin, department_name_pinyin_abbr, summary, description, created_at, updated_at)
-        VALUES (#{id}, #{parentId}, #{departmentType}, #{departmentName}, #{departmentNamePinyin}, #{departmentNamePinyinAbbr}, #{summary}, #{description}, #{createdAt}, #{updatedAt})
+    <resultMap id="DepartmentMap" type="DepartmentPo">
+        <id property="id" column="id"/>
+        <result property="parentId" column="parent_id"/>
+        <result property="departmentType" column="department_type"/>
+        <result property="departmentName" column="department_name"/>
+        <result property="summary" column="summary"/>
+        <result property="description" column="description"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+        <collection property="children" ofType="DepartmentPo"
+                    select="findByParentId" column="id"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="DepartmentPo" useGeneratedKeys="false">
+        INSERT INTO departments (id, parent_id, department_type, department_name, summary, description, created_at)
+        VALUES (#{id}, #{parentId}, #{departmentType}, #{departmentName}, #{summary}, #{description}, #{createdAt})
     </insert>
 
-    <update id="update" parameterType="com.zhenbanban.core.infrastructure.persistence.po.DepartmentPo">
+    <update id="update" parameterType="DepartmentPo">
         UPDATE departments
         SET
-            parent_id = #{parentId},
-            department_type = #{departmentType},
-            department_name = #{departmentName},
-            department_name_pinyin = #{departmentNamePinyin},
-            department_name_pinyin_abbr = #{departmentNamePinyinAbbr},
-            summary = #{summary},
-            description = #{description},
-            updated_at = #{updatedAt}
+        parent_id = #{parentId},
+        department_type = #{departmentType},
+        department_name = #{departmentName},
+        summary = #{summary},
+        description = #{description},
+        updated_at = #{updatedAt}
         WHERE id = #{id}
     </update>
 
     <delete id="delete" parameterType="Long">
-        DELETE FROM departments WHERE id = #{id}
+        UPDATE departments SET deleted_at=UNIX_TIMESTAMP(NOW(3)) * 1000 WHERE id = #{id}
     </delete>
 
-    <select id="findById" parameterType="Long" resultType="com.zhenbanban.core.infrastructure.persistence.po.DepartmentPo">
+    <select id="findById" parameterType="Long" resultMap="DepartmentMap">
         SELECT *
         FROM departments
         WHERE id = #{id}
     </select>
 
-    <select id="findAll" resultType="com.zhenbanban.core.infrastructure.persistence.po.DepartmentPo">
+    <select id="findAll" resultMap="DepartmentMap">
         SELECT *
         FROM departments
     </select>
@@ -46,8 +57,12 @@
     <select id="count" parameterType="java.util.Map" resultType="int">
         SELECT COUNT(id) FROM departments
         <where>
+            deleted_at = 0
             <if test="id != null and id > 0">
                 AND id = #{id}
+            </if>
+            <if test="parentId != null and parentId >= 0">
+                AND parent_id = #{parentId}
             </if>
             <if test="departmentType != null and departmentType != ''">
                 AND department_type = #{departmentType}
@@ -56,19 +71,21 @@
                 AND (
                 <foreach item="w" collection="keywords" separator="OR">
                     department_name LIKE CONCAT('%', #{w}, '%')
-                    OR department_name_pinyin LIKE CONCAT('%', #{w}, '%')
-                    OR department_name_pinyin_abbr LIKE CONCAT('%', #{w}, '%')
                 </foreach>
                 )
             </if>
         </where>
     </select>
 
-    <select id="search" parameterType="java.util.Map" resultType="com.zhenbanban.core.infrastructure.persistence.po.DepartmentPo">
+    <select id="search" parameterType="java.util.Map" resultMap="DepartmentMap">
         SELECT * FROM departments
         <where>
+            deleted_at = 0
             <if test="id != null and id > 0">
                 AND id = #{id}
+            </if>
+            <if test="parentId != null and parentId >= 0">
+                AND parent_id = #{parentId}
             </if>
             <if test="departmentType != null and departmentType != ''">
                 AND department_type = #{departmentType}
@@ -77,8 +94,6 @@
                 AND (
                 <foreach item="w" collection="keywords" separator="OR">
                     department_name LIKE CONCAT('%', #{w}, '%')
-                    OR department_name_pinyin LIKE CONCAT('%', #{w}, '%')
-                    OR department_name_pinyin_abbr LIKE CONCAT('%', #{w}, '%')
                 </foreach>
                 )
             </if>
@@ -89,7 +104,7 @@
                 #{orderBy}
             </when>
             <otherwise>
-                id DESC
+                id ASC
             </otherwise>
         </choose>
         <if test="offset != null and limit != null">
@@ -101,6 +116,13 @@
         <if test="offset != null and limit == null">
             LIMIT #{offset}, 18446744073709551615
         </if>
+    </select>
+
+    <select id="findByParentId" resultMap="DepartmentMap" parameterType="Long">
+        SELECT *
+        FROM departments
+        WHERE parent_id = #{parentId} AND deleted_at = 0
+        ORDER BY department_type ASC, id ASC
     </select>
 
 </mapper>

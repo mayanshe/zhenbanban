@@ -18,14 +18,14 @@
  * distribution of this code must also be licensed under the GPL. Failure
  * to comply with the terms of the GPL may result in legal action.
  */
-package com.zhenbanban.core.domain.dictionarycontext.event;
+package com.zhenbanban.core.domain.internethospitalcontext.event;
 
 import com.zhenbanban.core.domain.common.AbsDomainEvent;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 /**
- * 事件: 科室修改成功事件
+ * 事件: 科室删除成功事件
  *
  * @author zhangxihai 2025/09/16
  */
@@ -36,7 +36,8 @@ import lombok.experimental.SuperBuilder;
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class DepartmentModifiedEvent extends AbsDomainEvent {
+public class DepartmentDestroyedEvent extends AbsDomainEvent {
     private Long departmentId;      // 科室ID
     private String departmentName;  // 科室名称
+
 }

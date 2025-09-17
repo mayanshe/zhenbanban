@@ -27,6 +27,7 @@ import com.zhenbanban.core.application.dto.DepartmentAmdCommand;
 import com.zhenbanban.core.application.dto.DepartmentDto;
 import com.zhenbanban.core.application.dto.DepartmentQuery;
 import com.zhenbanban.core.application.query.DepartmentQueryHandler;
+import com.zhenbanban.core.domain.dictionarycontext.valueobj.DepartmentType;
 import com.zhenbanban.core.infrastructure.support.annotation.AdminPermit;
 import com.zhenbanban.core.infrastructure.support.paging.Pagination;
 import jakarta.validation.Valid;
@@ -43,7 +44,7 @@ import java.util.List;
  * @author zhangxihai 2025/09/16
  */
 @RestController
-@RequestMapping("/departments")
+@RequestMapping("/internet-hospital/departments")
 public class DepartmentController {
 
     private final DepartmentAmdCmdHandler departmentAmdCmdHandler;
@@ -72,7 +73,7 @@ public class DepartmentController {
     /**
      * 更新科室
      */
-    @PutMapping("/{id}")
+    @PutMapping("/{id:\\d+}")
     @AdminPermit(permissions = {"department:modify"}, message = "您未被授权执行此操作：修改科室信息")
     public void modifyDepartment(@PathVariable("id") Long id, @Valid @RequestBody DepartmentSaveRequest request) {
         DepartmentAmdCommand command = (new ModelMapper()).map(request, DepartmentAmdCommand.class);
@@ -93,7 +94,7 @@ public class DepartmentController {
      * 获取科室
      */
     @GetMapping("/{id}")
-    @AdminPermit(permissions = {"department:view"}, message = "您未被授权执行此操作：查询科室")
+    @AdminPermit(permissions = {"department:add", "department:modify", "department:delete"}, message = "您未被授权执行此操作：查询科室")
     public DepartmentDto getDepartment(@PathVariable("id") Long id) {
         return departmentQueryHandler.handleQuerySingle(id);
     }
@@ -101,29 +102,28 @@ public class DepartmentController {
     /**
      * 获取所有科室列表
      */
-    @GetMapping("/all")
-    @AdminPermit(permissions = {"department:view"}, message = "您未被授权执行此操作：查询科室")
-    public List<DepartmentDto> getAllDepartments() {
-        return departmentQueryHandler.handleQueryList(DepartmentQuery.builder().build());
+    @GetMapping
+    @AdminPermit(permissions = {"department:add", "department:modify", "department:delete"}, message = "您未被授权执行此操作：查询科室")
+    public List<DepartmentDto> getDepartmentList(
+            @RequestParam(value = "parentId", required = false, defaultValue = "0") Long parentId,
+            @RequestParam(value = "departmentType", required = false, defaultValue = "") String departmentType,
+            @RequestParam(value = "keywords", required = false, defaultValue = "") String keywords
+    ) {
+        return departmentQueryHandler.handleQueryList(DepartmentQuery
+                .builder()
+                .parentId(parentId)
+                .departmentType(departmentType)
+                .keywords(keywords)
+                .build()
+        );
     }
 
     /**
-     * 获取科室分页列表
+     * 获取科室类型列表
      */
-    @GetMapping
-    @AdminPermit(permissions = {"department:view"}, message = "您未被授权执行此操作：查询科室")
-    public Pagination<DepartmentDto> getDepartmentPagination(
-            @RequestParam(value = "page", defaultValue = "1", required = false) Integer page,
-            @RequestParam(value = "pageSize", defaultValue = "15", required = false) Integer pageSize,
-            @RequestParam(value = "departmentType", defaultValue = "", required = false) String departmentType,
-            @RequestParam(value = "keywords", defaultValue = "", required = false) String keywords
-    ) {
-        DepartmentQuery query = DepartmentQuery.builder()
-                .page(page)
-                .pageSize(pageSize)
-                .departmentType(departmentType)
-                .keywords(keywords)
-                .build();
-        return departmentQueryHandler.handleQueryPage(query);
+    @GetMapping("/types")
+    public List<DepartmentType> getDepartmentTypes() {
+        return DepartmentType.all();
     }
+
 }

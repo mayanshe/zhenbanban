@@ -18,12 +18,12 @@
  * distribution of this code must also be licensed under the GPL. Failure
  * to comply with the terms of the GPL may result in legal action.
  */
-package com.zhenbanban.core.domain.dictionarycontext.entity;
+package com.zhenbanban.core.domain.internethospitalcontext.entity;
 
 import com.zhenbanban.core.domain.common.AbsAggregate;
-import com.zhenbanban.core.domain.dictionarycontext.event.DepartmentAddedEvent;
-import com.zhenbanban.core.domain.dictionarycontext.event.DepartmentDestroyedEvent;
-import com.zhenbanban.core.domain.dictionarycontext.event.DepartmentModifiedEvent;
+import com.zhenbanban.core.domain.internethospitalcontext.event.DepartmentAddedEvent;
+import com.zhenbanban.core.domain.internethospitalcontext.event.DepartmentDestroyedEvent;
+import com.zhenbanban.core.domain.internethospitalcontext.event.DepartmentModifiedEvent;
 import lombok.*;
 
 /**
@@ -41,8 +41,6 @@ public class Department extends AbsAggregate {
     private Long parentId;
     private String departmentType;
     private String departmentName;
-    private String departmentNamePinyin;
-    private String departmentNamePinyinAbbr;
     private String summary;
     private String description;
     @Builder.Default
@@ -92,4 +90,5 @@ public class Department extends AbsAggregate {
 
         this.addEvent(event);
     }
+
 }

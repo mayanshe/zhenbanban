@@ -23,13 +23,14 @@ package com.zhenbanban.core.application.query.impl;
 import com.zhenbanban.core.application.dto.DepartmentDto;
 import com.zhenbanban.core.application.dto.DepartmentQuery;
 import com.zhenbanban.core.application.query.DepartmentQueryHandler;
+import com.zhenbanban.core.infrastructure.persistence.converter.DepartmentConverter;
 import com.zhenbanban.core.infrastructure.persistence.mapper.DepartmentPoMapper;
 import com.zhenbanban.core.infrastructure.persistence.po.DepartmentPo;
 import com.zhenbanban.core.infrastructure.support.paging.Pager;
 import com.zhenbanban.core.infrastructure.support.paging.Pagination;
+import com.zhenbanban.core.infrastructure.util.PrintUtils;
 import com.zhenbanban.core.shared.exception.BadRequestException;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -52,20 +53,24 @@ public class DepartmentQueryHandlerImpl implements DepartmentQueryHandler {
         if (po == null) {
             throw new BadRequestException("没有找到此科室");
         }
-        return (new ModelMapper()).map(po, DepartmentDto.class);
+        return DepartmentConverter.INSTANCE.toDto(po);
     }
 
     @Override
     public List<DepartmentDto> handleQueryList(DepartmentQuery query) {
-        List<DepartmentPo> poList = mapper.findAll();
+        List<DepartmentPo> poList = mapper.search(query.toMap());
+
         return poList.stream()
-                .map(po -> (new ModelMapper()).map(po, DepartmentDto.class))
+                .map(DepartmentConverter.INSTANCE::toDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public Pagination<DepartmentDto> handleQueryPage(DepartmentQuery query) {
         return Pager.paginate(mapper, query.getPage(), query.getPageSize(), query.toMap(),
-                source -> (new ModelMapper()).map(source, DepartmentDto.class));
+                source -> {
+                    return DepartmentConverter.INSTANCE.toDto( (DepartmentPo) source);
+                });
     }
+
 }

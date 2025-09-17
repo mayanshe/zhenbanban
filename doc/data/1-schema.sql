@@ -85,7 +85,8 @@ CREATE TABLE IF NOT EXISTS `departments`
     `summary`            VARCHAR(512)                                                             NOT NULL DEFAULT '' COMMENT '科室简介',
     `description`        TEXT                                                                     NOT NULL COMMENT '科室介绍',
     `created_at`         BIGINT(11) UNSIGNED                                                      NOT NULL DEFAULT 0 COMMENT '创建时间',
-    `updated_at`         BIGINT(11) UNSIGNED                                                      NOT NULL DEFAULT 0 COMMENT '更新时间'
+    `updated_at`         BIGINT(11) UNSIGNED                                                      NOT NULL DEFAULT 0 COMMENT '更新时间',
+    `deleted_at`         BIGINT(11) UNSIGNED                                                      NOT NULL DEFAULT 0 COMMENT '删除时间',
 ) ENGINE = InnoDB COMMENT '互联网医院科室表';
 
 

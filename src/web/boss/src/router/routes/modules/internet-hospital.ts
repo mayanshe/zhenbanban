@@ -6,7 +6,7 @@ const InternetHospital: AppRouteRecordRaw = {
   name: 'institution',
   component: DEFAULT_LAYOUT,
   meta: {
-    locale: '互联网医院',
+    locale: '互医',
     requiresAuth: false,
     icon: 'icon-bg-colors',
     order: 8000,
@@ -17,7 +17,7 @@ const InternetHospital: AppRouteRecordRaw = {
       name: 'InternetHospitalSettingManage',
       component: () => import('@/views/internet-hospital/setting.vue'),
       meta: {
-        locale: '互联网医院配置',
+        locale: '互医配置',
         requiresAuth: false,
         buttons: ['internet-hospital-setting:modify'],
       },
@@ -25,11 +25,11 @@ const InternetHospital: AppRouteRecordRaw = {
     {
       path: 'internet-hospital-departments',
       name: 'InternetHospitalDepartmentManage',
-      component: () => import('@/views/internet-hospital/setting.vue'),
+      component: () => import('@/views/internet-hospital/department.vue'),
       meta: {
-        locale: '互联网医院部门',
+        locale: '互医科室',
         requiresAuth: false,
-        buttons: ['internet-hospital-setting:modify'],
+        buttons: ['internet-hospital-department:add', 'internet-hospital-department:modify', 'internet-hospital-department:delete'],
       },
     },
     {

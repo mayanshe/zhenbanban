@@ -46,4 +46,5 @@ public class DepartmentAmdCommand extends BaseCommand<Long> {
     private String summary;               // 科室简介
 
     private String description;           // 科室介绍
+
 }

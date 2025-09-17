@@ -20,10 +20,15 @@
  */
 package com.zhenbanban.core.application.dto;
 
+import com.zhenbanban.core.domain.dictionarycontext.valueobj.DepartmentType;
+import com.zhenbanban.core.infrastructure.support.annotation.InList;
+import com.zhenbanban.core.infrastructure.util.DateUtils;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 /**
  * Dto: 互联网医院科室
@@ -35,14 +40,36 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DepartmentDto {
-    private Long id;
-    private Long parentId;
-    private String departmentType;
+    private String id;
+
+    private String parentId;
+
+    private DepartmentType departmentType;
+
     private String departmentName;
-    private String departmentNamePinyin;
-    private String departmentNamePinyinAbbr;
+
     private String summary;
+
     private String description;
-    private long createdAt;
-    private long updatedAt;
+
+    private String createdAt;
+
+    private String updatedAt;
+
+    private String deletedAt;
+
+    private List<DepartmentDto> children;
+
+    public String getCreatedAt() {
+        return createdAt == null || createdAt.isBlank() ? "" : DateUtils.timestampToFormattedDate(createdAt);
+    }
+
+    public String getUpdatedAt() {
+        return updatedAt == null || updatedAt.isBlank() ? "" : DateUtils.timestampToFormattedDate(updatedAt);
+    }
+
+    public String getDeletedAt() {
+        return deletedAt == null || deletedAt.isBlank() || "0".equals(deletedAt) ? "" : DateUtils.timestampToFormattedDate(deletedAt);
+    }
+
 }

@@ -20,8 +20,13 @@
  */
 package com.zhenbanban.bossapi.vo;
 
+import com.zhenbanban.core.infrastructure.support.annotation.InList;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * VO: 科室保存请求
@@ -29,17 +34,27 @@ import lombok.Data;
  * @author zhangxihai 2025/09/16
  */
 @Data
+@Builder(toBuilder = true)
+@NoArgsConstructor
+@AllArgsConstructor
 public class DepartmentSaveRequest {
 
-    private Long parentId;
+    @Builder.Default
+    private Long parentId = 0L;
 
     @NotEmpty(message = "科室类型不能为空")
+    @InList(value = {"clinical", "technology", "emergency", "logistics"}, message = "科室类型选择错误")
     private String departmentType;
 
     @NotEmpty(message = "科室名称不能为空")
+    @Size(max = 75, message = "科室名称不能超过75个字符")
     private String departmentName;
 
-    private String summary;
+    @Builder.Default
+    @Size(max = 512, message = "科室简介不能超过512个字符")
+    private String summary = "";
 
-    private String description;
+    @Builder.Default
+    private String description = "";
+
 }

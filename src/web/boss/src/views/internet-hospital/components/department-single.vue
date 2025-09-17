@@ -13,10 +13,7 @@
         </a-form-item>
         <a-form-item field="departmentType" label="科室类型 : ">
           <a-select v-model="formData.departmentType" placeholder="请选择科室类型">
-            <a-option value="clinical">临床科室</a-option>
-            <a-option value="technology">医技科室</a-option>
-            <a-option value="emergency">急诊与重症科室</a-option>
-            <a-option value="logistics">行政及后勤科室</a-option>
+            <a-option v-for="item in departmentTypes" :value="item.code">{{ item.name }}</a-option>
           </a-select>
         </a-form-item>
         <a-form-item field="summary" label="科室简介 : ">
@@ -34,8 +31,15 @@
 import { ref, watch } from 'vue'
 import { FormInstance } from '@arco-design/web-vue/es/form'
 import { Message } from '@arco-design/web-vue'
-import type { CascaderOption } from '@/api/common'
-import { Department, getDepartment, createDepartment, updateDepartment, getAllDepartments } from '@/api/department'
+import {CascaderOption, ValueObject} from '@/api/common'
+import {
+  Department,
+  getDepartment,
+  createDepartment,
+  updateDepartment,
+  getDepartmentList,
+  getDepartmentTypes, DepartmentView
+} from '@/api/department'
 
 // 定义组件props
 const props = defineProps<{
@@ -67,17 +71,35 @@ watch(
   }
 )
 
+// region 加载科室类型
+const departmentTypes = ref<ValueObject[]>([])
+const loadDepartmentTypes = async () => {
+  const res = (await getDepartmentTypes()) || []
+  departmentTypes.value = res
+}
+loadDepartmentTypes()
+// endregion
+
 // region 加载科室数据
 const load = async () => {
   if (props.action === 'add') {
     formData.value = generate()
-    // If singleId is provided, it's the parent ID for the new department
-    if (props.singleId && props.singleId !== '0') {
-      formData.value.parentId = props.singleId
-    }
   } else {
-    const resp = await getDepartment(props.singleId)
-    formData.value = resp.data || generate()
+    const resp = (await getDepartment(props.singleId))
+    if (resp) {
+      formData.value = {
+        id: resp.id,
+        parentId: resp.parentId,
+        departmentType: resp.departmentType.code,
+        departmentName: resp.departmentName,
+        summary: resp.summary,
+        description: resp.description,
+      }
+    } else {
+      formData.value = generate()
+      Message.error('获取科室信息失败，请稍后重试')
+      handleClose()
+    }
   }
 }
 // endregion
@@ -85,28 +107,24 @@ const load = async () => {
 // region 加载上级科室选项
 const departmentOptions = ref<CascaderOption[]>([])
 
-const listToTree = (items: Department[], parentId = '0'): CascaderOption[] => {
-  return items
-    .filter((item) => item.parentId === parentId)
-    .map((item) => {
-      const children = listToTree(items, item.id)
-      return {
-        value: item.id,
-        label: item.departmentName,
-        children: children.length > 0 ? children : undefined,
-      }
-    })
+const transDepartments = (departments: DepartmentView[]): CascaderOption[] => {
+  return departments.map((dept) => ({
+    label: dept.departmentName,
+    value: dept.id,
+    children: dept.children && dept.children.length > 0 ? transDepartments(dept.children) : null,
+  }))
 }
 
 const loadDepartmentOptions = async () => {
-  try {
-    const resp = await getAllDepartments()
-    const tree = listToTree(resp.data || [])
-    departmentOptions.value = tree
-  } catch (error) {
-    Message.error('加载科室列表失败')
+  const departments = await getDepartmentList({ keywords: '', departmentType: '' })
+  if (departments.length === 0) {
+    departmentOptions.value = [{ label: '无', value: '0', children: null }]
+    return
   }
+
+  departmentOptions.value = [{ label: '无', value: '0', children: null }, ...transDepartments(departments)]
 }
+loadDepartmentOptions()
 // endregion
 
 // region 表单定义
@@ -114,12 +132,10 @@ const generate = (): Department => {
   return {
     id: '0',
     parentId: '0',
-    departmentType: 'clinical',
+    departmentType: '',
     departmentName: '',
     summary: '',
     description: '',
-    createdAt: '',
-    updatedAt: '',
   }
 }
 

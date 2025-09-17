@@ -20,8 +20,8 @@
  */
 package com.zhenbanban.core.infrastructure.persistence.repository;
 
-import com.zhenbanban.core.domain.dictionarycontext.entity.Department;
-import com.zhenbanban.core.domain.dictionarycontext.repository.DepartmentRepository;
+import com.zhenbanban.core.domain.internethospitalcontext.entity.Department;
+import com.zhenbanban.core.domain.internethospitalcontext.repository.DepartmentRepository;
 import com.zhenbanban.core.infrastructure.persistence.converter.DepartmentConverter;
 import com.zhenbanban.core.infrastructure.persistence.mapper.DepartmentPoMapper;
 import com.zhenbanban.core.infrastructure.persistence.po.DepartmentPo;
@@ -68,19 +68,16 @@ public class DepartmentRepositoryImpl implements DepartmentRepository {
         }
 
         verify(aggregate);
+        DepartmentPo po = DepartmentConverter.INSTANCE.toPo(aggregate);
 
         if (isNew) {
-            DepartmentPo po = DepartmentConverter.INSTANCE.toPo(aggregate);
             if (departmentMapper.insert(po) <= 0) {
                 throw new InternalServerException("添加科室失败");
             }
             return po.getId();
         }
 
-        DepartmentPo po = getPo(aggregate.getId());
-        if (po == null) {
-            throw new ResourceNotFoundException("未找到对应的科室信息，无法更新");
-        }
+
         DepartmentPo updatedPo = DepartmentConverter.INSTANCE.updatePo(aggregate, po);
         if (departmentMapper.update(updatedPo) <= 0) {
             throw new InternalServerException("更新科室失败");
@@ -91,6 +88,16 @@ public class DepartmentRepositoryImpl implements DepartmentRepository {
 
     private void verify(Department aggregate) {
         verifyDepartmentExists(aggregate);
+        verifyParentDepartmentExists(aggregate);
+    }
+
+    private void verifyParentDepartmentExists(Department aggregate) {
+        if (aggregate.getParentId() != null && aggregate.getParentId() > 0) {
+            DepartmentPo parentPo = getPo(aggregate.getParentId());
+            if (parentPo == null) {
+                throw new ResourceNotFoundException("未找到对应的上级科室信息");
+            }
+        }
     }
 
     private void verifyDepartmentExists(Department aggregate) {

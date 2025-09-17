@@ -20,8 +20,11 @@
  */
 package com.zhenbanban.core.infrastructure.persistence.po;
 
+import com.zhenbanban.core.infrastructure.support.annotation.InList;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+
+import java.util.List;
 
 /**
  * Po: 互联网医院科室表
@@ -34,25 +37,27 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DepartmentPo {
-    private Long id;                          // 科室ID
+    private Long id;                                      // 科室ID
 
-    private Long parentId;                    // 上级科室ID
+    private Long parentId;                                // 上级科室ID
 
-    private String departmentType;            // 科室类型
+    private String departmentType;                        // 科室类型
 
-    private String departmentName;            // 科室名称
+    private String departmentName;                        // 科室名称
 
-    private String departmentNamePinyin;      // 科室名称拼音
+    private String summary;                               // 科室简介
 
-    private String departmentNamePinyinAbbr;  // 科室名称拼音首字母缩写
-
-    private String summary;                   // 科室简介
-
-    private String description;               // 科室介绍
+    private String description;                           // 科室介绍
 
     @Builder.Default
-    private long createdAt = 0L;              // 创建时间
+    private long createdAt = 0L;                          // 创建时间
 
     @Builder.Default
-    private long updatedAt = 0L;              // 更新时间
+    private long updatedAt = 0L;                          // 更新时间
+
+    @Builder.Default
+    private Long deletedAt = 0L;                          // 删除时间，0表示未删除
+
+    private List<DepartmentPo> children = List.of();      // 子科室列表
+
 }

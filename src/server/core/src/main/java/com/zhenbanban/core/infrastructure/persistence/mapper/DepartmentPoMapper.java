@@ -44,4 +44,7 @@ public interface DepartmentPoMapper extends PaginateMapper<DepartmentPo> {
     List<DepartmentPo> findAll();
 
     Long findIdByName(String name);
+
+    List<DepartmentPo> findByParentId(Long parentId);
+
 }

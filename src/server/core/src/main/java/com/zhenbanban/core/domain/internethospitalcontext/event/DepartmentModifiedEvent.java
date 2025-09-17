@@ -18,16 +18,26 @@
  * distribution of this code must also be licensed under the GPL. Failure
  * to comply with the terms of the GPL may result in legal action.
  */
-package com.zhenbanban.core.domain.dictionarycontext.repository;
+package com.zhenbanban.core.domain.internethospitalcontext.event;
 
-import com.zhenbanban.core.domain.common.IDomainRepository;
-import com.zhenbanban.core.domain.dictionarycontext.entity.Department;
+import com.zhenbanban.core.domain.common.AbsDomainEvent;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 /**
- * 领域仓储接口: 互联网医院科室
+ * 事件: 科室修改成功事件
  *
  * @author zhangxihai 2025/09/16
  */
-public interface DepartmentRepository extends IDomainRepository<Department, Long> {
+@Getter
+@Setter
+@SuperBuilder(toBuilder = true)
+@ToString(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
+@AllArgsConstructor
+public class DepartmentModifiedEvent extends AbsDomainEvent {
+    private Long departmentId;      // 科室ID
+    private String departmentName;  // 科室名称
 
 }
