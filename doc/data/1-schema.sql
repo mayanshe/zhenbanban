@@ -460,6 +460,8 @@ CREATE TABLE IF NOT EXISTS `hospitals` (
     `uscc_code`                      CHAR(18)                            NOT NULL DEFAULT '' COMMENT '统一社会信用代码',
     `hospital_code`                  CHAR(22)                            NOT NULL COMMENT '医院机构登记号',
     `hospital_name`                  VARCHAR(100)                        NOT NULL DEFAULT '' COMMENT '医院名称',
+    `hospital_name_pinyin`           VARCHAR(100)                        NOT NULL DEFAULT '' COMMENT '医院名称拼音',
+    `hospital_name_pinyin_abbr`      VARCHAR(100)                        NOT NULL DEFAULT '' COMMENT '医院名称拼音首字母',
     `province_id`                    BIGINT UNSIGNED                     NOT NULL DEFAULT 0 COMMENT '所在省份编码',
     `city_id`                        BIGINT UNSIGNED                     NOT NULL DEFAULT 0 COMMENT '所在城市编码',
     `county_id`                      BIGINT UNSIGNED                     NOT NULL DEFAULT 0 COMMENT '所在区县编码',
@@ -471,13 +473,14 @@ CREATE TABLE IF NOT EXISTS `hospitals` (
     `contact_phone`                  VARCHAR(20)                         NOT NULL DEFAULT '' COMMENT '联系电话',
     `contact_email`                  VARCHAR(125)                        NOT NULL DEFAULT '' COMMENT '联系邮箱',
     `website`                        VARCHAR(255)                        NOT NULL DEFAULT '' COMMENT '医院官网',
-    `companion_diagnosis_enabled`    TINYINT(2)                          NOT NULL DEFAULT 0 COMMENT '是否启用伴诊断服务',
+    `companion_diagnosis_enabled`    TINYINT(2)                          NOT NULL DEFAULT 0 COMMENT '是否启用伴诊服务',
     `meal_service_enabled`           TINYINT(2)                          NOT NULL DEFAULT 0 COMMENT '是否启用配餐服务',
     `testing_delivery_enabled`       TINYINT(2)                          NOT NULL DEFAULT 0 COMMENT '是否启用送检测服务',
     `created_at`                     BIGINT(11) UNSIGNED                 NOT NULL DEFAULT 0 COMMENT '创建时间',
     `updated_at`                     BIGINT(11) UNSIGNED                 NOT NULL DEFAULT 0 COMMENT '更新时间',
-    UNIQUE KEY `uk_hospital_code` (`hospital_code`) USING BTREE COMMENT '医院编码索引',
-    INDEX `idx_hospital_name` (`hospital_name`) USING BTREE COMMENT '医院名称索
+    `deleted_at`                     BIGINT(11) UNSIGNED                 NOT NULL DEFAULT 0 COMMENT '删除时间',
+    INDEX `idx_hospital_code` (`hospital_code`) USING BTREE COMMENT '医院编码索引',
+    FULLTEXT (`hospital_name`, `hospital_name_pinyin`, `hospital_name_pinyin_abbr`) WITH PARSER ngram
 ) ENGINE = InnoDB COMMENT '医院表';
 
 -- ---------------------------------------------------------------------------------------------------------------------
