@@ -18,16 +18,17 @@
  * distribution of this code must also be licensed under the GPL. Failure
  * to comply with the terms of the GPL may result in legal action.
  */
-package com.zhenbanban.core.application.command;
+package com.zhenbanban.core.application.query;
 
-import com.zhenbanban.core.application.common.IAmdCmdHandler;
-import com.zhenbanban.core.application.dto.HospitalAmdCommand;
+import com.zhenbanban.core.application.common.ISingleAndListQuery;
+import com.zhenbanban.core.application.dto.HospitalDto;
+import com.zhenbanban.core.application.dto.HospitalQuery;
 
 /**
- * 命令接口 : 业务医院表
+ * Query Interface : 业务医院表查询处理器
  *
  * @author zhangxihai 2025/09/17
  */
-public interface HospitalAmdCmdHandler extends IAmdCmdHandler<HospitalAmdCommand, Long> {
+public interface HospitalQueryHandler extends ISingleAndListQuery<HospitalDto, Long, HospitalQuery> {
 
 }

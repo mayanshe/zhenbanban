@@ -18,16 +18,16 @@
  * distribution of this code must also be licensed under the GPL. Failure
  * to comply with the terms of the GPL may result in legal action.
  */
-package com.zhenbanban.core.application.command;
+package com.zhenbanban.core.domain.internethospitalcontext.repository;
 
-import com.zhenbanban.core.application.common.IAmdCmdHandler;
-import com.zhenbanban.core.application.dto.HospitalAmdCommand;
+import com.zhenbanban.core.domain.common.IDomainRepository;
+import com.zhenbanban.core.domain.internethospitalcontext.entity.Hospital;
 
 /**
- * 命令接口 : 业务医院表
+ * 领域仓储接口 : 业务医院表
  *
  * @author zhangxihai 2025/09/17
  */
-public interface HospitalAmdCmdHandler extends IAmdCmdHandler<HospitalAmdCommand, Long> {
+public interface HospitalRepository extends IDomainRepository<Hospital, Long> {
 
 }

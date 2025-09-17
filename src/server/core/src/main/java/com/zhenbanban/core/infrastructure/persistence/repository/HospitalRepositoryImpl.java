@@ -20,40 +20,41 @@
  */
 package com.zhenbanban.core.infrastructure.persistence.repository;
 
-import com.zhenbanban.core.domain.institutioncontext.entity.Hospital;
-import com.zhenbanban.core.domain.institutioncontext.repository.HospitalRepository;
+import com.zhenbanban.core.domain.internethospitalcontext.entity.Hospital;
+import com.zhenbanban.core.domain.internethospitalcontext.repository.HospitalRepository;
 import com.zhenbanban.core.infrastructure.persistence.converter.HospitalConverter;
 import com.zhenbanban.core.infrastructure.persistence.mapper.HospitalPoMapper;
 import com.zhenbanban.core.infrastructure.persistence.po.HospitalPo;
 import com.zhenbanban.core.infrastructure.support.annotation.StoreDomainEventsExecution;
 import com.zhenbanban.core.shared.exception.InternalServerException;
+import com.zhenbanban.core.shared.exception.RequestConflictException;
 import com.zhenbanban.core.shared.exception.ResourceNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * 聚合根Repository实现：医院
+ * 领域仓储实现 : 业务医院表
  *
- * @author zhangxihai 2025/08/11
+ * @author zhangxihai 2025/09/17
  */
 @Repository
 public class HospitalRepositoryImpl implements HospitalRepository {
+    private final HospitalPoMapper hospitalMapper;
 
-    private final HospitalPoMapper hospitalPoMapper;
-
-    @Autowired
-    public HospitalRepositoryImpl(@Lazy HospitalPoMapper hospitalPoMapper) {
-        this.hospitalPoMapper = hospitalPoMapper;
+    public HospitalRepositoryImpl(
+            @Lazy HospitalPoMapper hospitalMapper
+    ) {
+        this.hospitalMapper = hospitalMapper;
     }
 
     @Override
     public Hospital load(Long id) {
         HospitalPo po = getPo(id);
         if (po == null) {
-            throw new ResourceNotFoundException("未找到此医院");
+            throw new ResourceNotFoundException("未找到对应的业务医院表信息");
         }
+
         return HospitalConverter.INSTANCE.toAggregate(po);
     }
 
@@ -61,37 +62,47 @@ public class HospitalRepositoryImpl implements HospitalRepository {
     @StoreDomainEventsExecution
     @Transactional
     public Long save(Hospital aggregate, boolean isNew) {
-        HospitalPo po = HospitalConverter.INSTANCE.toPo(aggregate);
-
-        // 新增
-        if (isNew) {
-            if (hospitalPoMapper.insert(po) <= 0) {
-                throw new InternalServerException(String.format("医院 `%s` 新增失败", aggregate.getHospitalName()));
+        if (aggregate.isDeleted()) {
+            if (hospitalMapper.delete(aggregate.getId()) <= 0) {
+                throw new InternalServerException("删除业务医院表失败");
             }
-
-            return po.getCityId();
+            return aggregate.getId();
         }
 
-        // 更新
-        if (hospitalPoMapper.update(po) <= 0) {
-            throw new InternalServerException(String.format("医院 `%s` 信息更新失败", aggregate.getHospitalName()));
+        verify(aggregate);
+        HospitalPo po = HospitalConverter.INSTANCE.toPo(aggregate);
+        po.setId(aggregate.getId());
+
+        if (isNew) {
+            if (hospitalMapper.insert(po) <= 0) {
+                throw new InternalServerException("添加业务医院表失败");
+            }
+            return po.getId();
+        }
+
+        if (hospitalMapper.update(po) <= 0) {
+            throw new InternalServerException("更新业务医院表失败");
         }
 
         return po.getId();
     }
 
-    /**
-     * 获取持久化对象
-     *
-     * @param id 医院ID
-     * @return 持久化对象
-     */
+    private void verify(Hospital aggregate) {
+        verifyHospitalExists(aggregate);
+    }
+
+    private void verifyHospitalExists(Hospital aggregate) {
+        Long id = hospitalMapper.findIdByCode(aggregate.getHospitalCode());
+        if (id != null && !id.equals(aggregate.getId())) {
+            throw new RequestConflictException(String.format("业务医院表 '%s' 已存在", aggregate.getHospitalName()));
+        }
+    }
+
     private HospitalPo getPo(Long id) {
         if (id == null || id <= 0) {
             return null;
         }
 
-        return hospitalPoMapper.findById(id);
+        return hospitalMapper.findById(id);
     }
-
 }

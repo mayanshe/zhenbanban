@@ -18,26 +18,29 @@
  * distribution of this code must also be licensed under the GPL. Failure
  * to comply with the terms of the GPL may result in legal action.
  */
-package com.zhenbanban.core.application.dto;
+package com.zhenbanban.core.domain.internethospitalcontext.entity;
 
-import com.zhenbanban.core.application.common.BaseCommand;
-import com.zhenbanban.core.infrastructure.util.PinyinUtils;
+import com.zhenbanban.core.domain.common.AbsAggregate;
+import com.zhenbanban.core.domain.internethospitalcontext.event.HospitalAddedEvent;
+import com.zhenbanban.core.domain.internethospitalcontext.event.HospitalDestroyedEvent;
+import com.zhenbanban.core.domain.internethospitalcontext.event.HospitalModifiedEvent;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
 
 /**
- * 命令载体 : 业务医院表
+ * 聚合根：业务医院表
  *
  * @author zhangxihai 2025/09/17
  */
-@Getter
-@Setter
-@SuperBuilder(toBuilder = true)
+@Data
+@Builder(toBuilder = true)
+@EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
 @AllArgsConstructor
-public class HospitalAmdCommand extends BaseCommand<Long> {
+public class Hospital extends AbsAggregate {
+
+    private Long id;
 
     private String ownershipType;
 
@@ -87,17 +90,51 @@ public class HospitalAmdCommand extends BaseCommand<Long> {
 
     private Integer testingDeliveryEnabled;
 
-    private void setHospitalNamePinyin(String value) {
+    @Builder.Default
+    private boolean deleted = false;
+
+    /**
+     * 添加
+     */
+    public void add() {
+        this.setDeleted(false);
+
+        HospitalAddedEvent event = HospitalAddedEvent.builder()
+                .refId(this.getId())
+                .hospitalId(this.getId())
+                .hospitalName(this.getHospitalName())
+                .build();
+
+        this.addEvent(event);
     }
 
-    public String getHospitalNamePinyin() {
-        return PinyinUtils.getPinyin(this.hospitalName);
+    /**
+     * 修改
+     */
+    public void modify() {
+        this.setDeleted(false);
+
+        HospitalModifiedEvent event = HospitalModifiedEvent.builder()
+                .refId(this.getId())
+                .hospitalId(this.getId())
+                .hospitalName(this.getHospitalName())
+                .build();
+
+        this.addEvent(event);
     }
 
-    private void setHospitalNamePinyinAbbr(String value) {
-    }
+    /**
+     * 销毁
+     */
+    public void destroy() {
+        this.setDeleted(true);
 
-    public String getHospitalNamePinyinAbbr() {
-        return PinyinUtils.getPinyinInitial(this.hospitalName);
+        HospitalDestroyedEvent event = HospitalDestroyedEvent.builder()
+                .refId(this.getId())
+                .hospitalId(this.getId())
+                .hospitalName(this.getHospitalName())
+                .build();
+
+        this.addEvent(event);
     }
 }
