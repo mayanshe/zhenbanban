@@ -20,7 +20,7 @@
  */
 package com.zhenbanban.core.domain.systemcontext.entity;
 
-import com.zhenbanban.core.domain.common.AbsAggregate;
+import com.zhenbanban.core.domain.common.entity.AbsAggregate;
 import com.zhenbanban.core.domain.systemcontext.event.MediaAddEvent;
 import com.zhenbanban.core.domain.systemcontext.event.MediaDestroyedEvent;
 import com.zhenbanban.core.domain.systemcontext.event.MediaModifiedEvent;

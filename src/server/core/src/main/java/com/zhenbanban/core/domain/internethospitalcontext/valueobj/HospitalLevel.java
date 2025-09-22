@@ -18,37 +18,43 @@
  * distribution of this code must also be licensed under the GPL. Failure
  * to comply with the terms of the GPL may result in legal action.
  */
-package com.zhenbanban.core.domain.institutioncontext.valueobj;
+package com.zhenbanban.core.domain.internethospitalcontext.valueobj;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 /**
- * 值对象：医院等级
+ * Value Object : 医院级别
  *
- * @author zhangxihai 2025/08/11
+ * @author zhangxihai 2025/9/17
  */
 public class HospitalLevel {
-    public static final HospitalLevel LEVEL_3A = new HospitalLevel("LEVEL-3A", "三甲");
-    public static final HospitalLevel LEVEL_3B = new HospitalLevel("LEVEL-3B", "三乙");
-    public static final HospitalLevel LEVEL_2A = new HospitalLevel("LEVEL-2A", "二甲");
-    public static final HospitalLevel LEVEL_2B = new HospitalLevel("LEVEL-2B", "二乙");
-    public static final HospitalLevel LEVEL_1 = new HospitalLevel("LEVEL-1", "一级");
-    public static final HospitalLevel OTHER = new HospitalLevel("OTHER", "其他");
+    private static final HospitalLevel LEVEL_3A = new HospitalLevel("LEVEL-3A", "三甲");
+    private static final HospitalLevel LEVEL_3B = new HospitalLevel("LEVEL-3B", "三乙");
+    private static final HospitalLevel LEVEL_2A = new HospitalLevel("LEVEL-2A", "二甲");
+    private static final HospitalLevel LEVEL_2B = new HospitalLevel("LEVEL-2B", "二乙");
+    private static final HospitalLevel LEVEL_1 = new HospitalLevel("LEVEL-1A", "一级");
+    private static final HospitalLevel OTHER = new HospitalLevel("OTHER", "其他");
 
-    private static final List<HospitalLevel> ALL_LEVELS = Collections.unmodifiableList(Arrays.asList(
+    private static final java.util.List<HospitalLevel> ALL_LEVELS = List.of(
             LEVEL_3A,
             LEVEL_3B,
             LEVEL_2A,
             LEVEL_2B,
             LEVEL_1,
             OTHER
-    ));
+    );
 
-    private final String code;
-    private final String name;
+    private final String code;       // 医院级别代码
+
+    private final String name;       // 医院级别名称
+
+    public String getCode() {
+        return code;
+    }
+
+    public String getName() {
+        return name;
+    }
 
     public HospitalLevel(String code, String name) {
         this.code = code;
@@ -60,34 +66,10 @@ public class HospitalLevel {
     }
 
     public static HospitalLevel of(String code) {
-        if (code == null || code.isEmpty()) {
-            return OTHER;
-        }
         return ALL_LEVELS.stream()
-                .filter(level -> level.getCode().equalsIgnoreCase(code))
+                .filter(level -> level.code.equals(code.toUpperCase()))
                 .findFirst()
-                .orElse(OTHER);
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        HospitalLevel that = (HospitalLevel) o;
-        return Objects.equals(code, that.code);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(code);
+                .orElseThrow(() -> new IllegalArgumentException("Invalid HospitalLevel code: " + code));
     }
 
     @Override
@@ -96,6 +78,19 @@ public class HospitalLevel {
                 "code='" + code + '\'' +
                 ", name='" + name + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        HospitalLevel that = (HospitalLevel) o;
+        return code.equals(that.code);
+    }
+
+    @Override
+    public int hashCode() {
+        return code.hashCode();
     }
 
 }

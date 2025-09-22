@@ -40,6 +40,7 @@ public interface DepartmentConverter extends IConverter {
     DepartmentConverter INSTANCE = Mappers.getMapper(DepartmentConverter.class);
 
     @Mappings({
+            @Mapping(target = "children", ignore = true),
             @Mapping(target = "createdAt", ignore = true),
             @Mapping(target = "updatedAt", ignore = true),
             @Mapping(target = "deletedAt", source = "deleted", qualifiedByName = "isDeletedToDeletedAt"),
@@ -48,6 +49,7 @@ public interface DepartmentConverter extends IConverter {
 
     @Mappings({
             @Mapping(target = "id", ignore = true),
+            @Mapping(target = "children", ignore = true),
             @Mapping(target = "createdAt", ignore = true),
             @Mapping(target = "updatedAt", ignore = true),
             @Mapping(target = "deletedAt", source = "deleted", qualifiedByName = "isDeletedToDeletedAt"),

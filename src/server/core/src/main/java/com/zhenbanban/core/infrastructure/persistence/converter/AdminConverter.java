@@ -60,6 +60,8 @@ public interface AdminConverter extends IConverter {
             @Mapping(target = "roleIds", source = "roles", qualifiedByName = "rolesToRoleIds"),
             @Mapping(target = "roleNames", source = "roles", qualifiedByName = "rolesToRoleNames"),
             @Mapping(target = "deleted", source = "deletedAt", qualifiedByName = "deletedAtToIsDeleted"),
+            @Mapping(target = "superAdmin", ignore = true),
+            @Mapping(target = "permissionNames", ignore = true),
     })
     Admin toAggregate(AdminPo adminPo);
 

@@ -20,89 +20,82 @@
  */
 package com.zhenbanban.core.infrastructure.persistence.converter;
 
-import com.zhenbanban.core.domain.institutioncontext.entity.Hospital;
-import com.zhenbanban.core.domain.institutioncontext.valueobj.HospitalLevel;
-import com.zhenbanban.core.domain.common.valueobj.OwnershipType;
-import com.zhenbanban.core.domain.institutioncontext.valueobj.HospitalStatus;
-import com.zhenbanban.core.domain.institutioncontext.valueobj.HospitalType;
+import com.zhenbanban.core.application.dto.HospitalDto;
+import com.zhenbanban.core.domain.common.valueobj.WithAuditStatus;
+import com.zhenbanban.core.domain.internethospitalcontext.entity.Hospital;
+import com.zhenbanban.core.domain.internethospitalcontext.valueobj.HospitalLevel;
+import com.zhenbanban.core.domain.internethospitalcontext.valueobj.HospitalOwnershipType;
+import com.zhenbanban.core.domain.internethospitalcontext.valueobj.HospitalType;
 import com.zhenbanban.core.infrastructure.persistence.po.HospitalPo;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Mappings;
-import org.mapstruct.Named;
+import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
 /**
- * 对象映射：医院
+ * 转换器 : 业务医院表
  *
- * @author zhangxihai 2025/08/11
+ * @author zhangxihai 2025/09/17
  */
 @Mapper
 public interface HospitalConverter extends IConverter {
     HospitalConverter INSTANCE = Mappers.getMapper(HospitalConverter.class);
 
     @Mappings({
-            @Mapping(target = "createdAt", ignore = true),
-            @Mapping(target = "updatedAt", ignore = true),
-            @Mapping(target = "ownershipType", source = "ownershipType", qualifiedByName = "ownershipTypeToString"),
-            @Mapping(target = "hospitalType", source = "hospitalType", qualifiedByName = "hospitalTypeToString"),
-            @Mapping(target = "hospitalLevel", source = "hospitalLevel", qualifiedByName = "hospitalLevelToString"),
-            @Mapping(target = "status", source = "status", qualifiedByName = "statusToString"),
             @Mapping(target = "companionDiagnosisEnabled", source = "companionDiagnosisEnabled", qualifiedByName = "booleanToShort"),
             @Mapping(target = "mealServiceEnabled", source = "mealServiceEnabled", qualifiedByName = "booleanToShort"),
-            @Mapping(target = "testingDeliveryEnabled", source = "testingDeliveryEnabled", qualifiedByName = "booleanToShort")
+            @Mapping(target = "testingDeliveryEnabled", source = "testingDeliveryEnabled", qualifiedByName = "booleanToShort"),
+            @Mapping(target = "createdAt", ignore = true),
+            @Mapping(target = "updatedAt", ignore = true),
+            @Mapping(target = "deletedAt", source = "deleted", qualifiedByName = "isDeletedToDeletedAt")
     })
     HospitalPo toPo(Hospital hospital);
 
     @Mappings({
-            @Mapping(target = "ownershipType", source = "ownershipType", qualifiedByName = "stringToOwnershipType"),
-            @Mapping(target = "hospitalType", source = "hospitalType", qualifiedByName = "stringToHospitalType"),
-            @Mapping(target = "hospitalLevel", source = "hospitalLevel", qualifiedByName = "stringToHospitalLevel"),
-            @Mapping(target = "status", source = "status", qualifiedByName = "stringToStatus"),
+            @Mapping(target = "companionDiagnosisEnabled", source = "companionDiagnosisEnabled", qualifiedByName = "booleanToShort"),
+            @Mapping(target = "mealServiceEnabled", source = "mealServiceEnabled", qualifiedByName = "booleanToShort"),
+            @Mapping(target = "testingDeliveryEnabled", source = "testingDeliveryEnabled", qualifiedByName = "booleanToShort"),
+            @Mapping(target = "createdAt", ignore = true),
+            @Mapping(target = "updatedAt", ignore = true),
+            @Mapping(target = "deletedAt", source = "deleted", qualifiedByName = "isDeletedToDeletedAt")
+    })
+    HospitalPo updatePo(Hospital hospital, @MappingTarget HospitalPo po);
+
+    @Mappings({
             @Mapping(target = "companionDiagnosisEnabled", source = "companionDiagnosisEnabled", qualifiedByName = "shortToBoolean"),
             @Mapping(target = "mealServiceEnabled", source = "mealServiceEnabled", qualifiedByName = "shortToBoolean"),
-            @Mapping(target = "testingDeliveryEnabled", source = "testingDeliveryEnabled", qualifiedByName = "shortToBoolean")
+            @Mapping(target = "testingDeliveryEnabled", source = "testingDeliveryEnabled", qualifiedByName = "shortToBoolean"),
+            @Mapping(target = "deleted", source = "deletedAt", qualifiedByName = "deletedAtToIsDeleted"),
     })
     Hospital toAggregate(HospitalPo po);
 
-    @Named("ownershipTypeToString")
-    default String ownershipTypeToString(OwnershipType type) {
-        return type.getCode();
+    @Mappings({
+            @Mapping(target = "ownershipType", source = "ownershipType", qualifiedByName = "stringToHospitalOwnershipTypeObj"),
+            @Mapping(target = "hospitalType", source = "hospitalType", qualifiedByName = "stringToHospitalTypeObj"),
+            @Mapping(target = "hospitalLevel", source = "hospitalLevel", qualifiedByName = "stringToHospitalLevelObj"),
+            @Mapping(target = "status", source = "status", qualifiedByName = "stringToWithAuditStatusObj"),
+            @Mapping(target = "companionDiagnosisEnabled", source = "companionDiagnosisEnabled", qualifiedByName = "shortToBoolean"),
+            @Mapping(target = "mealServiceEnabled", source = "mealServiceEnabled", qualifiedByName = "shortToBoolean"),
+            @Mapping(target = "testingDeliveryEnabled", source = "testingDeliveryEnabled", qualifiedByName = "shortToBoolean"),
+    })
+    HospitalDto toDto(HospitalPo po);
+
+    @Named("stringToHospitalOwnershipTypeObj")
+    default HospitalOwnershipType mapStringToHospitalOwnershipType(String value) {
+        return value != null ? HospitalOwnershipType.of(value) : null;
     }
 
-    @Named("stringToOwnershipType")
-    default OwnershipType stringToOwnershipType(String code) {
-        return OwnershipType.of(code);
+    @Named("stringToHospitalTypeObj")
+    default HospitalType mapStringToHospitalType(String value) {
+        return value != null ? HospitalType.of(value) : null;
     }
 
-    @Named("hospitalTypeToString")
-    default String hospitalTypeToString(HospitalType type) {
-        return type.getCode();
+    @Named("stringToHospitalLevelObj")
+    default HospitalLevel mapStringToHospitalLevel(String value) {
+        return value != null ? HospitalLevel.of(value) : null;
     }
 
-    @Named("stringToHospitalType")
-    default HospitalType stringToHospitalType(String code) {
-        return HospitalType.of(code);
-    }
-
-    @Named("hospitalLevelToString")
-    default String hospitalLevelToString(HospitalLevel level) {
-        return level.getCode();
-    }
-
-    @Named("stringToHospitalLevel")
-    default HospitalLevel stringToHospitalLevel(String code) {
-        return HospitalLevel.of(code);
-    }
-
-    @Named("statusToString")
-    default String statusToString(HospitalStatus status) {
-        return status.getCode();
-    }
-
-    @Named("stringToStatus")
-    default HospitalStatus stringToStatus(String code) {
-        return HospitalStatus.of(code);
+    @Named("stringToWithAuditStatusObj")
+    default WithAuditStatus mapStringToWithAuditStatus(String value) {
+        return value != null ? WithAuditStatus.of(value) : null;
     }
 
 }

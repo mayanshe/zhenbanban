@@ -84,4 +84,25 @@ public final class DateUtils {
             return "";
         }
     }
+
+    public static String timestampToFormattedDay(long timestamp) {
+        timestamp = timestamp <= 99_999_999_999L ? timestamp : timestamp / 1000;
+
+        if (timestamp <= 0) {
+            return "";
+        }
+
+        LocalDateTime dateTime = LocalDateTime.ofEpochSecond(timestamp, 0, java.time.ZoneOffset.UTC);
+        return dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+    }
+
+    public static String timestampToFormattedDay(String timestamp) {
+        try {
+            long ts = Long.parseLong(timestamp);
+            return timestampToFormattedDay(ts);
+        } catch (NumberFormatException e) {
+            return "";
+        }
+    }
+
 }

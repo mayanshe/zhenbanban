@@ -31,14 +31,15 @@
 import { ref, watch } from 'vue'
 import { FormInstance } from '@arco-design/web-vue/es/form'
 import { Message } from '@arco-design/web-vue'
-import {CascaderOption, ValueObject} from '@/api/common'
+import { CascaderOption, ValueObject } from '@/api/common'
 import {
   Department,
   getDepartment,
   createDepartment,
   updateDepartment,
   getDepartmentList,
-  getDepartmentTypes, DepartmentView
+  getDepartmentTypes,
+  DepartmentView,
 } from '@/api/department'
 
 // 定义组件props
@@ -85,7 +86,7 @@ const load = async () => {
   if (props.action === 'add') {
     formData.value = generate()
   } else {
-    const resp = (await getDepartment(props.singleId))
+    const resp = await getDepartment(props.singleId)
     if (resp) {
       formData.value = {
         id: resp.id,

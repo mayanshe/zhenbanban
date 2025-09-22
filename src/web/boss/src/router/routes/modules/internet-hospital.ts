@@ -34,10 +34,10 @@ const InternetHospital: AppRouteRecordRaw = {
     },
     {
       path: 'hospitals',
-      name: 'HospitalManageManage',
-      component: () => import('@/views/internet-hospital/setting.vue'),
+      name: 'HospitalManage',
+      component: () => import('@/views/hospital/index.vue'),
       meta: {
-        locale: '关联医院',
+        locale: '业务医院',
         requiresAuth: false,
         buttons: ['hospital:add', 'hospital:modify', 'hospital:delete'],
       },

@@ -24,7 +24,7 @@ import com.zhenbanban.core.application.command.SyndromeAmdCmdHandler;
 import com.zhenbanban.core.application.dto.SyndromeAmdCommand;
 import com.zhenbanban.core.domain.dictionarycontext.entity.Syndrome;
 import com.zhenbanban.core.domain.dictionarycontext.repository.SyndromeRepository;
-import com.zhenbanban.core.domain.common.DomainEventPublisher;
+import com.zhenbanban.core.domain.common.repository.DomainEventPublisher;
 import com.zhenbanban.core.shared.contract.IdGenerator;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;

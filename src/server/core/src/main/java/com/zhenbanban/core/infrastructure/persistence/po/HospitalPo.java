@@ -21,70 +21,91 @@
 package com.zhenbanban.core.infrastructure.persistence.po;
 
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
 
 /**
- * 持久化模型：医院
+ * Po: 业务医院表
  *
- * @author zhangxihai 2025/08/11
+ * @author zhangxihai 2025/09/17
  */
 @Getter
 @Setter
-@Builder(toBuilder = true)
+@SuperBuilder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
 public class HospitalPo {
+
     private Long id;
 
-    private String ownershipType;                      // 医院所有制类型（如：公立、私立、合资等）
+    private String ownershipType;
 
-    private String hospitalType;                       // 医院类型（如：综合医院、专科医院等）
+    private String hospitalType;
 
-    private String hospitalLevel;                      // 医院等级（如：一级、二级、三级等）
-
-    private String status;                             // 医院状态（如：正常、停业、注销等）
-
-    private String insuranceCode;                      // 医保编码（唯一标识）
-
-    private String usccCode;                           // 统一社会信用代码（唯一标识）
-
-    private String hospitalCode;                       // 医院编码（唯一标识）
-
-    private String hospitalName;                       // 医院名称
-
-    private Long provinceId;                           // 省份ID
-
-    private Long cityId;                               // 城市ID
-
-    private Long countyId;                             // 区县ID
-
-    private String address;                            // 医院地址
-
-    private String postalCode;                         // 邮政编码
-
-    private BigDecimal longitude;                      // 经度
-
-    private BigDecimal latitude;                       // 纬度
-
-    private String mapUrl;                             // 地图链接
-
-    private String contactPhone;                       // 联系电话
-
-    private String contactEmail;                       // 联系邮箱
-
-    private String website;                            // 医院官网网址
-
-    private Integer companionDiagnosisEnabled;         // 陪诊诊断是否启用
-
-    private Short mealServiceEnabled;                  // 餐饮服务是否启用
-
-    private Short testingDeliveryEnabled;              // 检测送检是
+    private String hospitalLevel;
 
     @Builder.Default
-    private Long createdAt = 0L;                       // 创建时间戳
+    private String status = "PENDING";
+
+    private String insuranceCode;
+
+    private String usccCode;
+
+    private String hospitalCode;
+
+    private String hospitalName;
+
+    private String hospitalNamePinyin;
+
+    private String hospitalNamePinyinAbbr;
+
+    private Long provinceId;
+
+    private String province;
+
+    private Long cityId;
+
+    private String city;
+
+    private Long countyId;
+
+    private String county;
+
+    private String address;
+
+    private String postalCode;
+
+    private BigDecimal longitude;
+
+    private BigDecimal latitude;
+
+    private String mapUrl;
+
+    private String contactPhone;
+
+    private String contactEmail;
+
+    private String website;
+
+    private Short companionDiagnosisEnabled;
+
+    private Short mealServiceEnabled;
+
+    private String summary;
+
+    private String description;
 
     @Builder.Default
-    private Long updatedAt = 0L;                       // 更新时间戳
+    private Short testingDeliveryEnabled = 0;
+
+    @Builder.Default
+    private long createdAt = 0L;
+
+    @Builder.Default
+    private long updatedAt = 0L;
+
+    @Builder.Default
+    private long deletedAt = 0L;
 
 }

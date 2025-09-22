@@ -20,7 +20,7 @@
  */
 package com.zhenbanban.core.domain.internethospitalcontext.entity;
 
-import com.zhenbanban.core.domain.common.AbsAggregate;
+import com.zhenbanban.core.domain.common.entity.AbsAggregate;
 import com.zhenbanban.core.domain.internethospitalcontext.event.DepartmentAddedEvent;
 import com.zhenbanban.core.domain.internethospitalcontext.event.DepartmentDestroyedEvent;
 import com.zhenbanban.core.domain.internethospitalcontext.event.DepartmentModifiedEvent;

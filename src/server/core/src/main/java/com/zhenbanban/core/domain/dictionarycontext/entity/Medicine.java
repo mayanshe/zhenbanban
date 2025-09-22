@@ -20,7 +20,7 @@
  */
 package com.zhenbanban.core.domain.dictionarycontext.entity;
 
-import com.zhenbanban.core.domain.common.AbsAggregate;
+import com.zhenbanban.core.domain.common.entity.AbsAggregate;
 import com.zhenbanban.core.domain.dictionarycontext.event.MedicineAddedEvent;
 import com.zhenbanban.core.domain.dictionarycontext.event.MedicineDestroyedEvent;
 import com.zhenbanban.core.domain.dictionarycontext.event.MedicineModifiedEvent;

@@ -18,28 +18,27 @@
  * distribution of this code must also be licensed under the GPL. Failure
  * to comply with the terms of the GPL may result in legal action.
  */
-package com.zhenbanban.core.domain.common;
-
-import java.util.List;
+package com.zhenbanban.core.domain.common.repository;
 
 /**
- * 领域公共: 发布领域事件接口
+ * 领域公共：基础仓储接口
  *
  * @author zhangxihai 2025/08/01
  */
-public interface DomainEventPublisher {
+public interface IDomainRepository<Aggregate, Key> {
     /**
-     * 发布单个领域事件
+     * 加载聚合根
      *
-     * @param event 领域事件
+     * @param id 聚合根ID
+     * @return 聚合根
      */
-    void publish(AbsDomainEvent event);
+    Aggregate load(Key id);
 
     /**
-     * 发布领域事件列表
+     * 保存聚合根
      *
-     * @param events
+     * @param aggregate 聚合根
      */
-    void publish(List<? extends AbsDomainEvent> events);
+    Key save(Aggregate aggregate, boolean isNew);
 
 }

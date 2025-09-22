@@ -22,7 +22,7 @@ package com.zhenbanban.core.application.command.impl;
 
 import com.zhenbanban.core.application.command.AdminLogoutCmdHandler;
 import com.zhenbanban.core.domain.accountcontext.entity.Admin;
-import com.zhenbanban.core.domain.common.DomainEventPublisher;
+import com.zhenbanban.core.domain.common.repository.DomainEventPublisher;
 import com.zhenbanban.core.shared.contract.IAuth;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

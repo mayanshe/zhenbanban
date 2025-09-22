@@ -20,7 +20,7 @@
  */
 package com.zhenbanban.core.domain.dictionarycontext.entity;
 
-import com.zhenbanban.core.domain.common.AbsAggregate;
+import com.zhenbanban.core.domain.common.entity.AbsAggregate;
 import com.zhenbanban.core.domain.dictionarycontext.event.AntagonismAddedEvent;
 import com.zhenbanban.core.domain.dictionarycontext.event.AntagonismDestroyedEvent;
 import com.zhenbanban.core.domain.dictionarycontext.event.AntagonismModifiedEvent;
@@ -39,7 +39,7 @@ import lombok.*;
 public class Antagonism extends AbsAggregate {
     private Long id;
 
-    private Short Kind;                      // 种类(18-十八反,19-十九畏)
+    private Short kind;                      // 种类(18-十八反,19-十九畏)
 
     private Long pieceId;                    // 饮片ID
 

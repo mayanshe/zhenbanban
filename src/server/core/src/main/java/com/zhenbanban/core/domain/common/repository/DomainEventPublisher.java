@@ -18,31 +18,30 @@
  * distribution of this code must also be licensed under the GPL. Failure
  * to comply with the terms of the GPL may result in legal action.
  */
-package com.zhenbanban.core.domain.institutioncontext.Event;
+package com.zhenbanban.core.domain.common.repository;
 
-import com.zhenbanban.core.domain.common.AbsDomainEvent;
-import lombok.*;
-import lombok.experimental.SuperBuilder;
+import com.zhenbanban.core.domain.common.event.AbsDomainEvent;
+
+import java.util.List;
 
 /**
- * 事件 : 医院添加成功事件
+ * 领域公共: 发布领域事件接口
  *
- * @author zhangxihai 2025/8/11
+ * @author zhangxihai 2025/08/01
  */
-@Getter
-@Setter
-@SuperBuilder(toBuilder = true)
-@ToString(callSuper = false)
-@EqualsAndHashCode(callSuper = true)
-@NoArgsConstructor
-@AllArgsConstructor
-public class HospitalDestroyedEvent extends AbsDomainEvent {
-    private Long hospitalId;                                  // 医院ID
+public interface DomainEventPublisher {
+    /**
+     * 发布单个领域事件
+     *
+     * @param event 领域事件
+     */
+    void publish(AbsDomainEvent event);
 
-    private String insuranceCode;                             // 医保编码（唯一标识）
-
-    private String hospitalCode;                              // 医院编码（唯一标识）
-
-    private String hospitalName;                              // 医院名称
+    /**
+     * 发布领域事件列表
+     *
+     * @param events
+     */
+    void publish(List<? extends AbsDomainEvent> events);
 
 }

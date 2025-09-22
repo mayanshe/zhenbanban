@@ -20,8 +20,8 @@
  */
 package com.zhenbanban.core.infrastructure.support;
 
-import com.zhenbanban.core.domain.common.AbsDomainEvent;
-import com.zhenbanban.core.domain.common.DomainEventPublisher;
+import com.zhenbanban.core.domain.common.event.AbsDomainEvent;
+import com.zhenbanban.core.domain.common.repository.DomainEventPublisher;
 import com.zhenbanban.core.infrastructure.persistence.mapper.EventPoMapper;
 import com.zhenbanban.core.infrastructure.persistence.po.EventPo;
 import com.zhenbanban.core.shared.exception.InternalServerException;

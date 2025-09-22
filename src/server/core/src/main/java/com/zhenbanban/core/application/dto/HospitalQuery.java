@@ -18,31 +18,59 @@
  * distribution of this code must also be licensed under the GPL. Failure
  * to comply with the terms of the GPL may result in legal action.
  */
-package com.zhenbanban.core.domain.institutioncontext.Event;
+package com.zhenbanban.core.application.dto;
 
-import com.zhenbanban.core.domain.common.AbsDomainEvent;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
- * Event : 医院激活成功事件
+ * Query : 业务医院表
  *
- * @author zhangxihai 2025/8/11
+ * @author zhangxihai 2025/09/17
  */
 @Getter
 @Setter
 @SuperBuilder(toBuilder = true)
-@ToString(callSuper = false)
-@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class HospitalActivatedEvent extends AbsDomainEvent {
-    private Long hospitalId;                                  // 医院ID
+public class HospitalQuery {
+    @Builder.Default
+    private int page = 1;
 
-    private String insuranceCode;                             // 医保编码（唯一标识）
+    @Builder.Default
+    private int pageSize = 15;
 
-    private String hospitalCode;                              // 医院编码（唯一标识）
+    private Long id;
 
-    private String hospitalName;                              // 医院名称
+    private String keywords;
 
+    private String hospitalCode;
+
+    private boolean deleted;
+
+    public Map<String, Object> toMap() {
+        Map<String, Object> map = new HashMap<>();
+
+        if (id != null && id > 0) {
+            map.put("id", id);
+        }
+
+        if (keywords != null && !keywords.isBlank()) {
+            List<String> keywordList = Arrays.asList(keywords.split(" "));
+            map.put("keywords", keywordList);
+        }
+
+        if (hospitalCode != null && !hospitalCode.isBlank()) {
+            map.put("hospitalCode", hospitalCode);
+        }
+
+        map.put("deleted", deleted);
+
+        return map;
+    }
 }

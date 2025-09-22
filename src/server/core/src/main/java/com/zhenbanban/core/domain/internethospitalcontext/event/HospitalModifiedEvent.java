@@ -18,47 +18,26 @@
  * distribution of this code must also be licensed under the GPL. Failure
  * to comply with the terms of the GPL may result in legal action.
  */
-package com.zhenbanban.core.domain.common;
+package com.zhenbanban.core.domain.internethospitalcontext.event;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import com.zhenbanban.core.domain.common.event.AbsDomainEvent;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 /**
- * 领域公共: 抽象基础聚合根类
+ * 事件：业务医院表修改成功事件
  *
- * @author zhangxihai 2025/08/01
+ * @author zhangxihai 2025/09/17
  */
-public abstract class AbsAggregate {
-    private final List<AbsDomainEvent> events = new ArrayList<>();
+@Getter
+@Setter
+@SuperBuilder(toBuilder = true)
+@ToString(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
+@AllArgsConstructor
+public class HospitalModifiedEvent extends AbsDomainEvent {
+    private Long hospitalId;
 
-    /**
-     * 注册领域事件
-     *
-     * @param event 领域事件
-     */
-    public void addEvent(AbsDomainEvent event) {
-        if (event != null) {
-            events.add(event);
-        }
-    }
-
-    /**
-     * 获取领域事件列表
-     *
-     * @return 领域事件列表
-     */
-    public List<AbsDomainEvent> getEvents() {
-        return Collections.unmodifiableList(events);
-    }
-
-    /**
-     * 清空领域事件列表
-     */
-    public void clearEvents() {
-        events.clear();
-    }
-
-    abstract public Long getId();
-
+    private String hospitalName;
 }

@@ -24,7 +24,7 @@ import com.zhenbanban.core.application.command.RoleAmdCmdHandler;
 import com.zhenbanban.core.application.dto.RoleAmdCommand;
 import com.zhenbanban.core.domain.accountcontext.entity.Role;
 import com.zhenbanban.core.domain.accountcontext.repository.RoleRepository;
-import com.zhenbanban.core.domain.common.DomainEventPublisher;
+import com.zhenbanban.core.domain.common.repository.DomainEventPublisher;
 import com.zhenbanban.core.shared.contract.IdGenerator;
 import com.zhenbanban.core.shared.exception.BadRequestException;
 import lombok.RequiredArgsConstructor;

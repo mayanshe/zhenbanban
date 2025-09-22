@@ -1,4 +1,4 @@
-package com.zhenbanban.core.domain.common;
+package com.zhenbanban.core.domain.common.event;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.zhenbanban.core.infrastructure.util.ApplicationContextHolder;

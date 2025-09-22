@@ -18,16 +18,29 @@
  * distribution of this code must also be licensed under the GPL. Failure
  * to comply with the terms of the GPL may result in legal action.
  */
-package com.zhenbanban.core.domain.institutioncontext.repository;
+package com.zhenbanban.core.infrastructure.util;
 
-import com.zhenbanban.core.domain.common.IDomainRepository;
-import com.zhenbanban.core.domain.institutioncontext.entity.Hospital;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
- * 聚合根Repository接口：医院
+ * 集合工具 : CollectUtil
  *
- * @author zhangxihai 2025/08/11
+ * @author zhangxihai 2025/9/21
  */
-public interface HospitalRepository extends IDomainRepository<Hospital, Long> {
+public final class CollectUtil {
+    private CollectUtil() {
+        throw new UnsupportedOperationException("Utility class cannot be instantiated");
+    }
+
+    public static <K> Map<K, Map<String, Object>> convertListToMap(List<Map<String, Object>> list, String keyField) {
+        return list.stream()
+                .collect(Collectors.toMap(
+                        map -> (K) map.get(keyField),
+                        map -> map,
+                        (v1, v2) -> v1
+                ));
+    }
 
 }

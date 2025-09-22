@@ -25,7 +25,7 @@ import com.zhenbanban.core.application.dto.ResourceAmdCommand;
 import com.zhenbanban.core.domain.accountcontext.entity.Resource;
 import com.zhenbanban.core.domain.accountcontext.repository.ResourceRepository;
 import com.zhenbanban.core.domain.accountcontext.valueobj.ResourceType;
-import com.zhenbanban.core.domain.common.DomainEventPublisher;
+import com.zhenbanban.core.domain.common.repository.DomainEventPublisher;
 import com.zhenbanban.core.shared.contract.IdGenerator;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;

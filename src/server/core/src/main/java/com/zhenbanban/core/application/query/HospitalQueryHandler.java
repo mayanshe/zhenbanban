@@ -18,27 +18,17 @@
  * distribution of this code must also be licensed under the GPL. Failure
  * to comply with the terms of the GPL may result in legal action.
  */
-package com.zhenbanban.core.domain.common;
+package com.zhenbanban.core.application.query;
+
+import com.zhenbanban.core.application.common.ISingleAndListQuery;
+import com.zhenbanban.core.application.dto.HospitalDto;
+import com.zhenbanban.core.application.dto.HospitalQuery;
 
 /**
- * 领域公共：基础仓储接口
+ * Query Interface : 业务医院表查询处理器
  *
- * @author zhangxihai 2025/08/01
+ * @author zhangxihai 2025/09/17
  */
-public interface IDomainRepository<Aggregate, Key> {
-    /**
-     * 加载聚合根
-     *
-     * @param id 聚合根ID
-     * @return 聚合根
-     */
-    Aggregate load(Key id);
-
-    /**
-     * 保存聚合根
-     *
-     * @param aggregate 聚合根
-     */
-    Key save(Aggregate aggregate, boolean isNew);
+public interface HospitalQueryHandler extends ISingleAndListQuery<HospitalDto, Long, HospitalQuery> {
 
 }

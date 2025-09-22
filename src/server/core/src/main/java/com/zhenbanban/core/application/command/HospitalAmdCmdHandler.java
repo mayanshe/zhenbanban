@@ -24,11 +24,10 @@ import com.zhenbanban.core.application.common.IAmdCmdHandler;
 import com.zhenbanban.core.application.dto.HospitalAmdCommand;
 
 /**
- * 命令处理结构：医院增删改
+ * 命令接口 : 业务医院表
  *
- * @author zhangxihai 2025/08/11
+ * @author zhangxihai 2025/09/17
  */
 public interface HospitalAmdCmdHandler extends IAmdCmdHandler<HospitalAmdCommand, Long> {
-    void handleActivate(Long id);
 
 }
