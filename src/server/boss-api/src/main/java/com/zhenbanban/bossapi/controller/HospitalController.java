@@ -27,16 +27,25 @@ import com.zhenbanban.core.application.dto.HospitalAmdCommand;
 import com.zhenbanban.core.application.dto.HospitalDto;
 import com.zhenbanban.core.application.dto.HospitalQuery;
 import com.zhenbanban.core.application.query.HospitalQueryHandler;
+import com.zhenbanban.core.domain.internethospitalcontext.valueobj.HospitalLevel;
+import com.zhenbanban.core.domain.internethospitalcontext.valueobj.HospitalOwnershipType;
+import com.zhenbanban.core.domain.internethospitalcontext.valueobj.HospitalType;
+import com.zhenbanban.core.infrastructure.persistence.mapper.HospitalPoMapper;
 import com.zhenbanban.core.infrastructure.support.annotation.AdminPermit;
 import com.zhenbanban.core.infrastructure.support.paging.Pagination;
+import com.zhenbanban.core.infrastructure.util.CollectUtil;
 import jakarta.validation.Valid;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 /**
- * 控制器 : 业务医院表
+ * 控制器 : 业务医院
  *
  * @author zhangxihai 2025/09/17
  */
@@ -46,14 +55,17 @@ public class HospitalController {
 
     private final HospitalAmdCmdHandler hospitalAmdCmdHandler;
     private final HospitalQueryHandler hospitalQueryHandler;
+    private final HospitalPoMapper mapper;
 
     @Autowired
     public HospitalController(
             @Lazy HospitalAmdCmdHandler hospitalAmdCmdHandler,
-            @Lazy HospitalQueryHandler hospitalQueryHandler
+            @Lazy HospitalQueryHandler hospitalQueryHandler,
+            @Lazy HospitalPoMapper mapper
     ) {
         this.hospitalAmdCmdHandler = hospitalAmdCmdHandler;
         this.hospitalQueryHandler = hospitalQueryHandler;
+        this.mapper = mapper;
     }
 
     /**
@@ -65,8 +77,40 @@ public class HospitalController {
     @PostMapping
     @AdminPermit(permissions = {"hospital:add"}, message = "您未被授权执行此操作：添加业务医院表")
     public IdResponse addHospital(@Valid @RequestBody HospitalSaveRequest request) {
-        HospitalAmdCommand command = (new ModelMapper()).map(request, HospitalAmdCommand.class);
+        HospitalAmdCommand command = HospitalAmdCommand.builder()
+                .ownershipType(request.getOwnershipType())
+                .hospitalType(request.getHospitalType())
+                .hospitalLevel(request.getHospitalLevel())
+                .insuranceCode(request.getInsuranceCode())
+                .usccCode(request.getUsccCode())
+                .hospitalCode(request.getHospitalCode())
+                .hospitalName(request.getHospitalName())
+                .hospitalNamePinyin(request.getHospitalName() != null ? request.getHospitalName().trim() : "")
+                .hospitalNamePinyinAbbr(request.getHospitalName() != null ? request.getHospitalName().trim() : "")
+                .provinceId(request.getProvinceId())
+                .province(request.getProvince())
+                .cityId(request.getCityId())
+                .city(request.getCity())
+                .countyId(request.getCountyId())
+                .county(request.getCounty())
+                .address(request.getAddress())
+                .postalCode(request.getPostalCode())
+                .longitude(request.getLongitude())
+                .latitude(request.getLatitude())
+                .mapUrl(request.getMapUrl())
+                .contactPhone(request.getContactPhone())
+                .contactEmail(request.getContactEmail())
+                .website(request.getWebsite())
+                .summary(request.getSummary())
+                .description(request.getDescription())
+                .companionDiagnosisEnabled(request.getCompanionDiagnosisEnabled() != null && request.getCompanionDiagnosisEnabled())
+                .mealServiceEnabled(request.getMealServiceEnabled() != null && request.getMealServiceEnabled())
+                .testingDeliveryEnabled(request.getTestingDeliveryEnabled() != null && request.getTestingDeliveryEnabled())
+                .build();
+        setRegionNames(command);
+
         Long hospitalId = hospitalAmdCmdHandler.handleAdd(command);
+
         return IdResponse.builder().id(hospitalId).build();
     }
 
@@ -78,8 +122,39 @@ public class HospitalController {
     @PutMapping("/{id}")
     @AdminPermit(permissions = {"hospital:modify"}, message = "您未被授权执行此操作：修改业务医院表信息")
     public void modifyHospital(@PathVariable("id") Long id, @Valid @RequestBody HospitalSaveRequest request) {
-        HospitalAmdCommand command = (new ModelMapper()).map(request, HospitalAmdCommand.class);
+        HospitalAmdCommand command = HospitalAmdCommand.builder()
+                .ownershipType(request.getOwnershipType())
+                .hospitalType(request.getHospitalType())
+                .hospitalLevel(request.getHospitalLevel())
+                .insuranceCode(request.getInsuranceCode())
+                .usccCode(request.getUsccCode())
+                .hospitalCode(request.getHospitalCode())
+                .hospitalName(request.getHospitalName())
+                .hospitalNamePinyin(request.getHospitalName() != null ? request.getHospitalName().trim() : "")
+                .hospitalNamePinyinAbbr(request.getHospitalName() != null ? request.getHospitalName().trim() : "")
+                .provinceId(request.getProvinceId())
+                .province(request.getProvince())
+                .cityId(request.getCityId())
+                .city(request.getCity())
+                .countyId(request.getCountyId())
+                .county(request.getCounty())
+                .address(request.getAddress())
+                .postalCode(request.getPostalCode())
+                .longitude(request.getLongitude())
+                .latitude(request.getLatitude())
+                .mapUrl(request.getMapUrl())
+                .contactPhone(request.getContactPhone())
+                .contactEmail(request.getContactEmail())
+                .website(request.getWebsite())
+                .summary(request.getSummary())
+                .description(request.getDescription())
+                .companionDiagnosisEnabled(request.getCompanionDiagnosisEnabled() != null && request.getCompanionDiagnosisEnabled())
+                .mealServiceEnabled(request.getMealServiceEnabled() != null && request.getMealServiceEnabled())
+                .testingDeliveryEnabled(request.getTestingDeliveryEnabled() != null && request.getTestingDeliveryEnabled())
+                .build();
         command.setId(id);
+        setRegionNames(command);
+
         hospitalAmdCmdHandler.handleModify(command);
     }
 
@@ -133,4 +208,55 @@ public class HospitalController {
 
         return hospitalQueryHandler.handleQueryPage(query);
     }
+
+    /**
+     * 获取医院级别列表
+     *
+     * @return 列表
+     */
+    @GetMapping("/levels")
+    public List<HospitalLevel> getHospitalLevels() {
+        return HospitalLevel.all();
+    }
+
+    /**
+     * 获取医院类型列表
+     *
+     * @return 列表
+     */
+    @GetMapping("/types")
+    public List<HospitalType> getHospitalTypes() {
+        return HospitalType.all();
+    }
+
+    /**
+     * 获取医院所有制类型列表
+     *
+     * @return 列表
+     */
+    @GetMapping("/ownership-types")
+    public List<HospitalOwnershipType> getHospitalOwnershipTypes() {
+        return HospitalOwnershipType.all();
+    }
+
+    private void setRegionNames(HospitalAmdCommand command) {
+        Set<Long> p = new HashSet<>();
+        p.add(command.getProvinceId());
+        p.add(command.getCityId());
+        p.add(command.getCountyId());
+        Map<Long, Map<String, Object>> regions = CollectUtil.convertListToMap(mapper.findNameMapByIds(p), "id");
+
+        if (regions.containsKey(command.getProvinceId())) {
+            command.setProvince((String) regions.get(command.getProvinceId()).get("region_name"));
+        }
+
+        if (regions.containsKey(command.getCityId())) {
+            command.setCity((String) regions.get(command.getCityId()).get("region_name"));
+        }
+
+        if (regions.containsKey(command.getCountyId())) {
+            command.setCounty((String) regions.get(command.getCountyId()).get("region_name"));
+        }
+    }
+
 }

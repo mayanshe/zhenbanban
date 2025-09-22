@@ -18,16 +18,49 @@
  * distribution of this code must also be licensed under the GPL. Failure
  * to comply with the terms of the GPL may result in legal action.
  */
-package com.zhenbanban.core.domain.institutioncontext.repository;
+package com.zhenbanban.core.domain.common.entity;
 
-import com.zhenbanban.core.domain.common.IDomainRepository;
-import com.zhenbanban.core.domain.institutioncontext.entity.Hospital;
+import com.zhenbanban.core.domain.common.event.AbsDomainEvent;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
- * 聚合根Repository接口：医院
+ * 领域公共: 抽象基础聚合根类
  *
- * @author zhangxihai 2025/08/11
+ * @author zhangxihai 2025/08/01
  */
-public interface HospitalRepository extends IDomainRepository<Hospital, Long> {
+public abstract class AbsAggregate {
+    private final List<AbsDomainEvent> events = new ArrayList<>();
+
+    /**
+     * 注册领域事件
+     *
+     * @param event 领域事件
+     */
+    public void addEvent(AbsDomainEvent event) {
+        if (event != null) {
+            events.add(event);
+        }
+    }
+
+    /**
+     * 获取领域事件列表
+     *
+     * @return 领域事件列表
+     */
+    public List<AbsDomainEvent> getEvents() {
+        return Collections.unmodifiableList(events);
+    }
+
+    /**
+     * 清空领域事件列表
+     */
+    public void clearEvents() {
+        events.clear();
+    }
+
+    abstract public Long getId();
 
 }

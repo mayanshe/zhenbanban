@@ -20,7 +20,7 @@
  */
 package com.zhenbanban.core.domain.dictionarycontext.repository;
 
-import com.zhenbanban.core.domain.common.IDomainRepository;
+import com.zhenbanban.core.domain.common.repository.IDomainRepository;
 import com.zhenbanban.core.domain.dictionarycontext.entity.ChineseMedicinePiece;
 
 /**

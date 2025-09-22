@@ -20,7 +20,7 @@
  */
 package com.zhenbanban.core.domain.systemcontext.event;
 
-import com.zhenbanban.core.domain.common.AbsDomainEvent;
+import com.zhenbanban.core.domain.common.event.AbsDomainEvent;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 

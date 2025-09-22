@@ -22,7 +22,7 @@ package com.zhenbanban.core.application.command.impl;
 
 import com.zhenbanban.core.application.command.OptionAmdCmdHandler;
 import com.zhenbanban.core.application.dto.OptionAmdCommand;
-import com.zhenbanban.core.domain.common.DomainEventPublisher;
+import com.zhenbanban.core.domain.common.repository.DomainEventPublisher;
 import com.zhenbanban.core.domain.systemcontext.entity.Option;
 import com.zhenbanban.core.domain.systemcontext.respository.OptionRepository;
 import com.zhenbanban.core.infrastructure.util.CacheKeyGenerator;

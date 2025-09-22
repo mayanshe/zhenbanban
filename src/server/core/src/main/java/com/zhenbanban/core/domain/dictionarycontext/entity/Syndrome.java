@@ -20,7 +20,7 @@
  */
 package com.zhenbanban.core.domain.dictionarycontext.entity;
 
-import com.zhenbanban.core.domain.common.AbsAggregate;
+import com.zhenbanban.core.domain.common.entity.AbsAggregate;
 import com.zhenbanban.core.domain.dictionarycontext.event.SyndromeAddedEvent;
 import com.zhenbanban.core.domain.dictionarycontext.event.SyndromeDestroyedEvent;
 import com.zhenbanban.core.domain.dictionarycontext.event.SyndromeModifiedEvent;

@@ -23,7 +23,7 @@ package com.zhenbanban.core.domain.accountcontext.entity;
 import com.zhenbanban.core.domain.accountcontext.event.AccountActivatedEvent;
 import com.zhenbanban.core.domain.accountcontext.event.AccountAddedEvent;
 import com.zhenbanban.core.domain.accountcontext.valueobj.AccountScope;
-import com.zhenbanban.core.domain.common.AbsAggregate;
+import com.zhenbanban.core.domain.common.entity.AbsAggregate;
 import com.zhenbanban.core.infrastructure.util.BCryptUtils;
 import com.zhenbanban.core.shared.exception.BadRequestException;
 import lombok.*;

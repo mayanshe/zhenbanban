@@ -24,7 +24,7 @@ import com.zhenbanban.core.application.command.AccountAmdCmdHandler;
 import com.zhenbanban.core.application.dto.AccountAmdCommand;
 import com.zhenbanban.core.domain.accountcontext.entity.Account;
 import com.zhenbanban.core.domain.accountcontext.repository.AccountRepository;
-import com.zhenbanban.core.domain.common.DomainEventPublisher;
+import com.zhenbanban.core.domain.common.repository.DomainEventPublisher;
 import com.zhenbanban.core.shared.contract.IdGenerator;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;

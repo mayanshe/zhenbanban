@@ -20,8 +20,8 @@
  */
 package com.zhenbanban.core.infrastructure.support.annotation;
 
-import com.zhenbanban.core.domain.common.AbsAggregate;
-import com.zhenbanban.core.domain.common.AbsDomainEvent;
+import com.zhenbanban.core.domain.common.entity.AbsAggregate;
+import com.zhenbanban.core.domain.common.event.AbsDomainEvent;
 import com.zhenbanban.core.infrastructure.persistence.mapper.EventPoMapper;
 import com.zhenbanban.core.infrastructure.persistence.po.EventPo;
 import lombok.RequiredArgsConstructor;

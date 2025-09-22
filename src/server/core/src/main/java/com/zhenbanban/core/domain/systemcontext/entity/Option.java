@@ -20,7 +20,7 @@
  */
 package com.zhenbanban.core.domain.systemcontext.entity;
 
-import com.zhenbanban.core.domain.common.AbsAggregate;
+import com.zhenbanban.core.domain.common.entity.AbsAggregate;
 import com.zhenbanban.core.domain.systemcontext.event.OptionAddedEvent;
 import com.zhenbanban.core.domain.systemcontext.event.OptionDestroyedEvent;
 import com.zhenbanban.core.domain.systemcontext.event.OptionModifiedEvent;

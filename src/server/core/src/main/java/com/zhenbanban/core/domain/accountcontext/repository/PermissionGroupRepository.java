@@ -21,7 +21,7 @@
 package com.zhenbanban.core.domain.accountcontext.repository;
 
 import com.zhenbanban.core.domain.accountcontext.entity.PermissionGroup;
-import com.zhenbanban.core.domain.common.IDomainRepository;
+import com.zhenbanban.core.domain.common.repository.IDomainRepository;
 
 /**
  * 领域仓储接口 : 权限组

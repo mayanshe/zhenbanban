@@ -45,7 +45,8 @@ public class HospitalPo {
 
     private String hospitalLevel;
 
-    private String status;
+    @Builder.Default
+    private String status = "PENDING";
 
     private String insuranceCode;
 
@@ -61,9 +62,15 @@ public class HospitalPo {
 
     private Long provinceId;
 
+    private String province;
+
     private Long cityId;
 
+    private String city;
+
     private Long countyId;
+
+    private String county;
 
     private String address;
 
@@ -81,11 +88,16 @@ public class HospitalPo {
 
     private String website;
 
-    private Integer companionDiagnosisEnabled;
+    private Short companionDiagnosisEnabled;
 
-    private Integer mealServiceEnabled;
+    private Short mealServiceEnabled;
 
-    private Integer testingDeliveryEnabled;
+    private String summary;
+
+    private String description;
+
+    @Builder.Default
+    private Short testingDeliveryEnabled = 0;
 
     @Builder.Default
     private long createdAt = 0L;
@@ -95,4 +107,5 @@ public class HospitalPo {
 
     @Builder.Default
     private long deletedAt = 0L;
+
 }

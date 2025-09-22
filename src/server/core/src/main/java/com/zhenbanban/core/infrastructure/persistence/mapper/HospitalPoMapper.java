@@ -25,6 +25,8 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Mybatis Mapper 接口：业务医院表
@@ -44,4 +46,7 @@ public interface HospitalPoMapper extends PaginateMapper<HospitalPo> {
     Long findIdByCode(@Param("hospitalCode") String hospitalCode);
 
     List<HospitalPo> findAll();
+
+    List<Map<String, Object>> findNameMapByIds(@Param("ids") Set<Long> ids);
+
 }

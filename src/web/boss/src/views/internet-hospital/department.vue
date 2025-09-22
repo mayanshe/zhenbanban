@@ -56,7 +56,12 @@
       <a-table style="margin-bottom: 16px" :columns="columns" :data="departments" :bordered="false" :pagination="false" :loading="loading">
         <template #optional="{ record }">
           <a-space>
-            <a-button v-if="buttons.includes('internet-hospital-department:modify')" type="text" size="mimi" @click="handleOpenSingle('modify', record.id)">
+            <a-button
+              v-if="buttons.includes('internet-hospital-department:modify')"
+              type="text"
+              size="mimi"
+              @click="handleOpenSingle('modify', record.id)"
+            >
               编辑
             </a-button>
             <a-popconfirm
@@ -76,7 +81,7 @@
 </template>
 
 <script lang="ts" setup>
-import {ref, computed, unref} from 'vue'
+import { ref, computed, unref } from 'vue'
 import { Message } from '@arco-design/web-vue'
 import { ValueObject } from '@/api/common'
 import { useRoute } from 'vue-router'

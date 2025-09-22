@@ -24,7 +24,7 @@ import com.zhenbanban.core.domain.accountcontext.event.ResourceAddedEvent;
 import com.zhenbanban.core.domain.accountcontext.event.ResourceDestroyedEvent;
 import com.zhenbanban.core.domain.accountcontext.event.ResourceModifiedEvent;
 import com.zhenbanban.core.domain.accountcontext.valueobj.ResourceType;
-import com.zhenbanban.core.domain.common.AbsAggregate;
+import com.zhenbanban.core.domain.common.entity.AbsAggregate;
 import lombok.*;
 
 import java.util.List;

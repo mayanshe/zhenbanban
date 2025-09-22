@@ -23,13 +23,13 @@ package com.zhenbanban.core.application.query.impl;
 import com.zhenbanban.core.application.dto.HospitalDto;
 import com.zhenbanban.core.application.dto.HospitalQuery;
 import com.zhenbanban.core.application.query.HospitalQueryHandler;
+import com.zhenbanban.core.infrastructure.persistence.converter.HospitalConverter;
 import com.zhenbanban.core.infrastructure.persistence.mapper.HospitalPoMapper;
 import com.zhenbanban.core.infrastructure.persistence.po.HospitalPo;
 import com.zhenbanban.core.infrastructure.support.paging.Pager;
 import com.zhenbanban.core.infrastructure.support.paging.Pagination;
 import com.zhenbanban.core.shared.exception.BadRequestException;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -51,7 +51,7 @@ public class HospitalQueryHandlerImpl implements HospitalQueryHandler {
             throw new BadRequestException("没有找到此业务医院表");
         }
 
-        return (new ModelMapper()).map(po, HospitalDto.class);
+        return HospitalConverter.INSTANCE.toDto(po);
     }
 
     @Override
@@ -62,6 +62,7 @@ public class HospitalQueryHandlerImpl implements HospitalQueryHandler {
     @Override
     public Pagination<HospitalDto> handleQueryPage(HospitalQuery query) {
         return Pager.paginate(mapper, query.getPage(), query.getPageSize(), query.toMap(),
-                source -> (new ModelMapper()).map(source, HospitalDto.class));
+                HospitalConverter.INSTANCE::toDto);
     }
+
 }

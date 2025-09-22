@@ -20,10 +20,8 @@
  */
 package com.zhenbanban.core.domain.systemcontext.respository;
 
-import com.zhenbanban.core.domain.common.IDomainRepository;
+import com.zhenbanban.core.domain.common.repository.IDomainRepository;
 import com.zhenbanban.core.domain.systemcontext.entity.Option;
-
-import java.util.Optional;
 
 /**
  * Repo Interface : 系统配置

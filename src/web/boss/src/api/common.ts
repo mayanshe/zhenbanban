@@ -1,5 +1,7 @@
 // 分页
 
+import axios from 'axios'
+
 /**
  * 分页
  */
@@ -32,4 +34,18 @@ export interface CascaderOption {
 export interface ValueObject {
   code: string
   name: string
+}
+
+/**
+ * 获取审核状态列表
+ */
+export function getAuditStatusList() {
+  return axios.get<ValueObject[]>('/common/audit-statuses')
+}
+
+/**
+ * 获取含有审核状态的列表
+ */
+export function getWithAuditStatusList() {
+  return axios.get<ValueObject[]>('/common/with-audit-statuses')
 }

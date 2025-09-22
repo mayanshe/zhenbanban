@@ -24,7 +24,7 @@ import com.zhenbanban.core.application.command.RoleAssignmentModifyCmdHandler;
 import com.zhenbanban.core.application.dto.RoleAssignmentModifyCommand;
 import com.zhenbanban.core.domain.accountcontext.entity.Role;
 import com.zhenbanban.core.domain.accountcontext.repository.RoleRepository;
-import com.zhenbanban.core.domain.common.DomainEventPublisher;
+import com.zhenbanban.core.domain.common.repository.DomainEventPublisher;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

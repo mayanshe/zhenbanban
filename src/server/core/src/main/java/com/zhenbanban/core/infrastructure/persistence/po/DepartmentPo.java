@@ -58,6 +58,7 @@ public class DepartmentPo {
     @Builder.Default
     private Long deletedAt = 0L;                          // 删除时间，0表示未删除
 
+    @Builder.Default
     private List<DepartmentPo> children = List.of();      // 子科室列表
 
 }
