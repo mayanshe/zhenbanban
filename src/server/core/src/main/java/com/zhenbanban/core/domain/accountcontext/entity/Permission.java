@@ -23,7 +23,7 @@ package com.zhenbanban.core.domain.accountcontext.entity;
 import com.zhenbanban.core.domain.accountcontext.event.PermissionAddedEvent;
 import com.zhenbanban.core.domain.accountcontext.event.PermissionDestroyedEvent;
 import com.zhenbanban.core.domain.accountcontext.event.PermissionModifiedEvent;
-import com.zhenbanban.core.domain.common.AbsAggregate;
+import com.zhenbanban.core.domain.common.entity.AbsAggregate;
 import lombok.*;
 
 /**

@@ -24,7 +24,7 @@ import com.zhenbanban.core.application.command.AdminRolesBindingCmdHandler;
 import com.zhenbanban.core.application.dto.AdminRolesBindingCommand;
 import com.zhenbanban.core.domain.accountcontext.entity.Admin;
 import com.zhenbanban.core.domain.accountcontext.repository.AdminRepository;
-import com.zhenbanban.core.domain.common.DomainEventPublisher;
+import com.zhenbanban.core.domain.common.repository.DomainEventPublisher;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

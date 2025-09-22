@@ -18,27 +18,29 @@
  * distribution of this code must also be licensed under the GPL. Failure
  * to comply with the terms of the GPL may result in legal action.
  */
-package com.zhenbanban.core.domain.common;
+package com.zhenbanban.core.infrastructure.util;
+
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
- * 领域公共：基础仓储接口
+ * 集合工具 : CollectUtil
  *
- * @author zhangxihai 2025/08/01
+ * @author zhangxihai 2025/9/21
  */
-public interface IDomainRepository<Aggregate, Key> {
-    /**
-     * 加载聚合根
-     *
-     * @param id 聚合根ID
-     * @return 聚合根
-     */
-    Aggregate load(Key id);
+public final class CollectUtil {
+    private CollectUtil() {
+        throw new UnsupportedOperationException("Utility class cannot be instantiated");
+    }
 
-    /**
-     * 保存聚合根
-     *
-     * @param aggregate 聚合根
-     */
-    Key save(Aggregate aggregate, boolean isNew);
+    public static <K> Map<K, Map<String, Object>> convertListToMap(List<Map<String, Object>> list, String keyField) {
+        return list.stream()
+                .collect(Collectors.toMap(
+                        map -> (K) map.get(keyField),
+                        map -> map,
+                        (v1, v2) -> v1
+                ));
+    }
 
 }

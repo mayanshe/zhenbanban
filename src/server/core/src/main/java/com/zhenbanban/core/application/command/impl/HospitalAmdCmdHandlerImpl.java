@@ -22,7 +22,7 @@ package com.zhenbanban.core.application.command.impl;
 
 import com.zhenbanban.core.application.command.HospitalAmdCmdHandler;
 import com.zhenbanban.core.application.dto.HospitalAmdCommand;
-import com.zhenbanban.core.domain.common.DomainEventPublisher;
+import com.zhenbanban.core.domain.common.repository.DomainEventPublisher;
 import com.zhenbanban.core.domain.internethospitalcontext.entity.Hospital;
 import com.zhenbanban.core.domain.internethospitalcontext.repository.HospitalRepository;
 import com.zhenbanban.core.shared.contract.IdGenerator;
@@ -56,6 +56,7 @@ public class HospitalAmdCmdHandlerImpl implements HospitalAmdCmdHandler {
         hospital.add();
 
         hospitalRepository.save(hospital, true);
+        domainEventPublisher.publish(hospital.getEvents());
 
         return id;
     }
@@ -70,6 +71,7 @@ public class HospitalAmdCmdHandlerImpl implements HospitalAmdCmdHandler {
         hospital.modify();
 
         hospitalRepository.save(hospital, false);
+        domainEventPublisher.publish(hospital.getEvents());
     }
 
     @Override
@@ -79,5 +81,7 @@ public class HospitalAmdCmdHandlerImpl implements HospitalAmdCmdHandler {
         hospital.destroy();
 
         hospitalRepository.save(hospital, false);
+        domainEventPublisher.publish(hospital.getEvents());
     }
+
 }

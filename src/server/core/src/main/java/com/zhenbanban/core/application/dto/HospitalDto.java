@@ -20,6 +20,10 @@
  */
 package com.zhenbanban.core.application.dto;
 
+import com.zhenbanban.core.domain.common.valueobj.WithAuditStatus;
+import com.zhenbanban.core.domain.internethospitalcontext.valueobj.HospitalLevel;
+import com.zhenbanban.core.domain.internethospitalcontext.valueobj.HospitalOwnershipType;
+import com.zhenbanban.core.domain.internethospitalcontext.valueobj.HospitalType;
 import com.zhenbanban.core.infrastructure.util.DateUtils;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -39,13 +43,13 @@ import java.math.BigDecimal;
 public class HospitalDto {
     private String id;
 
-    private String ownershipType;
+    private HospitalOwnershipType ownershipType;
 
-    private String hospitalType;
+    private HospitalType hospitalType;
 
-    private String hospitalLevel;
+    private HospitalLevel hospitalLevel;
 
-    private String status;
+    private WithAuditStatus status;
 
     private String insuranceCode;
 
@@ -61,9 +65,15 @@ public class HospitalDto {
 
     private String provinceId;
 
+    private String province;
+
     private String cityId;
 
+    private String city;
+
     private String countyId;
+
+    private String county;
 
     private String address;
 
@@ -81,11 +91,15 @@ public class HospitalDto {
 
     private String website;
 
-    private Integer companionDiagnosisEnabled;
+    private String summary;
 
-    private Integer mealServiceEnabled;
+    private String description;
 
-    private Integer testingDeliveryEnabled;
+    private Boolean companionDiagnosisEnabled;
+
+    private Boolean mealServiceEnabled;
+
+    private Boolean testingDeliveryEnabled;
 
     private String createdAt;
 
@@ -94,14 +108,15 @@ public class HospitalDto {
     private String deletedAt;
 
     public String getCreatedAt() {
-        return createdAt == null || createdAt.isBlank() ? "" : DateUtils.timestampToFormattedDate(createdAt);
+        return createdAt == null || createdAt.isBlank() ? "" : DateUtils.timestampToFormattedDay(createdAt);
     }
 
     public String getUpdatedAt() {
-        return updatedAt == null || updatedAt.isBlank() ? "" : DateUtils.timestampToFormattedDate(updatedAt);
+        return updatedAt == null || updatedAt.isBlank() ? "" : DateUtils.timestampToFormattedDay(updatedAt);
     }
 
     public String getDeletedAt() {
         return deletedAt == null || deletedAt.isBlank() || "0".equals(deletedAt) ? "" : DateUtils.timestampToFormattedDate(deletedAt);
     }
+
 }

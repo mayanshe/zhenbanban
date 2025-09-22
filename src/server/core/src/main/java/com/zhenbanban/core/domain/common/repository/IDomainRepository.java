@@ -18,31 +18,27 @@
  * distribution of this code must also be licensed under the GPL. Failure
  * to comply with the terms of the GPL may result in legal action.
  */
-package com.zhenbanban.core.domain.institutioncontext.Event;
-
-import com.zhenbanban.core.domain.common.AbsDomainEvent;
-import lombok.*;
-import lombok.experimental.SuperBuilder;
+package com.zhenbanban.core.domain.common.repository;
 
 /**
- * Event : 医院激活成功事件
+ * 领域公共：基础仓储接口
  *
- * @author zhangxihai 2025/8/11
+ * @author zhangxihai 2025/08/01
  */
-@Getter
-@Setter
-@SuperBuilder(toBuilder = true)
-@ToString(callSuper = false)
-@EqualsAndHashCode(callSuper = true)
-@NoArgsConstructor
-@AllArgsConstructor
-public class HospitalActivatedEvent extends AbsDomainEvent {
-    private Long hospitalId;                                  // 医院ID
+public interface IDomainRepository<Aggregate, Key> {
+    /**
+     * 加载聚合根
+     *
+     * @param id 聚合根ID
+     * @return 聚合根
+     */
+    Aggregate load(Key id);
 
-    private String insuranceCode;                             // 医保编码（唯一标识）
-
-    private String hospitalCode;                              // 医院编码（唯一标识）
-
-    private String hospitalName;                              // 医院名称
+    /**
+     * 保存聚合根
+     *
+     * @param aggregate 聚合根
+     */
+    Key save(Aggregate aggregate, boolean isNew);
 
 }

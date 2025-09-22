@@ -24,7 +24,7 @@ import com.zhenbanban.core.domain.accountcontext.event.RoleAddedEvent;
 import com.zhenbanban.core.domain.accountcontext.event.RoleAssignmentModifiedEvent;
 import com.zhenbanban.core.domain.accountcontext.event.RoleDestroyedEvent;
 import com.zhenbanban.core.domain.accountcontext.event.RoleModifiedEvent;
-import com.zhenbanban.core.domain.common.AbsAggregate;
+import com.zhenbanban.core.domain.common.entity.AbsAggregate;
 import com.zhenbanban.core.shared.exception.BadRequestException;
 import lombok.*;
 

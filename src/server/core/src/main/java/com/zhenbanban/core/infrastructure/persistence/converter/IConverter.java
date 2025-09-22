@@ -93,4 +93,32 @@ public interface IConverter {
         return String.join(",", value);
     }
 
+    @Named("timestampToFormattedDateTime")
+    default String mapTimestampToFormattedDateTime(Long timestamp) {
+        if (timestamp == null || timestamp <= 0L) {
+            return "";
+        }
+        return new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date(timestamp));
+    }
+
+    @Named("timestampToFormattedDate")
+    default String mapTimestampToFormattedDate(Long timestamp) {
+        if (timestamp == null || timestamp <= 0L) {
+            return "";
+        }
+        return new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date(timestamp));
+    }
+
+    @Named("formattedDateTimeToTimestamp")
+    default Long mapFormattedDateTimeToTimestamp(String dateTime) {
+        if (dateTime == null || dateTime.isEmpty()) {
+            return 0L;
+        }
+        try {
+            return new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(dateTime).getTime();
+        } catch (java.text.ParseException e) {
+            return 0L;
+        }
+    }
+
 }

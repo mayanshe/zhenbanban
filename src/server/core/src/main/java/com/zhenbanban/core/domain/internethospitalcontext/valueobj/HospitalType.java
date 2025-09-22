@@ -18,37 +18,35 @@
  * distribution of this code must also be licensed under the GPL. Failure
  * to comply with the terms of the GPL may result in legal action.
  */
-package com.zhenbanban.core.domain.institutioncontext.valueobj;
+package com.zhenbanban.core.domain.internethospitalcontext.valueobj;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 /**
- * 值对象：医院类型
+ * Value Object : 医院类型
  *
- * @author zhangxihai 2025/08/11
+ * @author zhangxihai 2025/9/17
  */
 public class HospitalType {
-    public static final HospitalType GENERAL = new HospitalType("GENERAL", "综合医院");
-    public static final HospitalType SPECIALTY = new HospitalType("SPECIALTY", "专科医院");
-    public static final HospitalType TRADITIONAL = new HospitalType("TRADITIONAL", "中医医院");
-    public static final HospitalType ETHNIC = new HospitalType("ETHNIC", "民族医医院");
-    public static final HospitalType REHABILITATION = new HospitalType("REHABILITATION", "康复医院");
-    public static final HospitalType OTHER = new HospitalType("OTHER", "其他");
+    private static final HospitalType GENERAL = new HospitalType("GENERAL", "综合医院");
+    private static final HospitalType SPECIALTY = new HospitalType("SPECIALTY", "专科医院");
+    private static final HospitalType TRADITIONAL = new HospitalType("TRADITIONAL", "中医医院");
+    private static final HospitalType ETHNIC = new HospitalType("ETHNIC", "民族医医院");
+    private static final HospitalType REHABILITATION = new HospitalType("REHABILITATION", "康复医院");
+    private static final HospitalType OTHER = new HospitalType("OTHER", "其他");
 
-    private static final List<HospitalType> ALL_TYPES = Collections.unmodifiableList(Arrays.asList(
+    private static final List<HospitalType> ALL_TYPES = List.of(
             GENERAL,
             SPECIALTY,
             TRADITIONAL,
             ETHNIC,
             REHABILITATION,
             OTHER
-    ));
+    );
 
-    private final String code;
-    private final String name;
+    private final String code;       // 医院类型代码
+
+    private final String name;       // 医院类型名称
 
     public HospitalType(String code, String name) {
         this.code = code;
@@ -60,13 +58,10 @@ public class HospitalType {
     }
 
     public static HospitalType of(String code) {
-        if (code == null || code.isEmpty()) {
-            return OTHER;
-        }
         return ALL_TYPES.stream()
-                .filter(type -> type.getCode().equalsIgnoreCase(code))
+                .filter(type -> type.getCode().equals(code.toUpperCase()))
                 .findFirst()
-                .orElse(OTHER);
+                .orElseThrow(() -> new IllegalArgumentException("Invalid HospitalType code: " + code));
     }
 
     public String getCode() {
@@ -78,23 +73,24 @@ public class HospitalType {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        HospitalType that = (HospitalType) o;
-        return Objects.equals(code, that.code);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(code);
-    }
-
-    @Override
     public String toString() {
         return "HospitalType{" +
                 "code='" + code + '\'' +
                 ", name='" + name + '\'' +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        HospitalType that = (HospitalType) o;
+        return code.equals(that.code);
+    }
+
+    @Override
+    public int hashCode() {
+        return code.hashCode();
+    }
+
 }

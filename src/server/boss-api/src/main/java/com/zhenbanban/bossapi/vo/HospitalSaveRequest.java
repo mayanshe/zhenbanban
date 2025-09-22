@@ -25,22 +25,18 @@ public class HospitalSaveRequest {
     private String hospitalType;
 
     @NotBlank(message = "请选择机构等级")
-    @InList(message = "机构等级不合法，只可以是（三甲/三乙/二甲/二乙/一级/其他）", value = {"LEVEL-3A", "LEVEL-2A", "LEVEL-2A", "LEVEL-2B", "LEVEL-1", "OTHER"})
+    @InList(message = "机构等级不合法，只可以是（三甲/三乙/二甲/二乙/一级/其他）", value = {"LEVEL-3A", "LEVEL-3B", "LEVEL-2A", "LEVEL-2B", "LEVEL-1", "OTHER"})
     private String hospitalLevel;
 
-    @NotBlank(message = "请选择医院状态")
-    @InList(message = "医院状态不合法，只可以是（待审核/激活/禁用）", value = {"PENDING", "ACTIVE", "INACTIVE"})
-    private String status;
-
     @Builder.Default
-    @NotBlankPattern(message = "医保编码格式错误", regexp = "^[A-Z0-9]{20}$")
+    @NotBlankPattern(message = "医保编码格式错误（字母/数组，20个字符）", regexp = "^[A-Z0-9]{1,32}$")
     private String insuranceCode = "";
 
-    @NotBlankPattern(message = "统一社会信用代码格式错误", regexp = "^[0-9A-Z]{18}$")
+    @NotBlankPattern(message = "统一社会信用代码格式错误（字母/数组，18个字符）", regexp = "^[A-Z0-9]{1,32}$")
     private String usccCode;
 
     @NotBlank(message = "医疗机构登记号不能为空")
-    @NotBlankPattern(message = "医疗机构登记号格式错误", regexp = "^PDY[A-Z0-9]{19}$")
+    @NotBlankPattern(message = "医疗机构登记号格式错误（字母/数组，22个字符", regexp = "^[A-Z0-9]{1,32}$")
     private String hospitalCode;
 
     @NotBlank(message = "医疗机构名称不能为空")
@@ -50,11 +46,20 @@ public class HospitalSaveRequest {
     @NotNull(message = "请选择医院所在省份")
     private Long provinceId;
 
+    @Builder.Default
+    private String province = "";
+
     @NotNull(message = "请选择医院所在城市")
     private Long cityId;
 
+    @Builder.Default
+    private String city = "";
+
     @NotNull(message = "请选择医院所在县区")
     private Long countyId;
+
+    @Builder.Default
+    private String county = "";
 
     @NotBlank(message = "医院地址不能为空")
     @Size(max = 255, message = "医院地址长度不能超过255个字符")
@@ -70,28 +75,36 @@ public class HospitalSaveRequest {
     @NotNull(message = "纬度不能为空")
     private BigDecimal latitude;
 
+    @NotBlank(message = "地图链接不能为空")
     @Size(max = 255, message = "地图链接长度不能超过255个字符")
     private String mapUrl;
 
-    @NotBlank(message = "医院联系电话不能为空")
+    @Builder.Default
     @Size(max = 20, message = "医院联系电话长度不能超过20个字符")
-    private String contactPhone;
+    private String contactPhone = "";
 
-    @NotBlank(message = "医院联系邮箱不能为空")
-    @Email(message = "医院联系邮箱格式不正确")
+    @Builder.Default
     @Size(max = 255, message = "医院联系邮箱长度不能超过255个字符")
-    private String contactEmail;
+    private String contactEmail = "";
 
+    @Builder.Default
     @Size(max = 255, message = "医院官网长度不能超过255个字符")
-    private String website;
+    private String website = "";
 
-    @NotBlank(message = "请选择是否启用伴诊服务")
-    private Boolean companionDiagnosisEnabled;
+    @Builder.Default
+    @Size(max = 255, message = "医院简介长度不能超过255个字符")
+    private String summary = "";
 
-    @NotBlank(message = "请选择是否启配餐饮服务")
-    private Boolean mealServiceEnabled;
+    @Builder.Default
+    private String description = "";
 
-    @NotBlank(message = "请选择是否启用检测送检服务")
-    private Boolean testingDeliveryEnabled;
+    @Builder.Default
+    private Boolean companionDiagnosisEnabled = false;
+
+    @Builder.Default
+    private Boolean mealServiceEnabled = false;
+
+    @Builder.Default
+    private Boolean testingDeliveryEnabled = false;
 
 }

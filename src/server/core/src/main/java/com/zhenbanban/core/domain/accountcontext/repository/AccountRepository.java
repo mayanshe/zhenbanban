@@ -21,7 +21,7 @@
 package com.zhenbanban.core.domain.accountcontext.repository;
 
 import com.zhenbanban.core.domain.accountcontext.entity.Account;
-import com.zhenbanban.core.domain.common.IDomainRepository;
+import com.zhenbanban.core.domain.common.repository.IDomainRepository;
 
 /**
  * Domain Repository Interface : 账号

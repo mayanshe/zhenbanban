@@ -18,28 +18,43 @@
  * distribution of this code must also be licensed under the GPL. Failure
  * to comply with the terms of the GPL may result in legal action.
  */
-package com.zhenbanban.core.domain.common;
+package com.zhenbanban.bossapi.controller;
+
+import com.zhenbanban.core.domain.common.valueobj.AuditStatus;
+import com.zhenbanban.core.domain.common.valueobj.WithAuditStatus;
+import com.zhenbanban.core.infrastructure.support.annotation.AdminPermit;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 /**
- * 领域公共: 发布领域事件接口
+ * Controller : 通用
  *
- * @author zhangxihai 2025/08/01
+ * @author zhangxihai 2025/9/18
  */
-public interface DomainEventPublisher {
+@RestController
+@RequestMapping("/common")
+public class CommonController {
     /**
-     * 发布单个领域事件
+     * 获取带审核状态列表
      *
-     * @param event 领域事件
+     * @return 列表
      */
-    void publish(AbsDomainEvent event);
+    @GetMapping("/with-audit-statuses")
+    public List<WithAuditStatus> getWithAuditStatusList() {
+        return WithAuditStatus.all();
+    }
 
     /**
-     * 发布领域事件列表
+     * 获取审核状态列表
      *
-     * @param events
+     * @return 列表
      */
-    void publish(List<? extends AbsDomainEvent> events);
+    @GetMapping("/audit-statuses")
+    public List<AuditStatus> getAuditStatusList() {
+        return AuditStatus.all();
+    }
 
 }

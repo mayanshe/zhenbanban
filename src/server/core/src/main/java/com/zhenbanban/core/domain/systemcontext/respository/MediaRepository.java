@@ -20,7 +20,7 @@
  */
 package com.zhenbanban.core.domain.systemcontext.respository;
 
-import com.zhenbanban.core.domain.common.IDomainRepository;
+import com.zhenbanban.core.domain.common.repository.IDomainRepository;
 import com.zhenbanban.core.domain.systemcontext.entity.Media;
 
 /**

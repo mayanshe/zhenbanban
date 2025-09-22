@@ -20,7 +20,7 @@
  */
 package com.zhenbanban.core.domain.accountcontext.event;
 
-import com.zhenbanban.core.domain.common.AbsDomainEvent;
+import com.zhenbanban.core.domain.common.event.AbsDomainEvent;
 
 /**
  * 事件 : 账号仅用事件

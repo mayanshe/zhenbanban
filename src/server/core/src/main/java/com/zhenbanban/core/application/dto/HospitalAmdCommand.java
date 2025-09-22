@@ -38,14 +38,11 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 public class HospitalAmdCommand extends BaseCommand<Long> {
-
     private String ownershipType;
 
     private String hospitalType;
 
     private String hospitalLevel;
-
-    private String status;
 
     private String insuranceCode;
 
@@ -61,9 +58,15 @@ public class HospitalAmdCommand extends BaseCommand<Long> {
 
     private Long provinceId;
 
+    private String province;
+
     private Long cityId;
 
+    private String city;
+
     private Long countyId;
+
+    private String county;
 
     private String address;
 
@@ -81,11 +84,15 @@ public class HospitalAmdCommand extends BaseCommand<Long> {
 
     private String website;
 
-    private Integer companionDiagnosisEnabled;
+    private String summary;
 
-    private Integer mealServiceEnabled;
+    private String description;
 
-    private Integer testingDeliveryEnabled;
+    private Boolean companionDiagnosisEnabled;
+
+    private Boolean mealServiceEnabled;
+
+    private Boolean testingDeliveryEnabled;
 
     private void setHospitalNamePinyin(String value) {
     }
@@ -100,4 +107,5 @@ public class HospitalAmdCommand extends BaseCommand<Long> {
     public String getHospitalNamePinyinAbbr() {
         return PinyinUtils.getPinyinInitial(this.hospitalName);
     }
+
 }

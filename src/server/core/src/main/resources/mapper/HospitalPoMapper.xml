@@ -3,16 +3,21 @@
 <mapper namespace="com.zhenbanban.core.infrastructure.persistence.mapper.HospitalPoMapper">
     <!-- 业务医院表(hospitals)表映射 -->
 
+    <resultMap id="HospitalPoOptionMap" type="java.util.Map">
+        <id property="id" column="id" javaType="Long"/>
+        <result property="hospitalName" column="hospital_name" javaType="String"/>
+    </resultMap>
+
     <insert id="insert" parameterType="com.zhenbanban.core.infrastructure.persistence.po.HospitalPo" useGeneratedKeys="false">
-        INSERT INTO hospitals (id, ownership_type, hospital_type, hospital_level, status, insurance_code, uscc_code,
+        INSERT INTO hospitals (id, ownership_type, hospital_type, hospital_level, insurance_code, uscc_code,
                                hospital_code, hospital_name, hospital_name_pinyin, hospital_name_pinyin_abbr,
-                               province_id, city_id, county_id, address, postal_code, longitude, latitude, map_url,
-                               contact_phone, contact_email, website, companion_diagnosis_enabled,
+                               province_id, province, city_id, city, county_id, county, address, postal_code, longitude, latitude, map_url,
+                               contact_phone, contact_email, website, summary, description, companion_diagnosis_enabled,
                                meal_service_enabled, testing_delivery_enabled, created_at)
-        VALUES (#{id}, #{ownershipType}, #{hospitalType}, #{hospitalLevel}, #{status}, #{insuranceCode}, #{usccCode},
-                #{hospitalCode}, #{hospitalName}, #{hospitalNamePinyin}, #{hospitalNamePinyinAbbr}, #{provinceId},
-                #{cityId}, #{countyId}, #{address}, #{postalCode}, #{longitude}, #{latitude}, #{mapUrl},
-                #{contactPhone}, #{contactEmail}, #{website}, #{companionDiagnosisEnabled}, #{mealServiceEnabled},
+        VALUES (#{id}, #{ownershipType}, #{hospitalType}, #{hospitalLevel}, #{insuranceCode}, #{usccCode},
+                #{hospitalCode}, #{hospitalName}, #{hospitalNamePinyin}, #{hospitalNamePinyinAbbr}, #{provinceId}, #{province},
+                #{cityId}, #{city}, #{countyId}, #{county}, #{address}, #{postalCode}, #{longitude}, #{latitude}, #{mapUrl},
+                #{contactPhone}, #{contactEmail}, #{website}, #{summary}, #{description}, #{companionDiagnosisEnabled}, #{mealServiceEnabled},
                 #{testingDeliveryEnabled}, #{createdAt})
     </insert>
 
@@ -29,8 +34,11 @@
             hospital_name_pinyin        = #{hospitalNamePinyin},
             hospital_name_pinyin_abbr   = #{hospitalNamePinyinAbbr},
             province_id                 = #{provinceId},
+            province                    = #{province},
             city_id                     = #{cityId},
+            city                        = #{city},
             county_id                   = #{countyId},
+            county                      = #{county},
             address                     = #{address},
             postal_code                 = #{postalCode},
             longitude                   = #{longitude},
@@ -39,6 +47,8 @@
             contact_phone               = #{contactPhone},
             contact_email               = #{contactEmail},
             website                     = #{website},
+            summary                     = #{summary},
+            description                 = #{description},
             companion_diagnosis_enabled = #{companionDiagnosisEnabled},
             meal_service_enabled        = #{mealServiceEnabled},
             testing_delivery_enabled    = #{testingDeliveryEnabled},
@@ -143,4 +153,16 @@
             LIMIT #{offset}, 18446744073709551615
         </if>
     </select>
+
+    <select id="findNameMapByIds" resultMap="HospitalPoOptionMap">
+        SELECT id, region_name
+        FROM regions
+        WHERE id IN
+        <if test="ids != null and !ids.isEmpty()">
+            <foreach item="id" collection="ids" open="(" separator="," close=")">
+                #{id}
+            </foreach>
+        </if>
+    </select>
+
 </mapper>

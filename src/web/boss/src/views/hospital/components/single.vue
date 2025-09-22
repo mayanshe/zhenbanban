@@ -1,11 +1,23 @@
 <template>
-  <a-drawer :width="420" :visible="dialog.open" @before-ok="handleValidate" @ok="handleSubmit" @cancel="handleClose"
-    unmountOnClose>
+  <a-drawer :width="600" :visible="dialog.open" @before-ok="handleValidate" @ok="handleSubmit" @cancel="handleClose" unmountOnClose>
     <template #title>
       {{ dialog.title }}
     </template>
     <div>
       <a-form layout="vertical" :model="formData" :rules="rules" ref="formRef">
+        <a-row :gutter="16">
+          <a-col :span="5">
+            <a-form-item field="companionDiagnosisEnabled" label="启用伴诊 :">
+              <a-switch v-model="formData.companionDiagnosisEnabled" />
+            </a-form-item>
+          </a-col>
+          <a-col :span="5">
+            <a-form-item field="mealServiceEnabled" label="启用配餐 :">
+              <a-switch v-model="formData.mealServiceEnabled" />
+            </a-form-item>
+          </a-col>
+        </a-row>
+
         <a-form-item field="hospitalName" label="医院名称 :">
           <a-input v-model="formData.hospitalName" placeholder="请输入医院名称" />
         </a-form-item>
@@ -18,52 +30,50 @@
         <a-form-item field="insuranceCode" label="医保编码 :">
           <a-input v-model="formData.insuranceCode" placeholder="请输入医保编码" />
         </a-form-item>
-        <a-form-item field="ownershipType" label="所有制类型 :">
-          <a-select v-model="formData.ownershipType" placeholder="请选择所有制类型">
-            <a-option value="PUBLIC">公立</a-option>
-            <a-option value="PRIVATE">私立</a-option>
-            <a-option value="OTHER">其他</a-option>
+        <a-form-item field="ownershipType" label="医院所有制类型 :">
+          <a-select v-model="formData.ownershipType" placeholder="请选择医院所有制类型">
+            <a-option v-for="item in hospitalOwnershipTypes" :key="item.code" :value="item.code">
+              {{ item.name }}
+            </a-option>
           </a-select>
         </a-form-item>
-        <a-form-item field="hospitalType" label="机构类型 :">
-          <a-select v-model="formData.hospitalType" placeholder="请选择机构类型">
-            <a-option value="GENERAL">综合医院</a-option>
-            <a-option value="SPECIALTY">专科医院</a-option>
-            <a-option value="TRADITIONAL">中医医院</a-option>
-            <a-option value="ETHNIC">民族医医院</a-option>
-            <a-option value="REHABILITATION">康复医院</a-option>
-            <a-option value="OTHER">其他</a-option>
+        <a-form-item field="hospitalType" label="医院类型 :">
+          <a-select v-model="formData.hospitalType" placeholder="请选择医院类型">
+            <a-option v-for="item in hospitalTypes" :key="item.code" :value="item.code">
+              {{ item.name }}
+            </a-option>
           </a-select>
         </a-form-item>
-        <a-form-item field="hospitalLevel" label="机构等级 :">
-          <a-select v-model="formData.hospitalLevel" placeholder="请选择机构等级">
-            <a-option value="LEVEL-3A">三甲</a-option>
-            <a-option value="LEVEL-3B">三乙</a-option>
-            <a-option value="LEVEL-2A">二甲</a-option>
-            <a-option value="LEVEL-2B">二乙</a-option>
-            <a-option value="LEVEL-1">一级</a-option>
-            <a-option value="OTHER">其他</a-option>
+        <a-form-item field="hospitalLevel" label="医院等级 :">
+          <a-select v-model="formData.hospitalLevel" placeholder="请选择医院等级">
+            <a-option v-for="item in hospitalLevels" :key="item.code" :value="item.code">
+              {{ item.name }}
+            </a-option>
           </a-select>
         </a-form-item>
-        <a-form-item field="status" label="状态 :">
-          <a-select v-model="formData.status" placeholder="请选择状态">
-            <a-option value="PENDING">待审核</a-option>
-            <a-option value="ACTIVE">启用</a-option>
-            <a-option value="INACTIVE">禁用</a-option>
+
+        <a-form-item field="provinceId" label="所在省/直辖市 : " :span="6">
+          <a-select v-model="formData.provinceId" placeholder="请选择" @change="loadCity(true)">
+            <a-option style="width: 50%" v-for="item in provinces" :value="item.id">{{ item.regionName }}</a-option>
           </a-select>
         </a-form-item>
-        <a-form-item field="provinceId" label="省份 :">
-          <a-input-number v-model="formData.provinceId" placeholder="请输入省份ID" />
+
+        <a-form-item field="cityId" label="所在市 : " :span="6">
+          <a-select v-model="formData.cityId" placeholder="请选择" @change="loadCounty(true)">
+            <a-option style="width: 50%" v-for="item in cities" :value="item.id">{{ item.regionName }}</a-option>
+          </a-select>
         </a-form-item>
-        <a-form-item field="cityId" label="城市 :">
-          <a-input-number v-model="formData.cityId" placeholder="请输入城市ID" />
+
+        <a-form-item field="countyId" label="所在区县 : " :span="6">
+          <a-select v-model="formData.countyId" placeholder="请选择">
+            <a-option style="width: 50%" v-for="item in counties" :value="item.id">{{ item.regionName }}</a-option>
+          </a-select>
         </a-form-item>
-        <a-form-item field="countyId" label="区县 :">
-          <a-input-number v-model="formData.countyId" placeholder="请输入区县ID" />
-        </a-form-item>
+
         <a-form-item field="address" label="地址 :">
           <a-input v-model="formData.address" placeholder="请输入地址" />
         </a-form-item>
+
         <a-form-item field="postalCode" label="邮政编码 :">
           <a-input v-model="formData.postalCode" placeholder="请输入邮政编码" />
         </a-form-item>
@@ -85,14 +95,11 @@
         <a-form-item field="website" label="官网 :">
           <a-input v-model="formData.website" placeholder="请输入官网" />
         </a-form-item>
-        <a-form-item field="companionDiagnosisEnabled" label="启用伴诊 :">
-          <a-switch v-model="formData.companionDiagnosisEnabled" />
+        <a-form-item field="summary" label="医院简介 :">
+          <a-textarea v-model="formData.summary" placeholder="请输入医院简介"  :row="`3`"/>
         </a-form-item>
-        <a-form-item field="mealServiceEnabled" label="启用配餐 :">
-          <a-switch v-model="formData.mealServiceEnabled" />
-        </a-form-item>
-        <a-form-item field="testingDeliveryEnabled" label="启用送检 :">
-          <a-switch v-model="formData.testingDeliveryEnabled" />
+        <a-form-item field="description" label="医院详情 :">
+          <a-textarea v-model="formData.description" placeholder="请输入医院详情" :row="`5`"/>
         </a-form-item>
       </a-form>
     </div>
@@ -100,46 +107,48 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
-import { FormInstance } from '@arco-design/web-vue/es/form';
-import { Message } from '@arco-design/web-vue';
-import { Hospital, getHospital, createHospital, updateHospital } from '@/api/hospital';
+import { ref, watch } from 'vue'
+import { FormInstance } from '@arco-design/web-vue/es/form'
+import { Message } from '@arco-design/web-vue'
+import { ValueObject } from '@/api/common'
+import {
+  Hospital,
+  getHospitalLevelList,
+  getHospitalOwnershipTypeList,
+  getHospitalTypeList,
+  getHospital,
+  createHospital,
+  updateHospital,
+} from '@/api/hospital'
+import { getRegionList, RegionView } from '@/api/region'
 
 const props = defineProps<{
-  open: boolean;
-  action: string;
-  singleId: string;
-}>();
+  open: boolean
+  action: string
+  singleId: string
+}>()
 
 const emit = defineEmits<{
-  (e: 'update:open', value: boolean): void;
-  (e: 'on-success'): void;
-}>();
+  (e: 'update:open', value: boolean): void
+  (e: 'on-success'): void
+}>()
 
 const dialog = ref({
   open: false,
-  title: '添加业务医院表',
-  remark: '业务医院表用于后端接口控制。',
-});
+  title: '添加业务医院',
+  remark: '业务医院用于后端接口控制。',
+})
 
+// region 医院数据加载
 watch(
   () => props.open,
   (val) => {
-    dialog.value.open = val;
+    dialog.value.open = val
     if (val) {
-      load();
+      load()
     }
   }
-);
-
-const load = async () => {
-  if (props.action === 'add') {
-    formData.value = generate();
-  } else {
-    const resp = await getHospital(props.singleId);
-    formData.value = (resp.data as Hospital) || generate();
-  }
-};
+)
 
 const generate = (): Hospital => {
   return {
@@ -152,9 +161,12 @@ const generate = (): Hospital => {
     usccCode: '',
     hospitalCode: '',
     hospitalName: '',
-    provinceId: 0,
-    cityId: 0,
-    countyId: 0,
+    provinceId: '',
+    province: '',
+    cityId: '',
+    city: '',
+    countyId: '',
+    county: '',
     address: '',
     postalCode: '',
     longitude: 0,
@@ -166,55 +178,157 @@ const generate = (): Hospital => {
     companionDiagnosisEnabled: false,
     mealServiceEnabled: false,
     testingDeliveryEnabled: false,
-  };
-};
+  }
+}
 
-const formData = ref<Hospital>(generate());
-const formRef = ref<FormInstance | null>(null);
+const load = async () => {
+  if (props.action === 'add') {
+    formData.value = generate()
+  } else {
+    const resp = (await getHospital(props.singleId)) || generate()
+    formData.value = {
+      id: resp.id,
+      ownershipType: resp.ownershipType.code,
+      hospitalType: resp.hospitalType.code,
+      hospitalLevel: resp.hospitalLevel.code,
+      status: resp.status.code,
+      insuranceCode: resp.insuranceCode,
+      usccCode: resp.usccCode,
+      hospitalCode: resp.hospitalCode,
+      hospitalName: resp.hospitalName,
+      provinceId: resp.provinceId,
+      province: resp.province,
+      cityId: resp.cityId,
+      city: resp.city,
+      countyId: resp.countyId,
+      county: resp.county,
+      address: resp.address,
+      postalCode: resp.postalCode,
+      longitude: resp.longitude,
+      latitude: resp.latitude,
+      mapUrl: resp.mapUrl,
+      contactPhone: resp.contactPhone,
+      contactEmail: resp.contactEmail,
+      website: resp.website,
+      summary: resp.summary,
+      description: resp.description,
+      companionDiagnosisEnabled: resp.companionDiagnosisEnabled,
+      mealServiceEnabled: resp.mealServiceEnabled,
+      testingDeliveryEnabled: resp.testingDeliveryEnabled,
+    }
+  }
+  loadProvince()
+  loadCity(false)
+  loadCounty(false)
+}
+
+const formData = ref<Hospital>(generate())
+const formRef = ref<FormInstance | null>(null)
 
 const rules = {
   hospitalName: [{ required: true, message: '请输入医院名称' }],
   hospitalCode: [{ required: true, message: '请输入医院编码' }],
-};
+  ownershipType: [{ required: true, message: '请选择医院所有制类型' }],
+  hospitalType: [{ required: true, message: '请选择医院类型' }],
+  hospitalLevel: [{ required: true, message: '请选择医院等级' }],
+  provinceId: [{ required: true, message: '请选择省/直辖市' }],
+  cityId: [{ required: true, message: '请选择市' }],
+  countyId: [{ required: true, message: '请选择区县' }],
+  address: [{ required: true, message: '请输入地址' }],
+  postalCode: [{ required: true, message: '请输入邮政编码' }],
+  longitude: [{ required: true, message: '请输入经度' }],
+  latitude: [{ required: true, message: '请输入纬度' }],
+}
 
 const handleValidate = async () => {
   const v = await new Promise((resolve) => {
     formRef.value?.validate((r) => {
       if (r === undefined) {
-        resolve(true);
+        resolve(true)
       } else {
-        const firstError = Object.values(r)[0];
-        Message.error(firstError.message);
-        resolve(false);
+        const firstError = Object.values(r)[0]
+        Message.error(firstError.message)
+        resolve(false)
       }
-    });
-  });
-  return v;
-};
+    })
+  })
+  return v
+}
+
+// ednregion
+
+// region 获取医院键值对属性
+const hospitalLevels = ref<ValueObject[]>([])
+const loadHospitalLevels = async () => {
+  const resp = await getHospitalLevelList()
+  hospitalLevels.value = resp || []
+}
+loadHospitalLevels()
+
+const hospitalOwnershipTypes = ref<ValueObject[]>([])
+const loadHospitalOwnershipTypes = async () => {
+  const resp = await getHospitalOwnershipTypeList()
+  hospitalOwnershipTypes.value = resp || []
+}
+loadHospitalOwnershipTypes()
+
+const hospitalTypes = ref<ValueObject[]>([])
+const loadHospitalTypes = async () => {
+  const resp = await getHospitalTypeList()
+  hospitalTypes.value = resp || []
+}
+loadHospitalTypes()
+// endregion
+
+// region 加载行政区划数据
+const provinces = ref<RegionView[]>([])
+const cities = ref<RegionView[]>([])
+const counties = ref<RegionView[]>([])
+const loadProvince = async () => {
+  provinces.value = (await getRegionList('0')) || []
+}
+const loadCity = async (reselect: boolean) => {
+  cities.value = (await getRegionList(formData.value.provinceId)) || []
+  if (reselect) {
+    counties.value = []
+    formData.value.cityId = ''
+    formData.value.city = ''
+    formData.value.countyId = ''
+    formData.value.county = ''
+  }
+}
+const loadCounty = async (reselect: boolean) => {
+  counties.value = (await getRegionList(formData.value.cityId)) || []
+  if (reselect) {
+    formData.value.countyId = ''
+    formData.value.county = ''
+  }
+}
+// endregion
 
 const handleSubmit = async () => {
   if (props.action === 'add') {
     createHospital(formData.value).then(() => {
-      Message.success(`创建成功`);
-      handleClose();
-      emit('on-success');
-    });
+      Message.success(`创建成功`)
+      handleClose()
+      emit('on-success')
+    })
   } else {
     updateHospital(formData.value).then(() => {
-      Message.success('修改成功');
-      handleClose();
-      emit('on-success');
-    });
+      Message.success('修改成功')
+      handleClose()
+      emit('on-success')
+    })
   }
-};
+}
 
 const handleClose = async () => {
-  emit('update:open', false);
-};
+  emit('update:open', false)
+}
 </script>
 
 <script lang="ts">
 export default {
   name: 'HospitalSingle',
-};
+}
 </script>

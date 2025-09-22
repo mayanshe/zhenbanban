@@ -18,47 +18,30 @@
  * distribution of this code must also be licensed under the GPL. Failure
  * to comply with the terms of the GPL may result in legal action.
  */
-package com.zhenbanban.core.domain.common;
+package com.zhenbanban.core.domain.common.repository;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import com.zhenbanban.core.domain.common.event.AbsDomainEvent;
+
 import java.util.List;
 
 /**
- * 领域公共: 抽象基础聚合根类
+ * 领域公共: 发布领域事件接口
  *
  * @author zhangxihai 2025/08/01
  */
-public abstract class AbsAggregate {
-    private final List<AbsDomainEvent> events = new ArrayList<>();
-
+public interface DomainEventPublisher {
     /**
-     * 注册领域事件
+     * 发布单个领域事件
      *
      * @param event 领域事件
      */
-    public void addEvent(AbsDomainEvent event) {
-        if (event != null) {
-            events.add(event);
-        }
-    }
+    void publish(AbsDomainEvent event);
 
     /**
-     * 获取领域事件列表
+     * 发布领域事件列表
      *
-     * @return 领域事件列表
+     * @param events
      */
-    public List<AbsDomainEvent> getEvents() {
-        return Collections.unmodifiableList(events);
-    }
-
-    /**
-     * 清空领域事件列表
-     */
-    public void clearEvents() {
-        events.clear();
-    }
-
-    abstract public Long getId();
+    void publish(List<? extends AbsDomainEvent> events);
 
 }

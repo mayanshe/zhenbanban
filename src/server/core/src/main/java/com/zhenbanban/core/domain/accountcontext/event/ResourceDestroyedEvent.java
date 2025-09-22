@@ -21,7 +21,7 @@
 package com.zhenbanban.core.domain.accountcontext.event;
 
 import com.zhenbanban.core.domain.accountcontext.valueobj.ResourceType;
-import com.zhenbanban.core.domain.common.AbsDomainEvent;
+import com.zhenbanban.core.domain.common.event.AbsDomainEvent;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 

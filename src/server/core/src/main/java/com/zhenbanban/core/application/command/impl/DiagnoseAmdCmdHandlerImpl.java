@@ -24,7 +24,7 @@ import com.zhenbanban.core.application.command.DiagnoseAmdCmdHandler;
 import com.zhenbanban.core.application.dto.DiagnoseAmdCommand;
 import com.zhenbanban.core.domain.dictionarycontext.entity.Diagnose;
 import com.zhenbanban.core.domain.dictionarycontext.repository.DiagnoseRepository;
-import com.zhenbanban.core.domain.common.DomainEventPublisher;
+import com.zhenbanban.core.domain.common.repository.DomainEventPublisher;
 import com.zhenbanban.core.shared.contract.IdGenerator;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;

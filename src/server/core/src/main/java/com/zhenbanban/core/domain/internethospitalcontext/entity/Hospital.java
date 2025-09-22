@@ -20,7 +20,7 @@
  */
 package com.zhenbanban.core.domain.internethospitalcontext.entity;
 
-import com.zhenbanban.core.domain.common.AbsAggregate;
+import com.zhenbanban.core.domain.common.entity.AbsAggregate;
 import com.zhenbanban.core.domain.internethospitalcontext.event.HospitalAddedEvent;
 import com.zhenbanban.core.domain.internethospitalcontext.event.HospitalDestroyedEvent;
 import com.zhenbanban.core.domain.internethospitalcontext.event.HospitalModifiedEvent;
@@ -64,9 +64,15 @@ public class Hospital extends AbsAggregate {
 
     private Long provinceId;
 
+    private String province;
+
     private Long cityId;
 
+    private String city;
+
     private Long countyId;
+
+    private String county;
 
     private String address;
 
@@ -84,11 +90,15 @@ public class Hospital extends AbsAggregate {
 
     private String website;
 
-    private Integer companionDiagnosisEnabled;
+    private String summary;
 
-    private Integer mealServiceEnabled;
+    private String description;
 
-    private Integer testingDeliveryEnabled;
+    private Boolean companionDiagnosisEnabled;
+
+    private Boolean mealServiceEnabled;
+
+    private Boolean testingDeliveryEnabled;
 
     @Builder.Default
     private boolean deleted = false;
@@ -98,6 +108,8 @@ public class Hospital extends AbsAggregate {
      */
     public void add() {
         this.setDeleted(false);
+        this.setStatus("PENDING");
+        this.setTestingDeliveryEnabled(false);
 
         HospitalAddedEvent event = HospitalAddedEvent.builder()
                 .refId(this.getId())
@@ -113,6 +125,8 @@ public class Hospital extends AbsAggregate {
      */
     public void modify() {
         this.setDeleted(false);
+        this.setStatus("PENDING");
+        this.setTestingDeliveryEnabled(false);
 
         HospitalModifiedEvent event = HospitalModifiedEvent.builder()
                 .refId(this.getId())
@@ -137,4 +151,5 @@ public class Hospital extends AbsAggregate {
 
         this.addEvent(event);
     }
+
 }

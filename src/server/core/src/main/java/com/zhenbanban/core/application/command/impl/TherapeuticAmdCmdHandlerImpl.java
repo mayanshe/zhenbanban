@@ -22,7 +22,7 @@ package com.zhenbanban.core.application.command.impl;
 
 import com.zhenbanban.core.application.command.TherapeuticAmdCmdHandler;
 import com.zhenbanban.core.application.dto.TherapeuticAmdCommand;
-import com.zhenbanban.core.domain.common.DomainEventPublisher;
+import com.zhenbanban.core.domain.common.repository.DomainEventPublisher;
 import com.zhenbanban.core.domain.dictionarycontext.entity.Therapeutic;
 import com.zhenbanban.core.domain.dictionarycontext.repository.TherapeuticRepository;
 import com.zhenbanban.core.shared.contract.IdGenerator;
